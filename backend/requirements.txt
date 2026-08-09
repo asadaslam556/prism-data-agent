@@ -1,0 +1,43 @@
+# Everything the app imports at runtime, plus all three LLM providers.
+# Python 3.11+.
+#
+# Providers used to be commented out here, which meant switching LLM_PROVIDER
+# gave you an ImportError instead of a working app. They're all included now --
+# the extra install weight is a few MB and it removes a footgun.
+
+# --- API ---
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9        # multipart parsing for CSV upload
+starlette>=0.37                # pulled in by fastapi; pinned so SSE behaviour is predictable
+
+# --- Data ---
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8                # charts, rendered headless via the Agg backend
+sqlalchemy>=2.0
+sqlparse>=0.5                  # used by the SQL guardrail to check statements
+
+# --- Agent / LLM ---
+langgraph>=1.0                 # the agent graph itself
+langchain-core>=0.3            # message types shared by every provider
+langchain-ollama>=0.2          # LLM_PROVIDER=ollama  (local, default)
+langchain-anthropic>=0.3       # LLM_PROVIDER=anthropic  (Claude, incl. gateways)
+langchain-openai>=0.3          # LLM_PROVIDER=openai  (OpenAI + any compatible endpoint)
+
+# --- Config ---
+pydantic>=2.7
+pydantic-settings>=2.3
+python-dotenv>=1.0             # lets pydantic-settings read backend/.env
+
+# --- HTTP ---
+httpx>=0.27                    # transport under the provider SDKs
+
+# --- Optional database drivers -------------------------------------------
+# CSV upload and SQLite files work with no extra install. For anything else,
+# uncomment the driver you need. psycopg2-binary is the wheel build; use plain
+# psycopg2 only if you have the Postgres build tools set up.
+# psycopg2-binary>=2.9         # PostgreSQL
+# pymysql>=1.1                 # MySQL / MariaDB
+# pyodbc>=5.1                  # SQL Server
+# cx_Oracle>=8.3               # Oracle

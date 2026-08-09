@@ -1,0 +1,23 @@
+# Normalise line endings. Without this, files authored on Windows land in the
+# repo with CRLF and every contributor on macOS or Linux sees a whole-file diff
+# the first time they touch them.
+* text=auto eol=lf
+
+# Binary assets: never touch them.
+*.png binary
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+
+# Windows-only scripts keep CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Collapse generated noise in diffs and language stats.
+frontend/package-lock.json linguist-generated=true -diff
+docs/images/* linguist-documentation=true

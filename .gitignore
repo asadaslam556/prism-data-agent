@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+.coverage
+coverage.xml
+htmlcov/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment. Keep the examples, never the real thing.
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+
+# Local databases. Anything connected through /api/connect, plus scratch files.
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs and scratch output
+*.log
+logs/
+tmp/
+*.bak
+
+# Agent tooling
+.claude/
+
+# Editors
+.vscode/
+.idea/
+.vs/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/

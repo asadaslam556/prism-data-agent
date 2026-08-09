@@ -1,0 +1,1401 @@
+order_id,order_date,region,country,category,product,customer_segment,sales_rep,quantity,unit_price,discount,revenue
+100235,2024-01-01,Asia Pacific,Japan,Software,Security Suite,Enterprise,C. Okafor,5,397.15,0.1,1787.18
+101362,2024-01-02,North America,Mexico,Office Supplies,Pen Set,Consumer,F. Larsson,2,15.09,0.07,28.07
+100334,2024-01-02,North America,Mexico,Furniture,Bookshelf,Enterprise,B. Nguyen,8,151.04,0.1,1087.49
+100644,2024-01-02,North America,Canada,Electronics,Monitor,SMB,B. Nguyen,4,236.94,0.08,871.94
+100925,2024-01-03,North America,United States,Software,CRM License,SMB,F. Larsson,5,371.01,0.0,1855.05
+100559,2024-01-03,Europe,Spain,Software,CRM License,Consumer,C. Okafor,1,331.91,0.11,295.4
+100895,2024-01-03,North America,Mexico,Office Supplies,Notebook,SMB,C. Okafor,3,7.7,0.0,23.1
+100121,2024-01-03,Asia Pacific,India,Office Supplies,Pen Set,Enterprise,E. Haddad,7,13.54,0.0,94.78
+100647,2024-01-04,Europe,Italy,Furniture,Bookshelf,SMB,C. Okafor,3,162.06,0.02,476.46
+100537,2024-01-04,Europe,Germany,Office Supplies,Stapler,SMB,A. Fischer,4,11.45,0.1,41.22
+100984,2024-01-05,North America,United States,Electronics,Smartphone,SMB,C. Okafor,2,719.24,0.03,1395.33
+100046,2024-01-05,Latin America,Chile,Electronics,Smartphone,SMB,D. Rossi,8,670.05,0.05,5092.38
+100735,2024-01-06,North America,Mexico,Office Supplies,Stapler,Consumer,C. Okafor,1,12.56,0.11,11.18
+100760,2024-01-06,North America,Mexico,Furniture,Office Chair,Consumer,E. Haddad,1,215.45,0.0,215.45
+101048,2024-01-06,Europe,Germany,Office Supplies,Pen Set,SMB,A. Fischer,1,14.71,0.0,14.71
+101032,2024-01-06,Asia Pacific,Japan,Electronics,Laptop,Consumer,C. Okafor,5,1070.0,0.07,4975.5
+100718,2024-01-07,Europe,France,Electronics,Laptop,SMB,,3,987.28,0.0,2961.84
+100651,2024-01-08,North America,United States,Furniture,Bookshelf,SMB,B. Nguyen,2,162.65,0.16,273.25
+100192,2024-01-08,Latin America,Chile,Office Supplies,Stapler,SMB,B. Nguyen,4,12.17,0.06,45.76
+100946,2024-01-08,North America,United States,Electronics,Monitor,SMB,C. Okafor,3,239.97,0.02,705.51
+100487,2024-01-08,Europe,United Kingdom,Electronics,Headphones,Consumer,A. Fischer,2,115.68,0.05,219.79
+100921,2024-01-08,Latin America,Brazil,Office Supplies,Stapler,SMB,A. Fischer,2,11.83,0.05,22.48
+100887,2024-01-08,Latin America,Argentina,Furniture,Office Chair,Consumer,E. Haddad,1,210.95,0.05,200.4
+100456,2024-01-09,North America,Canada,Software,CRM License,Enterprise,C. Okafor,8,352.47,0.03,2735.17
+101054,2024-01-09,Europe,Italy,Electronics,Smartphone,SMB,C. Okafor,4,769.03,0.02,3014.6
+101077,2024-01-10,Asia Pacific,Japan,Furniture,Bookshelf,Consumer,E. Haddad,2,168.35,0.08,309.76
+100554,2024-01-10,North America,Canada,Electronics,Laptop,Enterprise,B. Nguyen,13,878.03,0.15,9702.23
+100018,2024-01-12,Latin America,Chile,Furniture,Bookshelf,Consumer,F. Larsson,1,153.0,0.0,153.0
+100791,2024-01-12,Asia Pacific,India,Furniture,Bookshelf,Enterprise,C. Okafor,9,177.12,0.08,1466.55
+100563,2024-01-13,Europe,Germany,Office Supplies,Printer Paper,SMB,D. Rossi,2,24.27,0.01,48.05
+101350,2024-01-13,Europe,Italy,Office Supplies,Notebook,Consumer,D. Rossi,3,7.83,0.02,23.02
+101101,2024-01-14,Europe,Spain,Electronics,Monitor,Enterprise,C. Okafor,6,220.71,0.11,1178.59
+100153,2024-01-14,Asia Pacific,Japan,Furniture,Standing Desk,SMB,A. Fischer,3,491.25,0.09,1341.11
+100453,2024-01-14,North America,Canada,Furniture,Standing Desk,Enterprise,B. Nguyen,7,470.56,0.11,2931.59
+101391,2024-01-14,Europe,United Kingdom,Software,CRM License,SMB,E. Haddad,6,349.95,0.01,2078.7
+100863,2024-01-16,North America,Mexico,Electronics,Laptop,Enterprise,C. Okafor,12,1073.55,0.14,11079.04
+100808,2024-01-18,Asia Pacific,India,Software,Analytics Suite,Consumer,D. Rossi,5,610.58,0.0,3052.9
+101217,2024-01-19,Latin America,Argentina,Office Supplies,Notebook,Enterprise,C. Okafor,6,8.6,0.01,51.08
+100050,2024-01-19,Asia Pacific,Australia,Furniture,Office Chair,SMB,D. Rossi,5,242.12,0.04,1162.18
+100622,2024-01-20,North America,United States,Software,Security Suite,SMB,B. Nguyen,5,428.58,0.07,1992.9
+101129,2024-01-20,North America,Canada,Office Supplies,Pen Set,SMB,D. Rossi,4,13.38,0.04,51.38
+100157,2024-01-20,Europe,Italy,Electronics,Headphones,SMB,B. Nguyen,3,122.25,0.07,341.08
+101203,2024-01-21,Asia Pacific,Singapore,Office Supplies,Printer Paper,Consumer,B. Nguyen,1,26.04,0.08,23.96
+100674,2024-01-21,Asia Pacific,Singapore,Furniture,Office Chair,SMB,D. Rossi,7,214.42,0.08,1380.86
+100138,2024-01-21,North America,Canada,Office Supplies,Pen Set,SMB,E. Haddad,3,14.96,0.08,41.29
+100152,2024-01-21,Europe,Spain,Furniture,Standing Desk,Enterprise,C. Okafor,5,494.07,0.13,2149.2
+100311,2024-01-22,Asia Pacific,Japan,Electronics,Headphones,SMB,E. Haddad,3,125.78,0.09,343.38
+100979,2024-01-22,North America,United States,Office Supplies,Pen Set,Consumer,E. Haddad,1,14.58,0.0,14.58
+100897,2024-01-22,Europe,Germany,Furniture,Office Chair,Consumer,F. Larsson,1,211.03,0.03,204.7
+100589,2024-01-22,North America,Mexico,Furniture,Office Chair,SMB,F. Larsson,1,186.51,0.02,182.78
+100838,2024-01-23,North America,Canada,Office Supplies,Notebook,Enterprise,A. Fischer,10,7.92,0.02,77.62
+100807,2024-01-23,North America,Canada,Electronics,Monitor,Enterprise,E. Haddad,12,259.94,0.1,2807.35
+100501,2024-01-24,Asia Pacific,Japan,Furniture,Office Chair,Consumer,D. Rossi,4,195.54,0.0,782.16
+100350,2024-01-25,North America,Canada,Electronics,Laptop,SMB,C. Okafor,4,844.39,0.01,3343.78
+100435,2024-01-25,Asia Pacific,Singapore,Furniture,Office Chair,Enterprise,C. Okafor,16,185.43,0.1,2670.19
+100739,2024-01-26,North America,Canada,Office Supplies,Printer Paper,Consumer,E. Haddad,3,24.59,0.0,73.77
+100259,2024-01-26,North America,Canada,Electronics,Monitor,Enterprise,A. Fischer,9,231.24,0.15,1768.99
+100539,2024-01-26,Latin America,Chile,Furniture,Standing Desk,SMB,A. Fischer,5,496.03,0.02,2430.55
+101128,2024-01-26,Europe,United Kingdom,Electronics,Headphones,Enterprise,F. Larsson,8,127.02,0.14,873.9
+100488,2024-01-27,North America,United States,Software,Analytics Suite,Consumer,B. Nguyen,1,583.34,0.09,530.84
+100194,2024-01-27,Asia Pacific,Japan,Office Supplies,Stapler,SMB,C. Okafor,3,11.58,0.06,32.66
+100302,2024-01-28,Europe,United Kingdom,Electronics,Smartphone,Consumer,D. Rossi,2,758.38,0.07,1410.59
+101390,2024-01-29,North America,United States,Office Supplies,Notebook,SMB,E. Haddad,4,8.18,0.12,28.79
+100212,2024-01-29,North America,Canada,Electronics,Monitor,Enterprise,A. Fischer,5,255.54,0.06,1201.04
+100606,2024-01-29,North America,Mexico,Electronics,Laptop,Consumer,C. Okafor,1,920.28,0.0,920.28
+100891,2024-01-31,Europe,Italy,Office Supplies,Stapler,Enterprise,F. Larsson,10,12.01,0.09,109.29
+100884,2024-01-31,North America,United States,Furniture,Standing Desk,SMB,C. Okafor,2,453.52,0.0,907.04
+100049,2024-02-01,Latin America,Argentina,Electronics,Headphones,SMB,F. Larsson,7,125.21,0.13,831.16
+100209,2024-02-01,Latin America,Brazil,Office Supplies,Notebook,Consumer,A. Fischer,3,8.06,0.04,25.3
+100847,2024-02-02,Asia Pacific,Australia,Electronics,Laptop,SMB,E. Haddad,3,988.37,0.06,3038.05
+101233,2024-02-02,North America,United States,Software,CRM License,SMB,A. Fischer,7,324.32,0.06,2326.09
+100697,2024-02-02,Europe,Spain,Furniture,Standing Desk,Enterprise,D. Rossi,10,463.96,0.12,4450.3
+101333,2024-02-02,North America,Canada,Software,Analytics Suite,SMB,F. Larsson,4,598.04,0.0,2607.45
+101257,2024-02-03,Asia Pacific,Australia,Software,CRM License,SMB,B. Nguyen,2,334.4,0.13,634.22
+100817,2024-02-03,North America,Canada,Electronics,Monitor,Enterprise,A. Fischer,12,255.18,0.14,2870.47
+101374,2024-02-03,Asia Pacific,Australia,Office Supplies,Printer Paper,Enterprise,D. Rossi,12,27.47,0.07,334.16
+100845,2024-02-04,Europe,France,Electronics,Monitor,Consumer,D. Rossi,4,210.1,0.03,888.55
+100471,2024-02-04,Europe,Spain,Software,CRM License,Enterprise,D. Rossi,6,380.77,0.17,2066.9
+101277,2024-02-04,North America,Canada,Office Supplies,Pen Set,SMB,B. Nguyen,5,14.06,0.03,74.33
+101279,2024-02-06,Europe,United Kingdom,Software,Analytics Suite,SMB,D. Rossi,2,685.22,0.11,1329.46
+100907,2024-02-08,Europe,Spain,Electronics,Headphones,Consumer,D. Rossi,1,149.29,0.07,151.34
+100976,2024-02-08,North America,Mexico,Electronics,Headphones,SMB,D. Rossi,3,144.57,0.02,463.29
+100818,2024-02-08,North America,United States,Office Supplies,Stapler,SMB,E. Haddad,6,12.12,0.07,73.72
+100249,2024-02-09,North America,Mexico,Office Supplies,Printer Paper,Enterprise,F. Larsson,7,26.36,0.06,189.06
+100637,2024-02-10,Europe,United Kingdom,Office Supplies,Printer Paper,Consumer,E. Haddad,2,24.02,0.05,49.75
+100515,2024-02-10,North America,Mexico,Office Supplies,Pen Set,Enterprise,F. Larsson,11,13.74,0.14,141.68
+100109,2024-02-10,Latin America,Brazil,Electronics,Laptop,Enterprise,F. Larsson,11,1077.07,0.17,10718.68
+100001,2024-02-10,Asia Pacific,India,Electronics,Smartphone,SMB,F. Larsson,8,735.79,0.08,5902.8
+101037,2024-02-11,Latin America,Chile,Electronics,Smartphone,SMB,E. Haddad,2,815.99,0.0,1778.86
+100169,2024-02-12,North America,Canada,Electronics,Headphones,SMB,D. Rossi,2,131.83,0.0,287.39
+101155,2024-02-12,North America,United States,Electronics,Laptop,Consumer,A. Fischer,3,923.34,0.12,2657.0
+100460,2024-02-12,North America,Canada,Office Supplies,Pen Set,SMB,F. Larsson,2,15.63,0.0,34.07
+100432,2024-02-13,North America,Mexico,Office Supplies,Notebook,Enterprise,B. Nguyen,16,7.39,0.11,114.7
+100424,2024-02-13,North America,United States,Office Supplies,Pen Set,SMB,F. Larsson,4,14.51,0.1,56.94
+100297,2024-02-14,Europe,United Kingdom,Software,Security Suite,SMB,A. Fischer,5,410.43,0.01,2214.48
+100670,2024-02-14,Europe,United Kingdom,Electronics,Headphones,Enterprise,B. Nguyen,9,119.85,0.08,1081.67
+100499,2024-02-16,North America,Mexico,Office Supplies,Pen Set,Enterprise,A. Fischer,12,14.01,0.12,161.26
+100986,2024-02-16,Asia Pacific,Australia,Office Supplies,Stapler,Consumer,C. Okafor,1,11.91,0.04,12.46
+100296,2024-02-16,North America,United States,Furniture,Standing Desk,Enterprise,C. Okafor,6,480.3,0.1,2827.05
+100391,2024-02-16,North America,Canada,Electronics,Laptop,Consumer,A. Fischer,1,908.16,0.0,989.89
+100924,2024-02-17,Europe,Germany,Software,Analytics Suite,Enterprise,E. Haddad,16,620.73,0.13,9418.21
+100860,2024-02-17,North America,Canada,Office Supplies,Stapler,Enterprise,B. Nguyen,8,12.04,0.15,89.24
+100906,2024-02-18,Asia Pacific,Australia,Furniture,Standing Desk,SMB,F. Larsson,3,470.91,0.06,1447.48
+100605,2024-02-19,Latin America,Argentina,Electronics,Headphones,SMB,B. Nguyen,4,142.87,0.02,610.45
+101351,2024-02-19,Europe,Italy,Electronics,Monitor,Consumer,D. Rossi,1,246.3,0.0,268.47
+101085,2024-02-19,Latin America,Chile,Electronics,Laptop,SMB,F. Larsson,1,890.95,0.04,932.29
+100108,2024-02-19,Europe,United Kingdom,Electronics,Smartphone,Enterprise,E. Haddad,8,712.12,0.15,5278.23
+100844,2024-02-19,Europe,Italy,Electronics,Headphones,SMB,F. Larsson,2,128.14,0.01,276.55
+100940,2024-02-20,North America,United States,Electronics,Headphones,Enterprise,F. Larsson,8,127.78,0.2,891.39
+100245,2024-02-20,North America,Mexico,Furniture,Office Chair,Enterprise,A. Fischer,8,223.34,0.05,1850.15
+101231,2024-02-21,Europe,United Kingdom,Office Supplies,Notebook,Consumer,,2,8.49,0.02,18.14
+100920,2024-02-21,Europe,Italy,Office Supplies,Notebook,Enterprise,C. Okafor,13,8.53,0.08,111.2
+100315,2024-02-21,North America,Mexico,Electronics,Laptop,SMB,B. Nguyen,5,959.74,0.02,5125.97
+100176,2024-02-21,Latin America,Chile,Electronics,Laptop,SMB,E. Haddad,3,918.85,0.0,3004.64
+100300,2024-02-21,Latin America,Argentina,Software,Security Suite,SMB,E. Haddad,2,370.19,0.18,661.75
+100843,2024-02-21,North America,United States,Office Supplies,Stapler,SMB,C. Okafor,1,12.03,0.06,12.33
+101284,2024-02-24,Europe,Italy,Furniture,Bookshelf,Consumer,D. Rossi,2,145.92,0.0,318.11
+101255,2024-02-25,Europe,United Kingdom,Software,Security Suite,Consumer,,1,411.97,0.04,431.09
+101263,2024-02-26,Europe,France,Office Supplies,Notebook,SMB,A. Fischer,4,7.18,0.04,30.05
+100178,2024-02-26,Asia Pacific,Japan,Software,CRM License,Consumer,A. Fischer,1,330.0,0.0,359.7
+100583,2024-02-26,Latin America,Chile,Electronics,Monitor,Enterprise,E. Haddad,11,224.41,0.1,2421.61
+100763,2024-02-26,Asia Pacific,Singapore,Electronics,Laptop,SMB,C. Okafor,5,924.28,0.05,4785.46
+100161,2024-02-27,North America,Canada,Electronics,Smartphone,SMB,B. Nguyen,1,726.84,0.11,705.11
+101201,2024-02-27,Europe,France,Software,Security Suite,Consumer,A. Fischer,4,386.25,0.04,1616.69
+101087,2024-03-01,Asia Pacific,Australia,Office Supplies,Notebook,SMB,F. Larsson,4,7.53,0.08,32.03
+100555,2024-03-01,Europe,France,Office Supplies,Notebook,SMB,E. Haddad,6,8.53,0.01,58.57
+100723,2024-03-01,North America,Mexico,Software,CRM License,Consumer,C. Okafor,1,324.65,0.0,375.26
+100000,2024-03-01,Asia Pacific,India,Software,Analytics Suite,SMB,B. Nguyen,5,648.93,0.06,3525.41
+100088,2024-03-02,Europe,United Kingdom,Electronics,Headphones,Consumer,F. Larsson,1,122.29,0.05,134.29
+100506,2024-03-03,North America,United States,Electronics,Laptop,Enterprise,C. Okafor,9,913.12,0.12,8359.25
+101122,2024-03-03,Latin America,Brazil,Office Supplies,Pen Set,Consumer,A. Fischer,3,15.81,0.06,51.53
+101179,2024-03-05,Asia Pacific,Japan,Office Supplies,Notebook,SMB,D. Rossi,3,7.98,0.03,26.84
+101204,2024-03-05,Europe,France,Electronics,Headphones,Consumer,F. Larsson,2,127.96,0.01,292.86
+101378,2024-03-05,North America,Canada,Electronics,Headphones,SMB,F. Larsson,1,121.41,0.01,138.93
+100056,2024-03-06,Europe,Italy,Electronics,Smartphone,Consumer,E. Haddad,1,619.76,0.0,716.37
+100326,2024-03-06,North America,United States,Office Supplies,Stapler,Consumer,F. Larsson,1,13.01,0.09,13.68
+100657,2024-03-06,North America,United States,Electronics,Smartphone,SMB,A. Fischer,6,729.17,0.0,5057.02
+100496,2024-03-08,North America,Mexico,Electronics,Smartphone,SMB,A. Fischer,3,773.53,0.06,2521.39
+100045,2024-03-08,Asia Pacific,Australia,Furniture,Standing Desk,SMB,D. Rossi,4,501.3,0.05,2201.89
+100741,2024-03-09,Europe,Italy,Electronics,Headphones,Consumer,C. Okafor,3,124.11,0.0,430.37
+101147,2024-03-10,Europe,France,Electronics,Laptop,SMB,C. Okafor,5,960.68,0.07,5163.52
+100483,2024-03-10,Europe,Italy,Furniture,Office Chair,SMB,B. Nguyen,6,182.84,0.09,1153.93
+100624,2024-03-11,Europe,Germany,Office Supplies,Notebook,Consumer,C. Okafor,2,8.51,0.05,18.69
+100416,2024-03-11,North America,Canada,Furniture,Standing Desk,SMB,C. Okafor,3,526.21,0.0,1824.71
+100641,2024-03-12,North America,Mexico,Office Supplies,Printer Paper,Enterprise,E. Haddad,4,22.67,0.2,83.85
+100780,2024-03-12,Europe,Germany,Electronics,Headphones,Enterprise,D. Rossi,7,136.49,0.13,960.8
+101264,2024-03-12,Europe,Spain,Software,Analytics Suite,Consumer,E. Haddad,4,614.92,0.03,2757.81
+100566,2024-03-12,Europe,Italy,Furniture,Office Chair,Enterprise,B. Nguyen,7,192.61,0.08,1433.77
+100242,2024-03-12,North America,United States,Furniture,Standing Desk,SMB,B. Nguyen,2,478.51,0.09,1006.65
+100057,2024-03-12,Europe,United Kingdom,Electronics,Monitor,Enterprise,F. Larsson,7,250.1,0.07,1881.95
+100684,2024-03-13,Asia Pacific,Australia,Furniture,Office Chair,SMB,B. Nguyen,6,181.93,0.04,1211.27
+100415,2024-03-13,North America,Canada,Electronics,Smartphone,SMB,D. Rossi,4,762.87,0.12,3103.9
+100646,2024-03-14,North America,United States,Office Supplies,Stapler,Enterprise,D. Rossi,10,12.21,0.1,127.02
+100797,2024-03-16,Asia Pacific,Australia,Office Supplies,Printer Paper,SMB,E. Haddad,5,25.07,0.05,137.65
+101018,2024-03-16,Europe,Spain,Electronics,Smartphone,SMB,E. Haddad,4,704.23,0.01,3223.47
+101153,2024-03-17,Latin America,Brazil,Electronics,Headphones,SMB,E. Haddad,4,136.61,0.0,631.62
+100028,2024-03-17,Asia Pacific,India,Furniture,Standing Desk,Consumer,F. Larsson,1,522.51,0.05,573.76
+101251,2024-03-18,North America,Canada,Electronics,Laptop,Consumer,D. Rossi,3,917.15,0.07,2957.73
+100096,2024-03-19,North America,Mexico,Electronics,Laptop,SMB,C. Okafor,5,979.87,0.1,5096.77
+100511,2024-03-20,Europe,United Kingdom,Office Supplies,Notebook,Enterprise,A. Fischer,7,8.51,0.03,66.79
+100837,2024-03-20,Asia Pacific,Japan,Electronics,Laptop,SMB,D. Rossi,1,928.27,0.05,1019.32
+101288,2024-03-21,Asia Pacific,India,Furniture,Office Chair,SMB,A. Fischer,3,217.3,0.0,753.52
+100604,2024-03-21,Latin America,Argentina,Electronics,Laptop,SMB,F. Larsson,6,953.48,0.14,5686.9
+101187,2024-03-21,Europe,Germany,Electronics,Smartphone,Consumer,B. Nguyen,2,715.63,0.0,1654.37
+101125,2024-03-22,Asia Pacific,Japan,Electronics,Smartphone,Enterprise,E. Haddad,4,688.64,0.17,2642.68
+101021,2024-03-22,North America,Mexico,Office Supplies,Stapler,Enterprise,F. Larsson,10,11.43,0.11,117.58
+100172,2024-03-22,Latin America,Chile,Electronics,Smartphone,SMB,A. Fischer,9,726.52,0.09,6877.74
+100478,2024-03-23,Europe,France,Office Supplies,Pen Set,SMB,C. Okafor,4,14.44,0.12,58.75
+100277,2024-03-23,Europe,United Kingdom,Furniture,Office Chair,Enterprise,C. Okafor,11,241.41,0.1,2762.52
+100565,2024-03-23,North America,Mexico,Furniture,Bookshelf,Consumer,A. Fischer,2,156.53,0.0,361.86
+100069,2024-03-24,Europe,Germany,Electronics,Laptop,SMB,E. Haddad,4,867.79,0.06,3771.52
+100550,2024-03-24,Europe,Germany,Furniture,Standing Desk,Enterprise,B. Nguyen,7,474.52,0.14,3301.91
+100322,2024-03-24,Asia Pacific,Singapore,Electronics,Laptop,SMB,E. Haddad,5,996.85,0.09,5242.71
+100117,2024-03-24,North America,Mexico,Electronics,Headphones,Enterprise,C. Okafor,15,128.67,0.01,2208.61
+100155,2024-03-24,North America,United States,Software,Analytics Suite,SMB,A. Fischer,2,618.96,0.03,1387.97
+100353,2024-03-25,North America,United States,Electronics,Monitor,Enterprise,C. Okafor,9,255.04,0.14,2281.73
+101273,2024-03-26,Europe,Spain,Electronics,Smartphone,SMB,F. Larsson,3,682.6,0.01,2343.35
+100355,2024-03-26,Latin America,Chile,Electronics,Smartphone,SMB,B. Nguyen,2,707.36,0.1,1471.73
+101331,2024-03-26,Europe,France,Electronics,Smartphone,SMB,E. Haddad,5,711.87,0.11,3661.64
+100954,2024-03-26,North America,Mexico,Electronics,Smartphone,SMB,B. Nguyen,3,744.37,0.0,2581.22
+100181,2024-03-26,North America,United States,Software,CRM License,SMB,D. Rossi,4,329.97,0.06,1434.09
+100650,2024-03-27,Asia Pacific,Japan,Office Supplies,Stapler,SMB,B. Nguyen,4,11.84,0.06,51.46
+100095,2024-03-27,North America,Canada,Furniture,Office Chair,Enterprise,A. Fischer,7,207.66,0.08,1545.8
+100052,2024-03-28,Asia Pacific,India,Electronics,Headphones,SMB,D. Rossi,7,143.01,0.0,1157.12
+100534,2024-03-28,North America,Mexico,Electronics,Smartphone,SMB,D. Rossi,3,782.98,0.08,2497.9
+101363,2024-03-28,Europe,Italy,Software,Analytics Suite,SMB,D. Rossi,7,668.64,0.07,5031.39
+101329,2024-03-28,North America,Mexico,Electronics,Smartphone,SMB,B. Nguyen,3,713.28,0.06,2325.0
+101226,2024-03-29,Asia Pacific,Australia,Electronics,Smartphone,Enterprise,C. Okafor,11,643.73,0.08,7530.07
+100756,2024-03-30,Asia Pacific,Australia,Electronics,Monitor,Consumer,F. Larsson,4,243.33,0.06,1057.54
+101347,2024-03-30,North America,Mexico,Electronics,Headphones,Enterprise,D. Rossi,10,134.44,0.06,1460.73
+100625,2024-03-31,North America,Canada,Furniture,Bookshelf,SMB,E. Haddad,1,163.77,0.05,179.83
+101355,2024-03-31,Asia Pacific,India,Office Supplies,Stapler,SMB,E. Haddad,3,11.49,0.11,35.46
+100151,2024-03-31,Europe,Germany,Software,CRM License,SMB,B. Nguyen,2,344.86,0.06,749.4
+100801,2024-04-01,North America,Canada,Furniture,Bookshelf,Consumer,D. Rossi,1,154.86,0.04,175.43
+101027,2024-04-01,North America,United States,Office Supplies,Stapler,SMB,A. Fischer,3,11.51,0.08,37.49
+101184,2024-04-02,Europe,France,Electronics,Smartphone,Consumer,A. Fischer,3,669.39,0.03,2298.55
+100379,2024-04-02,North America,Canada,Electronics,Laptop,SMB,C. Okafor,5,998.12,0.12,5182.24
+100875,2024-04-03,Asia Pacific,Japan,Electronics,Headphones,SMB,B. Nguyen,4,135.11,0.1,573.95
+100922,2024-04-03,North America,Mexico,Electronics,Smartphone,Enterprise,D. Rossi,12,707.94,0.1,9021.99
+100337,2024-04-05,Europe,Italy,Furniture,Standing Desk,SMB,E. Haddad,3,469.56,0.04,1595.75
+101312,2024-04-05,Asia Pacific,Japan,Office Supplies,Printer Paper,SMB,E. Haddad,4,24.78,0.09,106.44
+100036,2024-04-05,Europe,France,Office Supplies,Stapler,Consumer,A. Fischer,2,13.5,0.03,30.9
+101034,2024-04-05,North America,United States,Office Supplies,Notebook,SMB,C. Okafor,4,8.32,0.03,38.09
+100489,2024-04-05,Asia Pacific,Japan,Electronics,Laptop,Consumer,B. Nguyen,3,939.23,0.07,3092.13
+100825,2024-04-06,Europe,Italy,Electronics,Monitor,Enterprise,C. Okafor,10,218.91,0.05,2453.98
+100043,2024-04-06,North America,Mexico,Furniture,Bookshelf,SMB,F. Larsson,2,144.97,0.09,311.34
+101315,2024-04-06,Latin America,Brazil,Software,Analytics Suite,Consumer,F. Larsson,1,567.53,0.06,629.5
+100580,2024-04-07,Europe,Italy,Electronics,Laptop,SMB,C. Okafor,5,993.19,0.08,5391.04
+100265,2024-04-08,Europe,Spain,Furniture,Standing Desk,Enterprise,F. Larsson,5,535.9,0.16,2655.92
+100448,2024-04-09,North America,Canada,Electronics,Monitor,Enterprise,A. Fischer,9,237.48,0.02,2471.6
+100912,2024-04-10,Latin America,Brazil,Office Supplies,Notebook,SMB,E. Haddad,1,7.77,0.0,9.17
+101002,2024-04-10,North America,Canada,Electronics,Laptop,Consumer,A. Fischer,3,953.3,0.02,3307.19
+100298,2024-04-11,North America,Mexico,Electronics,Smartphone,SMB,D. Rossi,3,698.89,0.13,2152.44
+101261,2024-04-11,Europe,United Kingdom,Electronics,Laptop,Enterprise,A. Fischer,6,971.45,0.18,5639.85
+100443,2024-04-11,Latin America,Argentina,Electronics,Smartphone,Enterprise,C. Okafor,8,824.17,0.15,6613.14
+100971,2024-04-12,Europe,United Kingdom,Software,Analytics Suite,Enterprise,B. Nguyen,8,635.25,0.2,4797.41
+100561,2024-04-12,North America,United States,Electronics,Headphones,Enterprise,C. Okafor,10,129.88,0.06,1440.63
+100449,2024-04-12,Latin America,Chile,Office Supplies,Notebook,SMB,F. Larsson,6,8.27,0.06,55.04
+100101,2024-04-12,Asia Pacific,Singapore,Furniture,Standing Desk,Enterprise,E. Haddad,15,515.51,0.0,9124.53
+100968,2024-04-12,Europe,France,Office Supplies,Stapler,Consumer,F. Larsson,1,12.78,0.05,14.33
+100755,2024-04-13,Europe,France,Office Supplies,Printer Paper,Consumer,E. Haddad,2,25.32,0.04,57.36
+100216,2024-04-13,North America,United States,Furniture,Standing Desk,Enterprise,A. Fischer,5,499.47,0.07,2740.59
+101107,2024-04-14,North America,Mexico,Office Supplies,Notebook,Consumer,F. Larsson,3,7.97,0.04,27.09
+100021,2024-04-15,Asia Pacific,Australia,Electronics,Smartphone,Consumer,D. Rossi,1,660.6,0.02,763.92
+101025,2024-04-15,North America,Mexico,Electronics,Headphones,Consumer,C. Okafor,1,125.08,0.0,147.59
+100196,2024-04-16,North America,Canada,Furniture,Office Chair,SMB,B. Nguyen,5,199.04,0.02,1150.85
+100099,2024-04-16,North America,Mexico,Electronics,Smartphone,Enterprise,B. Nguyen,10,782.61,0.1,8311.32
+101245,2024-04-17,Asia Pacific,Singapore,Office Supplies,Notebook,Consumer,C. Okafor,4,7.74,0.01,36.17
+100750,2024-04-18,Europe,France,Electronics,Headphones,SMB,E. Haddad,4,128.46,0.09,551.76
+100630,2024-04-18,Asia Pacific,Singapore,Office Supplies,Printer Paper,SMB,D. Rossi,9,24.77,0.09,239.38
+101012,2024-04-18,North America,United States,Furniture,Office Chair,Enterprise,D. Rossi,6,201.96,0.13,1243.99
+100132,2024-04-18,Latin America,Brazil,Software,Security Suite,SMB,E. Haddad,2,393.7,0.16,780.47
+101093,2024-04-18,Asia Pacific,Australia,Office Supplies,Notebook,Enterprise,E. Haddad,12,7.84,0.09,101.02
+100528,2024-04-19,Asia Pacific,Singapore,Furniture,Office Chair,SMB,C. Okafor,1,208.41,0.01,243.46
+100961,2024-04-19,Latin America,Argentina,Office Supplies,Pen Set,Consumer,F. Larsson,1,14.27,0.02,16.5
+100564,2024-04-20,North America,Canada,Office Supplies,Printer Paper,SMB,F. Larsson,1,24.48,0.09,26.29
+100115,2024-04-22,Europe,Germany,Office Supplies,Printer Paper,SMB,F. Larsson,3,24.08,0.06,80.13
+100711,2024-04-22,Europe,United Kingdom,Electronics,Smartphone,Consumer,C. Okafor,3,717.15,0.0,2538.71
+100086,2024-04-22,Asia Pacific,Japan,Electronics,Monitor,Consumer,D. Rossi,2,251.45,0.04,569.69
+101008,2024-04-22,Europe,France,Electronics,Monitor,Consumer,C. Okafor,1,249.76,0.04,282.93
+100469,2024-04-23,Europe,Germany,Furniture,Bookshelf,SMB,A. Fischer,2,169.76,0.11,356.56
+100903,2024-04-23,North America,United States,Electronics,Headphones,SMB,C. Okafor,3,125.46,0.03,430.8
+100009,2024-04-23,Europe,Spain,Electronics,Laptop,SMB,D. Rossi,7,960.22,0.07,7376.22
+100146,2024-04-23,North America,Mexico,Furniture,Office Chair,SMB,A. Fischer,4,217.8,0.0,1028.02
+100661,2024-04-24,Asia Pacific,India,Office Supplies,Printer Paper,Consumer,D. Rossi,1,26.15,0.0,30.86
+100658,2024-04-24,Latin America,Argentina,Office Supplies,Stapler,SMB,A. Fischer,5,10.7,0.06,59.34
+100842,2024-04-24,North America,Mexico,Electronics,Monitor,SMB,F. Larsson,2,239.11,0.0,564.3
+101343,2024-04-24,North America,Canada,Furniture,Bookshelf,SMB,B. Nguyen,7,162.79,0.13,1169.84
+100425,2024-04-25,Asia Pacific,Japan,Electronics,Laptop,SMB,E. Haddad,2,907.68,0.06,2013.6
+100175,2024-04-25,Asia Pacific,India,Electronics,Headphones,SMB,A. Fischer,2,128.33,0.0,302.86
+100110,2024-04-26,Latin America,Chile,Office Supplies,Pen Set,SMB,C. Okafor,4,15.59,0.1,66.23
+101285,2024-04-27,Asia Pacific,India,Electronics,Headphones,Enterprise,A. Fischer,12,130.85,0.26,1371.1
+100551,2024-04-27,Europe,Spain,Software,Security Suite,Consumer,C. Okafor,1,387.7,0.0,457.49
+100433,2024-04-27,Asia Pacific,Australia,Office Supplies,Printer Paper,Enterprise,A. Fischer,9,25.99,0.04,264.97
+101035,2024-04-28,North America,United States,Electronics,Laptop,SMB,D. Rossi,5,910.49,0.04,5157.02
+100545,2024-04-29,Latin America,Argentina,Electronics,Headphones,SMB,F. Larsson,3,131.52,0.0,465.58
+100051,2024-04-30,Europe,France,Electronics,Smartphone,Consumer,F. Larsson,1,742.66,0.0,876.34
+100779,2024-05-03,Europe,Italy,Office Supplies,Stapler,SMB,F. Larsson,2,11.57,0.09,24.34
+101110,2024-05-04,Asia Pacific,Singapore,Electronics,Laptop,SMB,D. Rossi,4,910.03,0.06,3955.11
+100396,2024-05-04,Asia Pacific,Singapore,Furniture,Standing Desk,SMB,D. Rossi,5,511.07,0.0,2953.69
+100238,2024-05-04,Asia Pacific,Japan,Electronics,Headphones,Enterprise,B. Nguyen,7,134.34,0.12,956.53
+100853,2024-05-05,North America,Canada,Electronics,Monitor,SMB,B. Nguyen,3,229.52,0.12,700.39
+101266,2024-05-05,North America,Mexico,Furniture,Bookshelf,Enterprise,D. Rossi,8,172.3,0.14,1370.21
+100951,2024-05-05,Latin America,Brazil,Office Supplies,Pen Set,SMB,F. Larsson,2,14.26,0.08,30.33
+100398,2024-05-07,Latin America,Brazil,Software,CRM License,SMB,F. Larsson,3,301.46,0.01,1034.91
+101223,2024-05-07,Latin America,Chile,Electronics,Monitor,Enterprise,A. Fischer,6,227.03,0.12,1385.58
+100614,2024-05-09,Europe,Spain,Electronics,Monitor,SMB,F. Larsson,2,228.57,0.05,501.98
+101112,2024-05-10,Asia Pacific,Australia,Electronics,Headphones,SMB,B. Nguyen,7,125.8,0.06,956.8
+100470,2024-05-11,Latin America,Argentina,Electronics,Monitor,Consumer,B. Nguyen,3,236.22,0.15,696.26
+100231,2024-05-11,Europe,United Kingdom,Office Supplies,Printer Paper,SMB,F. Larsson,8,23.86,0.05,209.6
+101143,2024-05-12,Europe,Italy,Furniture,Office Chair,Consumer,E. Haddad,3,204.36,0.0,708.65
+100679,2024-05-12,North America,Mexico,Electronics,Smartphone,Enterprise,F. Larsson,5,698.41,0.12,3552.04
+100076,2024-05-12,Europe,Italy,Electronics,Headphones,SMB,F. Larsson,1,136.75,0.07,147.0
+100664,2024-05-12,North America,United States,Software,Security Suite,Enterprise,B. Nguyen,6,417.22,0.13,2517.39
+100090,2024-05-13,Asia Pacific,India,Electronics,Smartphone,Enterprise,D. Rossi,6,761.59,0.13,4595.22
+100472,2024-05-14,Europe,Italy,Electronics,Laptop,SMB,D. Rossi,4,959.69,0.1,3993.45
+100124,2024-05-14,North America,United States,Office Supplies,Notebook,Consumer,A. Fischer,4,8.52,0.0,39.39
+101169,2024-05-14,North America,Canada,Software,Analytics Suite,Enterprise,E. Haddad,10,623.34,0.17,5980.23
+100736,2024-05-14,Europe,Italy,Electronics,Laptop,SMB,D. Rossi,4,944.45,0.11,3886.36
+100652,2024-05-14,North America,United States,Electronics,Laptop,SMB,C. Okafor,3,961.95,0.02,3269.0
+101346,2024-05-15,Europe,United Kingdom,Electronics,Smartphone,SMB,D. Rossi,5,701.44,0.03,3932.3
+100094,2024-05-15,Europe,Spain,Electronics,Monitor,Enterprise,A. Fischer,10,226.66,0.19,2122.14
+100540,2024-05-16,Asia Pacific,Singapore,Electronics,Monitor,Enterprise,B. Nguyen,5,254.36,0.15,1249.55
+100623,2024-05-17,Europe,Italy,Software,CRM License,Consumer,E. Haddad,4,335.71,0.0,1552.17
+100588,2024-05-17,North America,United States,Furniture,Office Chair,Enterprise,C. Okafor,12,210.34,0.06,2742.49
+101248,2024-05-17,North America,Mexico,Electronics,Smartphone,Consumer,D. Rossi,5,755.35,0.01,4321.83
+100229,2024-05-17,Europe,Italy,Office Supplies,Pen Set,Enterprise,F. Larsson,10,14.7,0.18,139.33
+100942,2024-05-17,Europe,Italy,Furniture,Office Chair,Consumer,F. Larsson,1,210.55,0.12,214.17
+101222,2024-05-17,North America,Canada,Office Supplies,Pen Set,Consumer,E. Haddad,2,15.74,0.0,36.39
+100406,2024-05-18,Europe,France,Electronics,Monitor,SMB,A. Fischer,5,243.44,0.09,1280.32
+100369,2024-05-18,Europe,United Kingdom,Electronics,Headphones,SMB,C. Okafor,4,132.73,0.1,552.31
+100274,2024-05-18,Europe,France,Electronics,Monitor,Consumer,A. Fischer,2,245.9,0.06,534.36
+100210,2024-05-18,North America,Mexico,Office Supplies,Notebook,SMB,B. Nguyen,6,7.44,0.0,51.6
+101115,2024-05-19,North America,Mexico,Furniture,Bookshelf,SMB,E. Haddad,4,159.13,0.12,647.45
+100384,2024-05-20,Latin America,Argentina,Electronics,Headphones,Enterprise,D. Rossi,5,126.02,0.06,684.62
+100764,2024-05-20,North America,Mexico,Electronics,Monitor,Enterprise,D. Rossi,4,236.03,0.15,927.6
+100368,2024-05-21,Europe,France,Office Supplies,Pen Set,SMB,A. Fischer,5,15.06,0.0,87.04
+100187,2024-05-21,Asia Pacific,India,Electronics,Monitor,SMB,B. Nguyen,8,262.32,0.04,2328.67
+100771,2024-05-22,Europe,Germany,Electronics,Smartphone,Consumer,D. Rossi,3,677.91,0.03,2280.23
+100851,2024-05-22,Europe,Italy,Electronics,Monitor,Enterprise,F. Larsson,5,239.1,0.27,1008.76
+100894,2024-05-22,North America,Mexico,Electronics,Headphones,SMB,E. Haddad,9,123.39,0.11,1142.42
+100930,2024-05-23,Europe,Italy,Furniture,Office Chair,Enterprise,D. Rossi,7,211.36,0.25,1282.62
+100758,2024-05-23,Europe,United Kingdom,Electronics,Smartphone,Enterprise,D. Rossi,4,746.26,0.22,2691.28
+101185,2024-05-24,Asia Pacific,Singapore,Electronics,Smartphone,SMB,D. Rossi,9,667.54,0.0,6944.39
+100016,2024-05-26,Latin America,Argentina,Electronics,Monitor,Enterprise,B. Nguyen,10,233.03,0.1,2424.2
+100526,2024-05-26,North America,Canada,Software,Analytics Suite,Enterprise,D. Rossi,8,598.21,0.13,4812.57
+100813,2024-05-26,Europe,France,Electronics,Monitor,Enterprise,D. Rossi,9,265.09,0.06,2592.26
+101305,2024-05-27,Asia Pacific,Japan,Electronics,Monitor,Enterprise,B. Nguyen,7,260.63,0.12,1855.75
+100012,2024-05-27,Asia Pacific,Singapore,Electronics,Headphones,Consumer,F. Larsson,1,124.34,0.14,123.6
+101349,2024-05-28,Europe,France,Furniture,Bookshelf,Consumer,B. Nguyen,2,147.51,0.01,337.6
+100937,2024-05-30,North America,Canada,Furniture,Office Chair,Enterprise,F. Larsson,10,181.41,0.13,1824.29
+100372,2024-05-30,North America,Mexico,Furniture,Office Chair,Enterprise,B. Nguyen,3,200.71,0.12,612.47
+100776,2024-05-30,North America,Mexico,Electronics,Monitor,Enterprise,E. Haddad,6,255.3,0.1,1593.53
+100958,2024-05-31,Asia Pacific,Australia,Electronics,Monitor,Consumer,A. Fischer,1,239.44,0.04,265.69
+100136,2024-05-31,North America,Mexico,Furniture,Office Chair,SMB,E. Haddad,8,195.87,0.13,1575.77
+100558,2024-06-02,Europe,United Kingdom,Furniture,Standing Desk,SMB,D. Rossi,7,472.71,0.02,3534.64
+100639,2024-06-02,Europe,France,Electronics,Monitor,SMB,D. Rossi,7,228.38,0.03,1690.26
+100978,2024-06-02,North America,Canada,Electronics,Headphones,Enterprise,D. Rossi,14,126.01,0.07,1788.31
+101068,2024-06-03,North America,Mexico,Furniture,Bookshelf,Enterprise,C. Okafor,13,178.07,0.13,2195.23
+100828,2024-06-04,Europe,France,Software,Security Suite,Consumer,D. Rossi,1,425.8,0.06,436.27
+100044,2024-06-04,Europe,Italy,Furniture,Standing Desk,Enterprise,B. Nguyen,13,471.16,0.08,6142.23
+101272,2024-06-04,Europe,France,Electronics,Smartphone,SMB,B. Nguyen,7,750.37,0.12,5038.28
+100815,2024-06-05,North America,Mexico,Office Supplies,Stapler,SMB,A. Fischer,4,12.22,0.05,50.62
+100272,2024-06-06,North America,Canada,Electronics,Headphones,Enterprise,B. Nguyen,10,119.58,0.17,1081.84
+101224,2024-06-06,Asia Pacific,Australia,Software,Security Suite,Enterprise,A. Fischer,6,394.4,0.14,2218.26
+100768,2024-06-08,Asia Pacific,Australia,Electronics,Smartphone,Consumer,E. Haddad,2,707.68,0.07,1434.75
+100729,2024-06-09,Asia Pacific,Singapore,Furniture,Office Chair,SMB,F. Larsson,3,189.25,0.02,606.47
+101094,2024-06-10,North America,Mexico,Office Supplies,Stapler,SMB,C. Okafor,3,12.29,0.0,40.19
+100856,2024-06-10,North America,Canada,Furniture,Standing Desk,SMB,E. Haddad,2,493.47,0.02,1054.25
+100343,2024-06-10,Europe,Germany,Electronics,Smartphone,Consumer,B. Nguyen,2,738.33,0.03,1561.27
+101357,2024-06-11,Asia Pacific,India,Office Supplies,Printer Paper,SMB,E. Haddad,6,27.47,0.03,174.26
+100933,2024-06-11,North America,United States,Software,CRM License,Consumer,D. Rossi,3,324.09,0.03,1027.98
+100064,2024-06-11,North America,United States,Electronics,Monitor,Consumer,F. Larsson,2,245.46,0.09,486.94
+100788,2024-06-12,Asia Pacific,Japan,Electronics,Smartphone,SMB,E. Haddad,5,763.75,0.07,3871.07
+100130,2024-06-13,Europe,France,Electronics,Headphones,SMB,D. Rossi,6,116.45,0.07,708.27
+100237,2024-06-13,North America,Mexico,Furniture,Office Chair,Consumer,E. Haddad,1,212.96,0.09,211.24
+100428,2024-06-13,Europe,Germany,Electronics,Laptop,SMB,F. Larsson,9,881.37,0.06,8127.47
+100831,2024-06-13,Europe,France,Office Supplies,Pen Set,Enterprise,A. Fischer,7,15.14,0.13,100.5
+100959,2024-06-14,North America,Mexico,Furniture,Standing Desk,Enterprise,E. Haddad,6,504.61,0.06,3102.14
+100156,2024-06-14,Europe,Germany,Furniture,Bookshelf,Consumer,F. Larsson,3,135.02,0.04,423.85
+100568,2024-06-14,Latin America,Argentina,Electronics,Laptop,SMB,A. Fischer,5,1038.19,0.0,5658.14
+100597,2024-06-15,North America,Canada,Software,CRM License,Enterprise,B. Nguyen,7,338.68,0.14,2222.35
+101280,2024-06-16,North America,Mexico,Electronics,Monitor,SMB,F. Larsson,4,253.67,0.12,973.28
+100795,2024-06-16,Asia Pacific,India,Office Supplies,Stapler,SMB,A. Fischer,3,11.01,0.1,32.4
+100602,2024-06-17,Asia Pacific,Australia,Office Supplies,Pen Set,Enterprise,D. Rossi,12,12.85,0.11,149.59
+100180,2024-06-17,Europe,Germany,Office Supplies,Printer Paper,SMB,E. Haddad,4,26.71,0.06,109.47
+101361,2024-06-17,North America,Canada,Office Supplies,Notebook,SMB,E. Haddad,10,7.89,0.03,83.42
+100465,2024-06-17,Europe,Spain,Office Supplies,Notebook,SMB,A. Fischer,4,7.74,0.1,30.37
+101072,2024-06-18,Asia Pacific,Japan,Office Supplies,Stapler,Consumer,A. Fischer,2,10.83,0.02,23.14
+100677,2024-06-18,North America,Mexico,Electronics,Monitor,Enterprise,C. Okafor,11,261.18,0.18,2567.87
+101020,2024-06-19,Europe,United Kingdom,Furniture,Office Chair,SMB,E. Haddad,2,238.49,0.03,504.31
+100619,2024-06-19,Europe,United Kingdom,Software,CRM License,SMB,F. Larsson,5,315.6,0.05,1634.02
+100025,2024-06-19,Asia Pacific,Singapore,Electronics,Smartphone,SMB,B. Nguyen,3,653.74,0.1,1923.96
+100227,2024-06-19,Europe,Germany,Electronics,Monitor,Enterprise,C. Okafor,10,254.8,0.12,2444.04
+101173,2024-06-20,Europe,Italy,Electronics,Headphones,Enterprise,C. Okafor,8,125.04,0.16,915.89
+101206,2024-06-20,North America,Canada,Software,Analytics Suite,SMB,F. Larsson,4,611.28,0.08,2451.97
+101297,2024-06-21,North America,Mexico,Office Supplies,Printer Paper,SMB,D. Rossi,6,25.65,0.02,164.4
+100349,2024-06-22,North America,Canada,Furniture,Office Chair,SMB,D. Rossi,2,221.45,0.07,448.97
+101311,2024-06-23,North America,United States,Software,Security Suite,Enterprise,E. Haddad,7,372.33,0.14,2443.15
+101016,2024-06-23,North America,Mexico,Electronics,Headphones,SMB,F. Larsson,4,128.29,0.06,525.78
+101060,2024-06-24,Europe,Italy,Electronics,Smartphone,Enterprise,D. Rossi,8,786.34,0.09,6239.77
+100522,2024-06-24,Asia Pacific,Japan,Software,Security Suite,Consumer,D. Rossi,3,416.09,0.03,1319.8
+100285,2024-06-24,Europe,France,Office Supplies,Stapler,SMB,A. Fischer,1,11.44,0.02,12.22
+100307,2024-06-24,Europe,Germany,Furniture,Office Chair,SMB,C. Okafor,6,201.45,0.11,1172.56
+100579,2024-06-24,Europe,United Kingdom,Furniture,Bookshelf,Enterprise,B. Nguyen,7,164.35,0.28,902.87
+100370,2024-06-25,Latin America,Brazil,Electronics,Smartphone,Enterprise,E. Haddad,12,618.16,0.21,6387.57
+101314,2024-06-25,North America,Canada,Electronics,Headphones,SMB,E. Haddad,7,144.45,0.02,1080.11
+100869,2024-06-25,North America,Mexico,Furniture,Bookshelf,SMB,C. Okafor,4,169.84,0.09,673.86
+100264,2024-06-26,Europe,Spain,Office Supplies,Pen Set,SMB,C. Okafor,10,16.73,0.16,153.18
+100226,2024-06-27,North America,United States,Office Supplies,Printer Paper,SMB,D. Rossi,4,24.51,0.0,106.86
+100649,2024-06-27,Europe,Germany,Furniture,Standing Desk,Enterprise,C. Okafor,11,480.45,0.15,4896.51
+100898,2024-06-28,Latin America,Argentina,Furniture,Office Chair,SMB,B. Nguyen,8,208.4,0.0,1817.25
+101320,2024-06-28,North America,Mexico,Electronics,Laptop,SMB,F. Larsson,5,1059.86,0.13,5025.33
+100861,2024-06-28,North America,United States,Electronics,Smartphone,Enterprise,C. Okafor,8,670.26,0.18,4792.63
+100006,2024-06-29,Europe,Italy,Electronics,Headphones,Enterprise,F. Larsson,8,127.02,0.06,1041.16
+100221,2024-06-30,Latin America,Chile,Office Supplies,Notebook,Enterprise,D. Rossi,11,7.95,0.09,86.74
+100610,2024-06-30,Asia Pacific,Australia,Electronics,Smartphone,Enterprise,C. Okafor,9,711.44,0.01,6909.43
+100150,2024-07-01,North America,United States,Furniture,Office Chair,Consumer,A. Fischer,3,221.44,0.0,664.32
+100102,2024-07-01,Europe,Germany,Office Supplies,Notebook,Consumer,A. Fischer,2,8.18,0.0,16.36
+100996,2024-07-01,North America,Mexico,Office Supplies,Notebook,Enterprise,A. Fischer,9,7.28,0.12,57.66
+100358,2024-07-01,Europe,France,Electronics,Laptop,Consumer,C. Okafor,1,910.2,0.0,910.2
+100596,2024-07-02,Europe,Germany,Software,CRM License,SMB,F. Larsson,5,349.77,0.13,1521.5
+101304,2024-07-02,North America,Canada,Electronics,Laptop,SMB,E. Haddad,7,937.8,0.11,5842.49
+100254,2024-07-02,North America,Canada,Furniture,Bookshelf,Consumer,A. Fischer,3,150.31,0.01,446.42
+100676,2024-07-03,Latin America,Argentina,Software,Analytics Suite,SMB,A. Fischer,3,557.72,0.05,1589.5
+101321,2024-07-03,Asia Pacific,Singapore,Furniture,Bookshelf,SMB,C. Okafor,3,154.58,0.02,454.47
+100427,2024-07-03,Asia Pacific,Japan,Furniture,Standing Desk,SMB,C. Okafor,4,493.11,0.07,1834.37
+101105,2024-07-03,Latin America,Chile,Electronics,Laptop,SMB,F. Larsson,2,866.85,0.09,1577.67
+100418,2024-07-04,Europe,Germany,Furniture,Standing Desk,SMB,D. Rossi,5,507.16,0.0,2535.8
+100013,2024-07-05,Asia Pacific,Australia,Electronics,Headphones,Consumer,D. Rossi,1,124.89,0.05,118.65
+101352,2024-07-05,Europe,Spain,Electronics,Laptop,SMB,A. Fischer,6,961.17,0.04,5536.34
+101253,2024-07-06,Europe,Spain,Office Supplies,Notebook,Consumer,A. Fischer,1,7.93,0.01,7.85
+100967,2024-07-06,North America,Canada,Software,Analytics Suite,Consumer,E. Haddad,1,600.19,0.02,588.19
+101377,2024-07-08,Latin America,Chile,Electronics,Laptop,SMB,C. Okafor,1,906.01,0.12,797.29
+100054,2024-07-10,Europe,Italy,Furniture,Bookshelf,SMB,A. Fischer,2,182.87,0.08,336.48
+100257,2024-07-10,Europe,Italy,Furniture,Office Chair,Enterprise,C. Okafor,9,216.8,0.07,1814.62
+100905,2024-07-11,North America,Canada,Electronics,Smartphone,Enterprise,D. Rossi,9,696.64,0.09,5705.48
+101182,2024-07-12,North America,Mexico,Software,CRM License,SMB,B. Nguyen,2,369.4,0.02,724.02
+101086,2024-07-12,Asia Pacific,Singapore,Furniture,Standing Desk,SMB,E. Haddad,4,474.77,0.11,1690.18
+100080,2024-07-12,Asia Pacific,Australia,Furniture,Bookshelf,SMB,B. Nguyen,8,159.43,0.02,1249.93
+101149,2024-07-12,North America,United States,Electronics,Laptop,SMB,F. Larsson,4,1091.31,0.0,4365.24
+100331,2024-07-13,North America,United States,Office Supplies,Pen Set,Consumer,D. Rossi,1,14.36,0.0,14.36
+101136,2024-07-13,Asia Pacific,Japan,Furniture,Bookshelf,Enterprise,,9,167.34,0.13,1310.27
+100916,2024-07-15,Europe,Spain,Electronics,Monitor,SMB,F. Larsson,3,235.88,0.07,658.11
+100383,2024-07-15,Asia Pacific,Singapore,Furniture,Office Chair,SMB,D. Rossi,3,189.96,0.0,569.88
+101397,2024-07-15,Asia Pacific,Singapore,Software,Security Suite,SMB,C. Okafor,4,382.32,0.08,1406.94
+100770,2024-07-15,Latin America,Chile,Electronics,Headphones,SMB,B. Nguyen,6,117.59,0.02,691.43
+100003,2024-07-18,Europe,Italy,Office Supplies,Pen Set,SMB,A. Fischer,5,15.61,0.06,73.37
+101063,2024-07-18,Asia Pacific,India,Electronics,Headphones,Consumer,C. Okafor,5,145.05,0.0,725.25
+101005,2024-07-18,Europe,Italy,Electronics,Headphones,SMB,B. Nguyen,1,111.94,0.0,111.94
+100040,2024-07-19,North America,United States,Electronics,Smartphone,Enterprise,E. Haddad,7,591.93,0.09,3770.59
+100972,2024-07-19,Europe,Italy,Electronics,Headphones,SMB,E. Haddad,4,146.57,0.1,527.65
+101151,2024-07-20,Europe,Spain,Furniture,Bookshelf,SMB,B. Nguyen,4,158.95,0.06,597.65
+101038,2024-07-20,North America,Mexico,Electronics,Monitor,SMB,A. Fischer,1,259.94,0.0,259.94
+100896,2024-07-20,Europe,Italy,Furniture,Bookshelf,Consumer,E. Haddad,2,164.1,0.04,315.07
+100533,2024-07-21,Latin America,Argentina,Electronics,Headphones,Consumer,F. Larsson,2,135.51,0.02,265.6
+100142,2024-07-21,North America,United States,Furniture,Bookshelf,Enterprise,F. Larsson,4,153.36,0.11,545.96
+100648,2024-07-23,North America,United States,Software,CRM License,Enterprise,B. Nguyen,10,381.0,0.17,3162.3
+100170,2024-07-23,Latin America,Chile,Software,Security Suite,Enterprise,F. Larsson,7,405.56,0.12,2498.25
+100708,2024-07-24,North America,United States,Furniture,Bookshelf,Consumer,D. Rossi,5,159.63,0.03,774.21
+101076,2024-07-24,Europe,Italy,Electronics,Laptop,SMB,B. Nguyen,3,985.96,0.13,2573.36
+100308,2024-07-25,Asia Pacific,India,Electronics,Headphones,Enterprise,B. Nguyen,14,137.55,0.1,1733.13
+101132,2024-07-25,Europe,Germany,Office Supplies,Printer Paper,SMB,A. Fischer,3,24.99,0.09,68.22
+100908,2024-07-25,Europe,Italy,Electronics,Laptop,SMB,D. Rossi,1,846.18,0.07,786.95
+100421,2024-07-26,Asia Pacific,India,Office Supplies,Printer Paper,SMB,D. Rossi,7,26.35,0.09,167.85
+100538,2024-07-26,North America,United States,Furniture,Office Chair,Enterprise,D. Rossi,12,191.09,0.12,2017.91
+100514,2024-07-26,North America,United States,Software,CRM License,Enterprise,A. Fischer,9,319.26,0.12,2528.54
+101354,2024-07-26,Latin America,Argentina,Furniture,Office Chair,SMB,D. Rossi,1,208.72,0.0,208.72
+100955,2024-07-27,Asia Pacific,Australia,Electronics,Headphones,Consumer,D. Rossi,2,137.07,0.08,252.21
+101301,2024-07-27,Asia Pacific,Singapore,Furniture,Office Chair,SMB,E. Haddad,2,211.75,0.05,402.32
+100616,2024-07-28,Europe,Spain,Electronics,Headphones,Consumer,C. Okafor,2,134.11,0.05,254.81
+100573,2024-07-28,Europe,France,Electronics,Smartphone,Consumer,A. Fischer,2,735.16,0.02,1440.91
+100945,2024-07-28,Asia Pacific,Australia,Office Supplies,Stapler,SMB,A. Fischer,2,12.71,0.11,22.62
+101159,2024-07-28,Europe,United Kingdom,Office Supplies,Notebook,SMB,C. Okafor,3,7.74,0.1,20.9
+101056,2024-07-28,Europe,France,Furniture,Bookshelf,Consumer,C. Okafor,4,156.22,0.0,624.88
+100659,2024-07-29,Asia Pacific,Japan,Office Supplies,Notebook,SMB,C. Okafor,8,8.04,0.05,61.1
+100461,2024-07-29,North America,United States,Office Supplies,Stapler,Enterprise,B. Nguyen,6,13.16,0.13,68.7
+101163,2024-07-30,North America,Mexico,Electronics,Headphones,SMB,B. Nguyen,2,144.45,0.08,265.79
+100134,2024-07-30,North America,Canada,Electronics,Laptop,Consumer,E. Haddad,2,967.89,0.01,1916.42
+101196,2024-07-31,North America,United States,Electronics,Smartphone,Consumer,C. Okafor,5,727.42,0.07,3382.5
+100011,2024-07-31,Latin America,Brazil,Furniture,Standing Desk,Enterprise,F. Larsson,7,465.99,0.12,2870.5
+100347,2024-07-31,North America,United States,Furniture,Bookshelf,Enterprise,F. Larsson,13,151.2,0.15,1670.76
+100631,2024-08-01,North America,United States,Software,Security Suite,Consumer,B. Nguyen,1,422.92,0.0,384.86
+100141,2024-08-01,Europe,France,Furniture,Standing Desk,SMB,E. Haddad,2,436.88,0.0,795.12
+100872,2024-08-01,Europe,France,Furniture,Standing Desk,Consumer,F. Larsson,4,428.14,0.0,1558.43
+100473,2024-08-02,Asia Pacific,Japan,Furniture,Standing Desk,Consumer,B. Nguyen,5,507.46,0.01,2285.85
+100230,2024-08-03,Asia Pacific,India,Software,Security Suite,Consumer,D. Rossi,2,428.19,0.15,662.41
+101230,2024-08-03,Asia Pacific,India,Electronics,Headphones,Enterprise,E. Haddad,7,133.63,0.13,740.56
+100746,2024-08-03,Europe,Italy,Electronics,Monitor,Consumer,D. Rossi,1,252.98,0.0,230.21
+100878,2024-08-04,Europe,United Kingdom,Furniture,Office Chair,SMB,C. Okafor,5,199.86,0.11,809.33
+101140,2024-08-04,Europe,Germany,Software,Analytics Suite,Enterprise,E. Haddad,16,610.84,0.04,8538.08
+100827,2024-08-04,Asia Pacific,Australia,Office Supplies,Notebook,SMB,E. Haddad,8,8.06,0.08,53.98
+100173,2024-08-04,Asia Pacific,Singapore,Furniture,Standing Desk,Enterprise,F. Larsson,10,494.18,0.09,4092.3
+100531,2024-08-05,Europe,United Kingdom,Electronics,Smartphone,Enterprise,F. Larsson,4,728.87,0.05,2520.43
+101385,2024-08-05,North America,Canada,Software,Security Suite,Enterprise,D. Rossi,10,365.2,0.13,2891.29
+101338,2024-08-05,North America,Mexico,Electronics,Monitor,Enterprise,B. Nguyen,14,234.72,0.11,2661.4
+100403,2024-08-05,Asia Pacific,India,Office Supplies,Stapler,Enterprise,F. Larsson,8,12.28,0.12,78.67
+101239,2024-08-06,Asia Pacific,India,Furniture,Bookshelf,Consumer,B. Nguyen,2,149.81,0.05,259.02
+100991,2024-08-06,Asia Pacific,Japan,Office Supplies,Pen Set,Consumer,C. Okafor,1,14.27,0.0,12.99
+101213,2024-08-06,Europe,Spain,Furniture,Standing Desk,Consumer,,3,460.36,0.02,1231.65
+100053,2024-08-07,North America,Canada,Furniture,Office Chair,SMB,F. Larsson,6,189.64,0.08,952.6
+100357,2024-08-07,Europe,Spain,Electronics,Smartphone,Consumer,A. Fischer,3,672.22,0.03,1780.11
+101017,2024-08-07,Asia Pacific,Japan,Furniture,Bookshelf,SMB,A. Fischer,6,169.78,0.0,927.0
+100356,2024-08-08,Europe,France,Furniture,Bookshelf,Enterprise,F. Larsson,8,155.85,0.12,998.44
+100267,2024-08-08,North America,United States,Software,Security Suite,SMB,B. Nguyen,6,437.99,0.06,2247.94
+100611,2024-08-08,Latin America,Brazil,Electronics,Headphones,Enterprise,B. Nguyen,11,135.96,0.14,1170.43
+101135,2024-08-08,Europe,Italy,Office Supplies,Printer Paper,Consumer,A. Fischer,3,25.65,0.06,65.82
+101370,2024-08-08,Europe,Spain,Office Supplies,Pen Set,SMB,C. Okafor,3,14.75,0.04,38.66
+100888,2024-08-09,Europe,France,Electronics,Laptop,Enterprise,E. Haddad,7,953.33,0.08,5586.9
+101039,2024-08-10,North America,Mexico,Electronics,Laptop,Enterprise,D. Rossi,6,971.73,0.08,4881.19
+100278,2024-08-10,Europe,Spain,Electronics,Smartphone,Enterprise,D. Rossi,8,686.93,0.09,4550.77
+100582,2024-08-10,Europe,Germany,Electronics,Headphones,Enterprise,B. Nguyen,6,140.49,0.12,675.03
+100793,2024-08-10,North America,Mexico,Office Supplies,Pen Set,Enterprise,F. Larsson,15,13.73,0.14,161.18
+101180,2024-08-11,Europe,Spain,Electronics,Monitor,Enterprise,D. Rossi,7,264.9,0.13,1468.05
+100457,2024-08-11,North America,Mexico,Furniture,Bookshelf,Enterprise,F. Larsson,7,164.1,0.11,930.33
+100761,2024-08-12,Europe,Spain,Electronics,Headphones,SMB,C. Okafor,5,139.98,0.06,598.69
+100669,2024-08-12,Europe,United Kingdom,Software,Security Suite,SMB,E. Haddad,5,393.71,0.08,1648.07
+100414,2024-08-12,Europe,Spain,Electronics,Headphones,Enterprise,C. Okafor,12,143.9,0.16,1319.97
+100127,2024-08-13,Latin America,Brazil,Software,Security Suite,Consumer,C. Okafor,3,415.51,0.03,1100.31
+100866,2024-08-14,Latin America,Chile,Electronics,Monitor,Enterprise,E. Haddad,7,236.76,0.18,1236.69
+101373,2024-08-16,Europe,France,Electronics,Monitor,Enterprise,A. Fischer,11,230.94,0.07,2149.89
+100934,2024-08-16,North America,United States,Office Supplies,Stapler,Consumer,D. Rossi,2,11.15,0.03,19.68
+100410,2024-08-16,Latin America,Brazil,Software,Security Suite,SMB,A. Fischer,4,385.83,0.01,1390.38
+101262,2024-08-16,North America,United States,Office Supplies,Pen Set,SMB,C. Okafor,7,16.37,0.05,99.06
+100543,2024-08-16,North America,Mexico,Office Supplies,Pen Set,Consumer,E. Haddad,2,16.12,0.0,29.34
+101015,2024-08-18,Europe,Italy,Electronics,Laptop,SMB,A. Fischer,3,980.02,0.16,2247.38
+100690,2024-08-18,Europe,Spain,Electronics,Headphones,SMB,C. Okafor,5,130.28,0.18,486.07
+100719,2024-08-18,Asia Pacific,India,Office Supplies,Printer Paper,Enterprise,A. Fischer,11,23.76,0.1,214.05
+100158,2024-08-19,North America,Canada,Office Supplies,Pen Set,SMB,D. Rossi,5,13.9,0.12,55.66
+100864,2024-08-20,North America,Mexico,Electronics,Laptop,SMB,F. Larsson,1,820.56,0.04,716.84
+100835,2024-08-20,Europe,United Kingdom,Furniture,Standing Desk,Enterprise,F. Larsson,10,464.88,0.05,4018.89
+100714,2024-08-20,Europe,Germany,Electronics,Laptop,Enterprise,E. Haddad,9,973.67,0.1,7176.92
+101199,2024-08-23,Asia Pacific,India,Furniture,Office Chair,SMB,D. Rossi,5,228.64,0.01,1029.91
+100695,2024-08-23,Latin America,Brazil,Electronics,Monitor,Consumer,F. Larsson,2,255.5,0.0,465.01
+101238,2024-08-24,North America,United States,Office Supplies,Pen Set,Consumer,B. Nguyen,1,15.55,0.01,14.01
+101399,2024-08-24,Europe,Spain,Electronics,Monitor,SMB,B. Nguyen,5,250.98,0.04,1096.28
+101062,2024-08-25,North America,United States,Electronics,Monitor,SMB,F. Larsson,6,219.48,0.0,1198.36
+100002,2024-08-25,Asia Pacific,Singapore,Software,Security Suite,SMB,F. Larsson,2,389.33,0.02,694.41
+100291,2024-08-25,Europe,Germany,Office Supplies,Pen Set,SMB,A. Fischer,2,13.91,0.04,24.3
+100757,2024-08-26,North America,United States,Software,Security Suite,SMB,C. Okafor,3,394.29,0.05,1022.59
+100541,2024-08-27,Latin America,Chile,Electronics,Smartphone,Enterprise,D. Rossi,16,722.11,0.18,8621.42
+100392,2024-08-28,Latin America,Chile,Furniture,Bookshelf,SMB,B. Nguyen,1,170.33,0.18,127.1
+100981,2024-08-30,Europe,France,Electronics,Smartphone,Consumer,C. Okafor,4,687.3,0.01,2476.75
+100218,2024-08-30,Europe,France,Electronics,Headphones,Consumer,C. Okafor,2,135.71,0.0,246.99
+100171,2024-08-30,Europe,United Kingdom,Furniture,Standing Desk,Consumer,A. Fischer,5,467.5,0.07,1978.23
+101371,2024-08-31,Europe,Germany,Office Supplies,Pen Set,Enterprise,B. Nguyen,11,15.59,0.12,137.33
+100785,2024-08-31,Latin America,Argentina,Furniture,Bookshelf,SMB,D. Rossi,3,136.83,0.15,317.51
+100990,2024-09-01,Europe,Germany,Electronics,Laptop,Consumer,B. Nguyen,1,969.35,0.01,810.06
+100336,2024-09-01,Asia Pacific,India,Electronics,Headphones,SMB,E. Haddad,2,123.03,0.0,207.7
+100388,2024-09-03,North America,United States,Furniture,Standing Desk,SMB,D. Rossi,1,449.81,0.1,341.72
+100409,2024-09-03,North America,United States,Electronics,Headphones,SMB,F. Larsson,2,134.83,0.08,209.41
+101194,2024-09-03,Asia Pacific,Singapore,Electronics,Smartphone,Consumer,D. Rossi,2,717.55,0.09,1102.36
+100734,2024-09-03,Asia Pacific,Singapore,Furniture,Bookshelf,SMB,B. Nguyen,3,161.04,0.11,362.95
+100673,2024-09-04,Asia Pacific,India,Software,CRM License,Enterprise,A. Fischer,12,347.15,0.13,3059.28
+101358,2024-09-04,Latin America,Chile,Software,Analytics Suite,SMB,B. Nguyen,5,672.18,0.14,2439.81
+100560,2024-09-04,North America,Mexico,Electronics,Headphones,SMB,C. Okafor,5,130.56,0.07,512.47
+101165,2024-09-04,North America,Mexico,Electronics,Headphones,Enterprise,B. Nguyen,7,139.34,0.06,773.93
+100407,2024-09-05,North America,Canada,Software,Analytics Suite,SMB,C. Okafor,5,596.96,0.09,2292.76
+100753,2024-09-05,Europe,Italy,Electronics,Headphones,Enterprise,F. Larsson,11,127.02,0.12,1037.89
+100680,2024-09-05,North America,United States,Furniture,Office Chair,SMB,A. Fischer,7,225.99,0.1,1201.8
+100085,2024-09-06,Asia Pacific,Japan,Office Supplies,Notebook,Enterprise,A. Fischer,8,8.21,0.12,48.79
+100275,2024-09-06,North America,Canada,Office Supplies,Notebook,SMB,B. Nguyen,3,8.24,0.1,18.78
+100948,2024-09-06,Asia Pacific,Australia,Electronics,Headphones,Enterprise,E. Haddad,9,128.22,0.19,789.01
+101269,2024-09-06,North America,Canada,Office Supplies,Stapler,SMB,C. Okafor,9,10.94,0.0,83.11
+100270,2024-09-06,Europe,France,Software,Security Suite,Consumer,F. Larsson,2,423.43,0.0,714.85
+100943,2024-09-07,Asia Pacific,Singapore,Software,Analytics Suite,SMB,C. Okafor,3,583.2,0.07,1373.48
+100717,2024-09-07,Europe,Germany,Electronics,Monitor,SMB,F. Larsson,5,253.8,0.02,1049.76
+101053,2024-09-07,North America,United States,Electronics,Headphones,SMB,E. Haddad,5,132.74,0.03,543.43
+101046,2024-09-07,Europe,United Kingdom,Office Supplies,Notebook,Enterprise,E. Haddad,7,8.28,0.14,42.08
+101310,2024-09-08,Europe,United Kingdom,Electronics,Smartphone,Enterprise,E. Haddad,15,717.05,0.22,7081.69
+101345,2024-09-08,Latin America,Argentina,Electronics,Smartphone,SMB,B. Nguyen,6,749.07,0.07,3528.24
+100508,2024-09-09,Europe,Italy,Furniture,Bookshelf,SMB,E. Haddad,5,165.59,0.06,656.95
+100980,2024-09-09,North America,United States,Office Supplies,Notebook,SMB,F. Larsson,3,8.62,0.0,21.83
+101268,2024-09-09,Europe,Germany,Electronics,Smartphone,SMB,E. Haddad,4,720.95,0.11,2166.49
+100436,2024-09-10,Europe,Spain,Software,Analytics Suite,SMB,D. Rossi,8,621.05,0.04,4026.15
+101031,2024-09-10,North America,Mexico,Electronics,Monitor,Consumer,F. Larsson,2,209.91,0.0,354.38
+100360,2024-09-11,Europe,Spain,Office Supplies,Notebook,SMB,B. Nguyen,1,7.58,0.06,6.01
+100106,2024-09-11,North America,Mexico,Software,Analytics Suite,SMB,E. Haddad,3,605.88,0.08,1411.55
+100995,2024-09-11,Europe,France,Office Supplies,Notebook,Consumer,C. Okafor,4,8.06,0.06,25.58
+100354,2024-09-12,Europe,Spain,Office Supplies,Notebook,Consumer,C. Okafor,2,7.86,0.05,12.61
+100698,2024-09-12,Asia Pacific,Australia,Office Supplies,Notebook,SMB,A. Fischer,2,7.81,0.05,12.53
+100083,2024-09-13,Latin America,Argentina,Office Supplies,Pen Set,Enterprise,D. Rossi,18,13.76,0.19,169.35
+101069,2024-09-13,Asia Pacific,Australia,Furniture,Office Chair,Enterprise,B. Nguyen,18,206.59,0.09,2856.44
+100987,2024-09-13,North America,Canada,Electronics,Laptop,SMB,F. Larsson,6,963.95,0.02,4784.47
+101095,2024-09-14,North America,Mexico,Electronics,Laptop,Enterprise,A. Fischer,11,915.14,0.09,7732.56
+101327,2024-09-15,Europe,Spain,Furniture,Standing Desk,Consumer,E. Haddad,3,508.87,0.03,1249.98
+100455,2024-09-15,Europe,United Kingdom,Software,Security Suite,SMB,F. Larsson,3,380.37,0.0,963.23
+100104,2024-09-16,North America,Canada,Electronics,Smartphone,Consumer,B. Nguyen,2,748.42,0.17,1048.71
+101387,2024-09-16,Asia Pacific,India,Electronics,Smartphone,SMB,E. Haddad,3,701.7,0.14,1528.17
+101389,2024-09-17,Europe,United Kingdom,Electronics,Monitor,SMB,A. Fischer,4,245.77,0.0,829.83
+100577,2024-09-18,North America,Canada,Electronics,Smartphone,SMB,D. Rossi,3,686.6,0.11,1547.45
+101265,2024-09-19,North America,United States,Electronics,Monitor,SMB,A. Fischer,5,250.62,0.09,962.56
+100084,2024-09-19,Europe,Spain,Electronics,Smartphone,SMB,C. Okafor,4,673.69,0.08,2092.71
+100668,2024-09-19,Europe,Italy,Software,CRM License,SMB,C. Okafor,1,324.91,0.12,241.35
+100603,2024-09-19,Europe,Italy,Office Supplies,Notebook,Enterprise,A. Fischer,19,8.42,0.12,118.84
+100459,2024-09-20,North America,Canada,Electronics,Smartphone,Consumer,D. Rossi,2,776.36,0.03,1271.35
+100197,2024-09-20,North America,Canada,Software,Analytics Suite,Consumer,C. Okafor,3,608.4,0.13,1340.39
+100381,2024-09-20,Asia Pacific,Singapore,Software,Analytics Suite,Enterprise,E. Haddad,11,556.33,0.22,4029.23
+100048,2024-09-20,Europe,Italy,Furniture,Bookshelf,Consumer,B. Nguyen,1,153.98,0.0,129.98
+100373,2024-09-20,North America,United States,Software,CRM License,SMB,C. Okafor,5,352.14,0.09,1352.47
+100497,2024-09-20,Europe,Germany,Software,CRM License,Enterprise,B. Nguyen,5,326.45,0.13,1198.69
+100422,2024-09-21,North America,Mexico,Office Supplies,Stapler,Consumer,A. Fischer,3,11.79,0.01,29.56
+101236,2024-09-21,North America,Canada,Office Supplies,Printer Paper,SMB,A. Fischer,5,23.38,0.03,95.72
+100165,2024-09-21,Europe,Germany,Electronics,Laptop,SMB,D. Rossi,7,998.24,0.08,5426.54
+100215,2024-09-22,Europe,Spain,Electronics,Monitor,Enterprise,C. Okafor,7,220.18,0.09,1183.91
+100239,2024-09-23,Latin America,Chile,Office Supplies,Printer Paper,Consumer,F. Larsson,1,24.06,0.0,20.31
+100858,2024-09-23,Europe,Spain,Electronics,Laptop,SMB,F. Larsson,4,898.21,0.11,2699.17
+100873,2024-09-23,Europe,United Kingdom,Software,CRM License,SMB,D. Rossi,4,358.16,0.06,1136.75
+100879,2024-09-24,Europe,Spain,Software,CRM License,Consumer,A. Fischer,1,349.44,0.01,292.02
+100536,2024-09-24,Europe,Germany,Office Supplies,Stapler,Consumer,A. Fischer,2,11.8,0.03,19.32
+101398,2024-09-24,Europe,Italy,Electronics,Smartphone,Consumer,C. Okafor,4,777.39,0.05,2493.59
+100701,2024-09-25,North America,United States,Electronics,Smartphone,SMB,C. Okafor,7,717.33,0.12,3729.94
+100999,2024-09-25,North America,Canada,Electronics,Monitor,SMB,C. Okafor,7,248.78,0.1,1322.99
+100949,2024-09-26,Asia Pacific,Japan,Electronics,Headphones,Enterprise,A. Fischer,13,136.17,0.18,1225.29
+100724,2024-09-28,North America,Mexico,Electronics,Monitor,SMB,B. Nguyen,2,277.07,0.1,420.98
+100862,2024-09-28,North America,United States,Electronics,Headphones,SMB,E. Haddad,6,130.47,0.08,607.93
+100982,2024-09-29,Europe,Italy,Furniture,Standing Desk,SMB,B. Nguyen,6,460.41,0.0,2331.84
+100164,2024-09-29,North America,Canada,Electronics,Smartphone,SMB,F. Larsson,5,685.05,0.06,2717.83
+101161,2024-09-29,North America,Mexico,Software,Analytics Suite,SMB,A. Fischer,3,632.7,0.0,1602.22
+100529,2024-09-30,North America,United States,Office Supplies,Printer Paper,Consumer,C. Okafor,2,25.14,0.0,42.44
+100405,2024-09-30,North America,Mexico,Software,Security Suite,Consumer,B. Nguyen,3,489.73,0.08,1140.95
+101081,2024-09-30,Asia Pacific,Singapore,Electronics,Monitor,SMB,E. Haddad,5,251.15,0.0,1060.0
+100310,2024-09-30,Asia Pacific,India,Office Supplies,Printer Paper,SMB,A. Fischer,2,24.95,0.0,42.12
+101348,2024-10-01,Asia Pacific,India,Software,Security Suite,SMB,D. Rossi,5,420.69,0.14,1483.35
+100365,2024-10-01,North America,United States,Furniture,Bookshelf,Enterprise,E. Haddad,9,152.5,0.16,945.38
+100177,2024-10-01,Europe,Germany,Office Supplies,Pen Set,Enterprise,E. Haddad,6,16.08,0.1,71.2
+101234,2024-10-01,North America,Mexico,Electronics,Smartphone,SMB,D. Rossi,3,714.76,0.11,1564.9
+100720,2024-10-01,Asia Pacific,Singapore,Software,CRM License,SMB,D. Rossi,5,320.03,0.09,1194.03
+100923,2024-10-01,Europe,Italy,Furniture,Bookshelf,Enterprise,E. Haddad,9,160.61,0.12,1043.07
+101166,2024-10-01,Asia Pacific,Australia,Electronics,Monitor,Enterprise,E. Haddad,6,242.29,0.11,1060.94
+100423,2024-10-01,Europe,France,Electronics,Monitor,SMB,D. Rossi,3,232.33,0.06,537.24
+101190,2024-10-02,North America,United States,Software,CRM License,SMB,D. Rossi,3,332.84,0.0,818.79
+100834,2024-10-03,Asia Pacific,Australia,Office Supplies,Notebook,Enterprise,F. Larsson,10,7.87,0.05,61.31
+100058,2024-10-03,North America,United States,Furniture,Standing Desk,SMB,C. Okafor,4,436.9,0.01,1418.7
+100938,2024-10-03,Europe,Italy,Office Supplies,Pen Set,SMB,C. Okafor,2,14.34,0.0,23.52
+100280,2024-10-03,Europe,Germany,Furniture,Standing Desk,Consumer,A. Fischer,4,477.4,0.0,1565.87
+100454,2024-10-03,Europe,France,Electronics,Laptop,SMB,E. Haddad,3,982.74,0.05,2296.66
+100855,2024-10-04,Asia Pacific,Australia,Office Supplies,Stapler,Enterprise,E. Haddad,6,11.64,0.13,49.82
+100250,2024-10-04,North America,United States,Electronics,Laptop,Enterprise,F. Larsson,10,913.09,0.2,5989.87
+101004,2024-10-04,North America,Mexico,Furniture,Office Chair,SMB,E. Haddad,5,220.78,0.09,823.73
+100792,2024-10-04,Asia Pacific,Japan,Furniture,Office Chair,Consumer,B. Nguyen,2,212.01,0.09,316.4
+100476,2024-10-06,Asia Pacific,India,Furniture,Standing Desk,Enterprise,C. Okafor,13,475.06,0.16,4253.88
+100332,2024-10-08,Asia Pacific,Australia,Office Supplies,Stapler,SMB,D. Rossi,3,11.53,0.14,24.39
+101124,2024-10-08,Europe,Spain,Electronics,Laptop,Enterprise,F. Larsson,10,965.27,0.04,7598.61
+100567,2024-10-08,Asia Pacific,Singapore,Electronics,Headphones,Enterprise,A. Fischer,9,129.29,0.06,896.91
+101393,2024-10-09,Asia Pacific,Australia,Furniture,Standing Desk,Consumer,D. Rossi,2,475.0,0.13,677.73
+100880,2024-10-09,Asia Pacific,India,Furniture,Bookshelf,SMB,C. Okafor,3,144.08,0.01,350.89
+100899,2024-10-09,Asia Pacific,India,Office Supplies,Printer Paper,Consumer,D. Rossi,4,22.87,0.01,74.26
+100902,2024-10-10,Europe,France,Furniture,Standing Desk,Consumer,F. Larsson,1,476.06,0.03,378.66
+100304,2024-10-10,North America,Mexico,Electronics,Headphones,Consumer,F. Larsson,1,124.33,0.15,86.66
+100143,2024-10-10,Asia Pacific,Japan,Office Supplies,Notebook,SMB,E. Haddad,3,7.9,0.09,17.68
+100393,2024-10-10,Europe,Italy,Electronics,Laptop,SMB,E. Haddad,1,903.46,0.1,666.75
+100983,2024-10-10,Europe,Spain,Electronics,Smartphone,Consumer,E. Haddad,1,763.08,0.01,619.47
+100323,2024-10-11,North America,Mexico,Office Supplies,Stapler,SMB,B. Nguyen,7,12.01,0.1,62.04
+101057,2024-10-12,Asia Pacific,Singapore,Electronics,Headphones,Consumer,F. Larsson,6,128.19,0.03,611.77
+100636,2024-10-14,North America,United States,Electronics,Smartphone,Consumer,C. Okafor,2,750.76,0.05,1169.68
+100074,2024-10-14,North America,United States,Electronics,Headphones,SMB,A. Fischer,6,115.33,0.04,544.73
+101384,2024-10-14,Latin America,Argentina,Office Supplies,Pen Set,SMB,C. Okafor,3,13.44,0.05,31.41
+100491,2024-10-14,North America,Canada,Office Supplies,Printer Paper,Enterprise,D. Rossi,10,23.66,0.16,162.97
+101246,2024-10-15,North America,Canada,Electronics,Headphones,SMB,F. Larsson,1,128.11,0.07,97.7
+100502,2024-10-15,Latin America,Chile,Furniture,Bookshelf,SMB,D. Rossi,4,172.2,0.0,564.82
+100468,2024-10-16,Europe,Spain,Furniture,Office Chair,SMB,B. Nguyen,5,192.71,0.1,711.1
+100576,2024-10-16,Latin America,Argentina,Software,Security Suite,SMB,D. Rossi,2,365.95,0.11,534.14
+100881,2024-10-16,Latin America,Brazil,Electronics,Monitor,SMB,F. Larsson,7,227.82,0.14,1124.61
+100031,2024-10-17,North America,Canada,Office Supplies,Stapler,Enterprise,A. Fischer,12,12.1,0.16,100.01
+100233,2024-10-17,North America,Canada,Electronics,Laptop,SMB,E. Haddad,3,924.28,0.0,2273.73
+100447,2024-10-18,Europe,France,Office Supplies,Pen Set,SMB,B. Nguyen,2,14.76,0.08,22.27
+100340,2024-10-18,Europe,United Kingdom,Office Supplies,Printer Paper,Enterprise,E. Haddad,9,24.92,0.04,176.55
+100219,2024-10-18,Asia Pacific,Singapore,Furniture,Office Chair,SMB,A. Fischer,3,199.64,0.14,422.36
+100386,2024-10-18,North America,Canada,Electronics,Laptop,SMB,B. Nguyen,4,971.44,0.0,3186.32
+100546,2024-10-19,Asia Pacific,Japan,Software,CRM License,SMB,B. Nguyen,5,329.02,0.06,1268.04
+100004,2024-10-20,Asia Pacific,Singapore,Office Supplies,Stapler,Consumer,D. Rossi,1,13.08,0.0,10.73
+100035,2024-10-20,North America,Canada,Electronics,Laptop,Consumer,D. Rossi,3,1025.28,0.01,2496.97
+101080,2024-10-20,North America,United States,Software,Security Suite,Enterprise,E. Haddad,14,380.87,0.14,3760.25
+100395,2024-10-21,North America,Mexico,Electronics,Smartphone,Enterprise,F. Larsson,7,679.54,0.12,3432.49
+100059,2024-10-21,North America,Mexico,Software,CRM License,Enterprise,C. Okafor,5,355.87,0.16,1225.62
+100439,2024-10-22,North America,Mexico,Electronics,Smartphone,SMB,A. Fischer,4,831.04,0.0,2725.81
+100123,2024-10-23,North America,Canada,Electronics,Smartphone,Enterprise,C. Okafor,10,643.23,0.14,4536.06
+100854,2024-10-23,North America,Canada,Electronics,Smartphone,Enterprise,A. Fischer,9,745.3,0.16,4620.26
+100957,2024-10-23,North America,Mexico,Electronics,Laptop,Enterprise,A. Fischer,13,939.61,0.18,8213.32
+100883,2024-10-23,North America,Mexico,Furniture,Standing Desk,Enterprise,C. Okafor,8,463.62,0.22,2372.25
+100809,2024-10-25,North America,Mexico,Electronics,Monitor,SMB,D. Rossi,6,210.87,0.06,975.23
+101306,2024-10-25,Asia Pacific,Japan,Electronics,Headphones,SMB,E. Haddad,5,141.66,0.0,580.81
+100445,2024-10-25,Asia Pacific,Singapore,Software,Security Suite,Enterprise,D. Rossi,7,399.11,0.18,1878.53
+100950,2024-10-27,Asia Pacific,Australia,Electronics,Monitor,Enterprise,C. Okafor,16,240.23,0.12,2773.6
+101130,2024-10-27,Europe,Germany,Electronics,Laptop,SMB,C. Okafor,4,1010.1,0.15,2816.16
+100224,2024-10-29,Asia Pacific,Japan,Furniture,Office Chair,SMB,A. Fischer,3,223.31,0.02,538.36
+100941,2024-10-29,Asia Pacific,Australia,Furniture,Standing Desk,Consumer,C. Okafor,2,503.17,0.14,709.67
+100312,2024-10-30,Europe,Italy,Furniture,Office Chair,SMB,C. Okafor,1,213.09,0.11,155.51
+100693,2024-10-31,North America,Mexico,Software,Security Suite,Consumer,C. Okafor,1,422.1,0.08,318.43
+100288,2024-10-31,North America,United States,Software,CRM License,SMB,D. Rossi,4,366.51,0.05,1142.05
+100811,2024-10-31,Europe,Spain,Electronics,Laptop,Consumer,A. Fischer,3,957.68,0.1,2120.3
+101278,2024-10-31,Asia Pacific,India,Electronics,Laptop,Consumer,F. Larsson,2,938.73,0.0,1539.52
+100819,2024-11-01,North America,Mexico,Electronics,Laptop,SMB,C. Okafor,1,928.64,0.05,744.69
+100252,2024-11-03,North America,United States,Electronics,Smartphone,SMB,F. Larsson,5,766.36,0.04,3105.1
+100246,2024-11-05,Europe,Spain,Office Supplies,Stapler,Consumer,B. Nguyen,2,11.75,0.05,18.84
+101058,2024-11-05,North America,United States,Electronics,Headphones,Consumer,C. Okafor,4,124.63,0.0,420.81
+100585,2024-11-05,North America,Mexico,Office Supplies,Notebook,SMB,E. Haddad,5,7.92,0.08,30.75
+101103,2024-11-06,Latin America,Argentina,Electronics,Smartphone,Enterprise,A. Fischer,6,754.01,0.1,3436.95
+100184,2024-11-07,Asia Pacific,Singapore,Furniture,Bookshelf,SMB,F. Larsson,2,151.52,0.1,230.22
+100329,2024-11-07,Asia Pacific,Japan,Software,Security Suite,SMB,E. Haddad,6,431.35,0.03,2119.12
+100376,2024-11-07,Asia Pacific,Singapore,Electronics,Laptop,SMB,E. Haddad,9,895.16,0.03,6596.55
+101010,2024-11-07,North America,Mexico,Furniture,Standing Desk,SMB,A. Fischer,4,513.05,0.04,1663.0
+100549,2024-11-08,Europe,France,Software,Analytics Suite,SMB,F. Larsson,4,648.78,0.09,1993.43
+100179,2024-11-08,North America,Canada,Furniture,Standing Desk,Consumer,F. Larsson,2,503.8,0.04,816.51
+101294,2024-11-08,Europe,Spain,Software,Security Suite,SMB,F. Larsson,3,421.18,0.07,991.91
+100475,2024-11-08,Asia Pacific,Japan,Furniture,Standing Desk,SMB,F. Larsson,4,426.8,0.04,1383.43
+100380,2024-11-08,Europe,Italy,Software,Analytics Suite,Enterprise,C. Okafor,6,601.84,0.09,2773.8
+101126,2024-11-09,Europe,United Kingdom,Office Supplies,Pen Set,Consumer,D. Rossi,1,14.85,0.03,12.16
+100075,2024-11-09,Latin America,Brazil,Office Supplies,Printer Paper,SMB,B. Nguyen,3,25.01,0.08,58.27
+101205,2024-11-10,Asia Pacific,Japan,Electronics,Laptop,Enterprise,B. Nguyen,5,914.63,0.09,3512.84
+101050,2024-11-10,Asia Pacific,Singapore,Software,CRM License,Enterprise,E. Haddad,11,325.72,0.1,2721.96
+100202,2024-11-10,Asia Pacific,India,Electronics,Smartphone,Enterprise,B. Nguyen,11,686.68,0.2,5100.81
+100137,2024-11-11,North America,Canada,Furniture,Standing Desk,Consumer,C. Okafor,3,509.25,0.0,1289.6
+100299,2024-11-11,North America,Canada,Electronics,Laptop,Enterprise,E. Haddad,6,985.77,0.04,4792.92
+100654,2024-11-11,North America,United States,Electronics,Monitor,Consumer,B. Nguyen,5,239.89,0.01,1002.35
+100914,2024-11-13,Europe,Spain,Electronics,Laptop,SMB,C. Okafor,2,1037.11,0.0,1750.88
+100200,2024-11-13,North America,United States,Electronics,Smartphone,Enterprise,D. Rossi,14,733.37,0.15,7366.68
+101014,2024-11-13,Europe,United Kingdom,Electronics,Smartphone,Consumer,F. Larsson,4,708.37,0.04,2296.11
+100681,2024-11-14,Asia Pacific,Singapore,Software,Analytics Suite,SMB,E. Haddad,4,545.76,0.04,1769.03
+101193,2024-11-14,Europe,United Kingdom,Electronics,Smartphone,Consumer,A. Fischer,2,699.63,0.11,1051.21
+100752,2024-11-15,Europe,Spain,Furniture,Standing Desk,Enterprise,B. Nguyen,8,472.13,0.07,2965.08
+100474,2024-11-15,Europe,Spain,Software,CRM License,Enterprise,F. Larsson,9,360.16,0.13,2380.45
+100688,2024-11-15,North America,Canada,Electronics,Monitor,Enterprise,E. Haddad,8,216.93,0.19,1186.58
+101356,2024-11-15,North America,United States,Furniture,Bookshelf,SMB,F. Larsson,3,160.65,0.07,378.34
+101240,2024-11-16,Europe,Italy,Electronics,Smartphone,SMB,E. Haddad,5,729.81,0.09,2803.0
+100584,2024-11-16,Asia Pacific,India,Electronics,Monitor,SMB,A. Fischer,4,239.75,0.06,760.94
+100910,2024-11-18,Europe,Spain,Furniture,Standing Desk,SMB,C. Okafor,1,462.39,0.03,378.6
+100635,2024-11-18,Europe,France,Office Supplies,Stapler,SMB,D. Rossi,4,11.75,0.09,36.1
+100975,2024-11-18,North America,Mexico,Electronics,Headphones,Consumer,A. Fischer,3,134.59,0.0,340.83
+100366,2024-11-19,Europe,Spain,Electronics,Monitor,Enterprise,E. Haddad,9,219.42,0.21,1316.88
+101049,2024-11-19,Asia Pacific,Australia,Office Supplies,Printer Paper,SMB,A. Fischer,4,26.28,0.14,76.31
+100188,2024-11-19,North America,Canada,Electronics,Laptop,Consumer,C. Okafor,1,1008.57,0.0,851.35
+101376,2024-11-20,Asia Pacific,Japan,Furniture,Bookshelf,SMB,F. Larsson,4,162.9,0.09,500.52
+100859,2024-11-21,Europe,Germany,Office Supplies,Printer Paper,Consumer,D. Rossi,3,24.81,0.19,50.89
+100911,2024-11-21,Europe,United Kingdom,Software,Analytics Suite,SMB,C. Okafor,4,602.83,0.08,1872.6
+101372,2024-11-21,North America,Mexico,Office Supplies,Stapler,SMB,A. Fischer,3,11.92,0.08,27.77
+100319,2024-11-21,Europe,Spain,Office Supplies,Printer Paper,SMB,C. Okafor,3,27.18,0.08,63.32
+100727,2024-11-22,North America,Canada,Office Supplies,Notebook,SMB,B. Nguyen,8,7.76,0.07,48.73
+101181,2024-11-22,North America,United States,Electronics,Monitor,SMB,A. Fischer,2,223.41,0.12,331.91
+100527,2024-11-22,Latin America,Chile,Electronics,Headphones,SMB,C. Okafor,4,130.01,0.07,408.25
+100348,2024-11-23,North America,Canada,Furniture,Office Chair,SMB,D. Rossi,4,196.69,0.08,610.99
+100282,2024-11-23,Asia Pacific,Singapore,Electronics,Smartphone,Enterprise,E. Haddad,10,674.76,0.15,4841.39
+100330,2024-11-23,North America,Mexico,Electronics,Smartphone,Enterprise,C. Okafor,6,709.65,0.1,3234.74
+100575,2024-11-23,Europe,Spain,Electronics,Headphones,SMB,D. Rossi,5,128.71,0.0,543.23
+101252,2024-11-23,North America,United States,Electronics,Headphones,SMB,B. Nguyen,1,118.66,0.02,98.16
+100065,2024-11-25,Europe,United Kingdom,Software,Security Suite,SMB,F. Larsson,1,395.78,0.07,310.7
+101270,2024-11-26,Latin America,Chile,Furniture,Standing Desk,Enterprise,D. Rossi,11,463.36,0.24,3269.84
+100293,2024-11-26,Latin America,Argentina,Electronics,Smartphone,SMB,C. Okafor,5,737.43,0.07,2894.51
+100783,2024-11-27,North America,Mexico,Electronics,Monitor,Enterprise,E. Haddad,6,219.06,0.1,998.52
+100523,2024-11-27,North America,Mexico,Electronics,Laptop,Consumer,B. Nguyen,5,804.21,0.01,3360.29
+100413,2024-11-27,North America,United States,Office Supplies,Printer Paper,Enterprise,F. Larsson,6,24.15,0.13,106.41
+100328,2024-11-28,Asia Pacific,Australia,Office Supplies,Printer Paper,Consumer,E. Haddad,2,24.6,0.01,41.12
+100039,2024-11-28,Asia Pacific,India,Software,Security Suite,SMB,E. Haddad,4,426.37,0.11,1281.26
+100111,2024-11-28,Latin America,Chile,Electronics,Laptop,SMB,D. Rossi,6,870.73,0.13,3836.68
+101295,2024-11-29,North America,United States,Office Supplies,Printer Paper,SMB,B. Nguyen,6,25.1,0.0,127.12
+100251,2024-11-29,North America,Canada,Software,Analytics Suite,Enterprise,F. Larsson,10,548.69,0.06,4353.68
+100070,2024-11-30,Asia Pacific,Australia,Electronics,Smartphone,Enterprise,C. Okafor,7,719.47,0.11,3783.58
+100023,2024-12-01,Europe,Italy,Electronics,Smartphone,SMB,F. Larsson,2,740.74,0.0,1348.15
+100284,2024-12-01,North America,Canada,Software,Security Suite,Enterprise,C. Okafor,7,405.61,0.15,2196.18
+100892,2024-12-02,Europe,Germany,Electronics,Smartphone,Consumer,F. Larsson,2,729.15,0.07,1234.16
+101142,2024-12-03,Asia Pacific,Singapore,Office Supplies,Notebook,Enterprise,A. Fischer,13,7.48,0.14,76.1
+101123,2024-12-03,Asia Pacific,India,Furniture,Standing Desk,SMB,F. Larsson,1,503.9,0.01,453.96
+100482,2024-12-03,North America,United States,Office Supplies,Printer Paper,SMB,D. Rossi,3,23.28,0.08,58.47
+101382,2024-12-04,North America,Mexico,Electronics,Headphones,SMB,B. Nguyen,6,138.77,0.06,712.22
+100574,2024-12-04,North America,Mexico,Office Supplies,Stapler,Enterprise,C. Okafor,9,11.26,0.13,80.23
+100207,2024-12-04,North America,Canada,Furniture,Office Chair,Enterprise,A. Fischer,9,187.87,0.11,1369.4
+100804,2024-12-05,Asia Pacific,India,Office Supplies,Printer Paper,SMB,D. Rossi,6,26.15,0.05,135.64
+100829,2024-12-05,Latin America,Brazil,Electronics,Smartphone,Consumer,F. Larsson,4,781.82,0.0,2845.82
+100359,2024-12-05,Europe,United Kingdom,Electronics,Headphones,Enterprise,,12,131.33,0.11,1276.37
+101220,2024-12-05,Asia Pacific,India,Software,Security Suite,Consumer,B. Nguyen,2,397.14,0.0,722.79
+101113,2024-12-05,North America,Canada,Electronics,Laptop,SMB,C. Okafor,4,976.81,0.03,3448.92
+100131,2024-12-06,Latin America,Argentina,Office Supplies,Stapler,SMB,F. Larsson,6,12.46,0.05,64.63
+100077,2024-12-06,North America,Mexico,Furniture,Standing Desk,SMB,D. Rossi,5,493.75,0.0,2246.56
+100932,2024-12-06,North America,Mexico,Software,Security Suite,Enterprise,B. Nguyen,10,404.27,0.16,3090.24
+100742,2024-12-07,Europe,United Kingdom,Software,CRM License,Enterprise,D. Rossi,5,359.52,0.12,1439.52
+100929,2024-12-07,Europe,France,Electronics,Monitor,Consumer,E. Haddad,3,257.94,0.0,704.18
+101186,2024-12-08,North America,United States,Electronics,Headphones,SMB,B. Nguyen,3,112.73,0.12,270.82
+101089,2024-12-08,Asia Pacific,India,Electronics,Laptop,SMB,E. Haddad,2,904.03,0.03,1595.97
+100105,2024-12-08,Europe,United Kingdom,Furniture,Standing Desk,Enterprise,B. Nguyen,9,500.79,0.22,3199.15
+100552,2024-12-09,Latin America,Chile,Electronics,Headphones,Consumer,F. Larsson,2,122.11,0.07,206.68
+101133,2024-12-09,North America,Canada,Electronics,Laptop,Consumer,C. Okafor,5,896.17,0.06,3832.92
+101286,2024-12-10,Asia Pacific,Australia,Electronics,Smartphone,Enterprise,B. Nguyen,11,738.11,0.07,6871.29
+100901,2024-12-11,Asia Pacific,Singapore,Electronics,Headphones,SMB,B. Nguyen,3,130.77,0.04,342.72
+100612,2024-12-11,North America,Mexico,Office Supplies,Printer Paper,SMB,E. Haddad,4,25.21,0.03,89.01
+100072,2024-12-13,Europe,France,Office Supplies,Notebook,SMB,C. Okafor,2,8.5,0.03,15.01
+100222,2024-12-13,Latin America,Chile,Furniture,Office Chair,Enterprise,F. Larsson,10,203.89,0.21,1465.77
+100193,2024-12-13,Latin America,Argentina,Electronics,Laptop,Enterprise,D. Rossi,8,1019.41,0.17,6159.68
+100390,2024-12-13,Latin America,Chile,Electronics,Smartphone,Consumer,B. Nguyen,1,690.39,0.0,628.25
+100992,2024-12-13,North America,Mexico,Electronics,Laptop,Consumer,D. Rossi,3,972.28,0.04,2548.15
+101116,2024-12-14,Asia Pacific,Australia,Furniture,Standing Desk,Consumer,B. Nguyen,3,453.3,0.04,1188.01
+101319,2024-12-14,Europe,Germany,Office Supplies,Notebook,Enterprise,E. Haddad,7,8.77,0.14,48.04
+101267,2024-12-15,Europe,United Kingdom,Furniture,Office Chair,SMB,D. Rossi,1,205.28,0.05,177.46
+101293,2024-12-16,North America,Canada,Electronics,Laptop,SMB,E. Haddad,3,913.36,0.0,2493.47
+101313,2024-12-17,Europe,France,Electronics,Laptop,Enterprise,D. Rossi,10,909.86,0.14,7120.56
+100191,2024-12-17,North America,United States,Electronics,Headphones,Enterprise,F. Larsson,12,135.94,0.11,1321.17
+100325,2024-12-18,Asia Pacific,Japan,Electronics,Headphones,Consumer,F. Larsson,1,124.62,0.05,107.73
+100261,2024-12-19,Europe,France,Furniture,Standing Desk,SMB,C. Okafor,9,528.13,0.08,3979.35
+100988,2024-12-19,North America,United States,Office Supplies,Stapler,Enterprise,E. Haddad,9,12.0,0.15,83.54
+100446,2024-12-19,North America,Mexico,Electronics,Smartphone,Enterprise,B. Nguyen,8,713.52,0.09,4726.93
+100408,2024-12-19,Asia Pacific,Australia,Electronics,Laptop,Enterprise,A. Fischer,8,1002.85,0.21,5767.59
+100244,2024-12-19,Asia Pacific,India,Furniture,Bookshelf,Consumer,D. Rossi,1,163.65,0.0,148.92
+100047,2024-12-19,Asia Pacific,Japan,Office Supplies,Notebook,SMB,D. Rossi,7,7.39,0.04,45.19
+101098,2024-12-19,Latin America,Brazil,Office Supplies,Printer Paper,SMB,F. Larsson,2,26.85,0.01,48.38
+101275,2024-12-19,Latin America,Chile,Software,Security Suite,Enterprise,C. Okafor,6,437.01,0.06,2242.91
+100005,2024-12-20,Europe,Italy,Office Supplies,Stapler,SMB,D. Rossi,2,11.67,0.1,19.12
+100586,2024-12-20,Asia Pacific,India,Furniture,Office Chair,SMB,A. Fischer,6,232.63,0.09,1155.85
+101000,2024-12-20,Latin America,Argentina,Office Supplies,Stapler,SMB,D. Rossi,5,11.4,0.03,50.31
+100510,2024-12-21,Europe,Germany,Office Supplies,Stapler,Enterprise,A. Fischer,12,11.25,0.09,111.79
+100707,2024-12-21,Latin America,Brazil,Electronics,Laptop,SMB,F. Larsson,2,946.39,0.1,1550.19
+100042,2024-12-21,North America,Mexico,Office Supplies,Notebook,Consumer,F. Larsson,2,8.67,0.01,15.62
+100318,2024-12-22,North America,Canada,Office Supplies,Printer Paper,Enterprise,F. Larsson,6,24.78,0.29,96.06
+100754,2024-12-22,North America,Canada,Electronics,Headphones,SMB,B. Nguyen,4,129.87,0.08,434.91
+101119,2024-12-22,Asia Pacific,Australia,Software,CRM License,Enterprise,F. Larsson,16,362.36,0.02,5170.44
+100258,2024-12-22,Asia Pacific,India,Office Supplies,Printer Paper,SMB,B. Nguyen,3,23.47,0.07,59.59
+100966,2024-12-23,North America,United States,Software,Analytics Suite,Enterprise,C. Okafor,12,640.16,0.11,6221.59
+101210,2024-12-23,Europe,Spain,Electronics,Headphones,Consumer,C. Okafor,1,124.49,0.01,112.15
+100821,2024-12-23,Asia Pacific,Australia,Electronics,Smartphone,Enterprise,C. Okafor,13,749.8,0.05,8426.63
+100273,2024-12-24,North America,Mexico,Office Supplies,Pen Set,SMB,C. Okafor,4,15.94,0.02,56.86
+100696,2024-12-24,Latin America,Argentina,Office Supplies,Pen Set,Enterprise,E. Haddad,9,14.89,0.15,103.66
+101045,2024-12-25,Asia Pacific,India,Office Supplies,Notebook,SMB,E. Haddad,3,7.72,0.07,19.6
+100848,2024-12-25,Europe,Germany,Electronics,Smartphone,Enterprise,F. Larsson,7,787.16,0.11,4462.65
+101396,2024-12-25,North America,United States,Electronics,Headphones,Enterprise,E. Haddad,6,132.66,0.13,630.16
+100463,2024-12-25,North America,United States,Software,CRM License,SMB,A. Fischer,6,352.52,0.0,1924.76
+100129,2024-12-26,Asia Pacific,Singapore,Electronics,Laptop,SMB,B. Nguyen,2,919.32,0.07,1556.04
+100166,2024-12-26,Europe,United Kingdom,Software,CRM License,Enterprise,C. Okafor,7,322.73,0.07,1911.88
+100243,2024-12-26,North America,United States,Electronics,Smartphone,Consumer,F. Larsson,2,765.97,0.06,1310.42
+101316,2024-12-27,Europe,Spain,Furniture,Bookshelf,SMB,D. Rossi,1,162.29,0.06,138.82
+100702,2024-12-27,Europe,Germany,Office Supplies,Notebook,SMB,C. Okafor,9,8.0,0.0,65.52
+101134,2024-12-28,Asia Pacific,Singapore,Office Supplies,Notebook,SMB,E. Haddad,2,7.58,0.1,12.42
+101160,2024-12-28,North America,Canada,Office Supplies,Printer Paper,Enterprise,B. Nguyen,6,23.82,0.1,117.05
+100629,2024-12-28,Europe,Germany,Furniture,Bookshelf,SMB,D. Rossi,4,170.62,0.03,602.43
+101006,2024-12-29,Latin America,Argentina,Software,Analytics Suite,Consumer,F. Larsson,4,613.13,0.03,2164.84
+101227,2024-12-29,North America,Canada,Electronics,Monitor,SMB,E. Haddad,4,213.88,0.06,731.81
+101287,2024-12-29,Europe,France,Electronics,Smartphone,SMB,D. Rossi,5,723.0,0.01,3256.75
+101144,2024-12-30,Latin America,Chile,Furniture,Standing Desk,Enterprise,A. Fischer,9,494.02,0.12,3560.5
+100135,2024-12-30,North America,Canada,Software,Security Suite,Enterprise,F. Larsson,9,384.12,0.11,2799.89
+101302,2024-12-30,North America,Mexico,Electronics,Smartphone,Consumer,D. Rossi,1,736.0,0.02,656.36
+100263,2024-12-31,Asia Pacific,Australia,Software,Analytics Suite,SMB,F. Larsson,1,615.71,0.11,498.66
+100389,2025-01-01,Asia Pacific,Australia,Furniture,Office Chair,Consumer,B. Nguyen,2,203.98,0.03,395.72
+100712,2025-01-02,Europe,Italy,Furniture,Office Chair,Enterprise,F. Larsson,11,192.17,0.09,1923.62
+100279,2025-01-02,North America,United States,Software,Analytics Suite,Enterprise,C. Okafor,13,647.04,0.18,6897.45
+100796,2025-01-02,Asia Pacific,Japan,Software,Analytics Suite,Enterprise,F. Larsson,8,611.67,0.01,4844.43
+100493,2025-01-03,North America,Canada,Furniture,Bookshelf,SMB,E. Haddad,7,176.88,0.06,1163.87
+100335,2025-01-03,North America,Mexico,Office Supplies,Printer Paper,SMB,E. Haddad,4,25.23,0.04,96.88
+100867,2025-01-04,North America,United States,Office Supplies,Stapler,SMB,D. Rossi,1,10.77,0.0,10.77
+100363,2025-01-05,Asia Pacific,Japan,Furniture,Standing Desk,SMB,C. Okafor,5,511.08,0.06,2402.08
+101212,2025-01-05,North America,Mexico,Electronics,Smartphone,SMB,B. Nguyen,2,690.0,0.03,1338.6
+100685,2025-01-05,Europe,Germany,Software,CRM License,SMB,F. Larsson,3,327.65,0.11,874.83
+101164,2025-01-06,North America,United States,Office Supplies,Printer Paper,Enterprise,E. Haddad,8,25.31,0.05,192.36
+100440,2025-01-07,North America,Mexico,Electronics,Smartphone,Consumer,F. Larsson,2,857.37,0.04,1646.15
+100203,2025-01-07,North America,Canada,Software,Security Suite,Enterprise,A. Fischer,13,404.74,0.15,4472.38
+101290,2025-01-07,North America,Mexico,Software,CRM License,Enterprise,A. Fischer,9,299.53,0.06,2534.02
+100126,2025-01-07,North America,Mexico,Furniture,Office Chair,SMB,D. Rossi,6,190.25,0.08,1050.18
+100399,2025-01-08,Europe,France,Office Supplies,Printer Paper,Consumer,F. Larsson,2,28.17,0.1,50.71
+100186,2025-01-08,Europe,Italy,Electronics,Monitor,SMB,F. Larsson,8,244.19,0.04,1875.38
+100429,2025-01-08,North America,Mexico,Electronics,Headphones,Enterprise,E. Haddad,3,128.65,0.13,335.78
+101079,2025-01-08,Asia Pacific,Singapore,Electronics,Laptop,SMB,E. Haddad,1,921.61,0.16,774.15
+100010,2025-01-11,Europe,Germany,Electronics,Smartphone,Enterprise,B. Nguyen,9,806.26,0.27,5297.13
+100214,2025-01-11,Europe,France,Electronics,Smartphone,Enterprise,C. Okafor,10,767.54,0.15,6524.09
+100833,2025-01-12,Latin America,Brazil,Furniture,Bookshelf,Consumer,C. Okafor,1,157.76,0.0,157.76
+101326,2025-01-12,Asia Pacific,India,Office Supplies,Notebook,Enterprise,C. Okafor,5,8.19,0.1,36.85
+100220,2025-01-12,North America,Mexico,Office Supplies,Notebook,Enterprise,B. Nguyen,11,7.09,0.13,67.85
+100225,2025-01-12,North America,United States,Electronics,Monitor,Consumer,D. Rossi,1,258.22,0.03,250.47
+100240,2025-01-12,North America,Canada,Office Supplies,Pen Set,Consumer,F. Larsson,1,14.29,0.02,14.0
+100060,2025-01-12,North America,Mexico,Electronics,Monitor,SMB,B. Nguyen,1,253.4,0.15,215.39
+100182,2025-01-13,Latin America,Brazil,Office Supplies,Notebook,Enterprise,F. Larsson,6,8.72,0.16,43.95
+100371,2025-01-15,Europe,France,Software,CRM License,Enterprise,B. Nguyen,14,319.23,0.18,3664.76
+100404,2025-01-16,Europe,Spain,Software,Analytics Suite,Consumer,D. Rossi,2,611.12,0.0,1222.24
+100900,2025-01-16,Asia Pacific,India,Office Supplies,Stapler,Consumer,B. Nguyen,1,12.15,0.04,11.66
+101042,2025-01-17,North America,Canada,Office Supplies,Printer Paper,SMB,D. Rossi,6,26.21,0.13,136.82
+100713,2025-01-17,Latin America,Chile,Furniture,Bookshelf,SMB,A. Fischer,4,168.35,0.0,673.4
+101082,2025-01-18,North America,United States,Software,Analytics Suite,SMB,C. Okafor,4,694.88,0.08,2557.16
+101364,2025-01-18,Asia Pacific,Japan,Electronics,Smartphone,Enterprise,F. Larsson,14,767.23,0.24,8163.33
+101176,2025-01-18,Asia Pacific,India,Office Supplies,Stapler,SMB,C. Okafor,5,12.86,0.13,55.94
+100965,2025-01-18,North America,Canada,Furniture,Bookshelf,SMB,F. Larsson,6,144.05,0.06,812.44
+101040,2025-01-19,Europe,Italy,Electronics,Headphones,Enterprise,F. Larsson,9,122.25,0.03,1067.24
+101369,2025-01-19,Europe,Italy,Software,CRM License,Consumer,E. Haddad,3,365.84,0.04,1053.62
+100781,2025-01-19,Asia Pacific,Australia,Electronics,Headphones,SMB,,3,135.93,0.1,367.01
+100019,2025-01-20,North America,Canada,Office Supplies,Stapler,Consumer,E. Haddad,2,11.93,0.0,23.86
+100849,2025-01-21,North America,United States,Electronics,Smartphone,Enterprise,B. Nguyen,10,753.79,0.25,5653.42
+100678,2025-01-21,Latin America,Argentina,Office Supplies,Pen Set,Enterprise,C. Okafor,10,15.8,0.09,143.78
+100223,2025-01-23,Asia Pacific,Japan,Electronics,Monitor,Enterprise,E. Haddad,4,221.67,0.09,806.88
+101237,2025-01-23,Europe,United Kingdom,Electronics,Laptop,Enterprise,E. Haddad,10,945.07,0.2,7560.56
+101120,2025-01-23,North America,United States,Electronics,Monitor,Enterprise,E. Haddad,4,230.3,0.12,810.66
+100119,2025-01-23,Asia Pacific,Japan,Furniture,Office Chair,Enterprise,E. Haddad,6,202.67,0.1,1094.42
+100442,2025-01-23,North America,Canada,Electronics,Laptop,SMB,D. Rossi,3,979.68,0.1,2645.14
+100731,2025-01-24,North America,United States,Electronics,Laptop,Enterprise,B. Nguyen,3,986.61,0.2,2367.86
+101244,2025-01-24,Europe,Spain,Software,CRM License,SMB,F. Larsson,3,381.23,0.05,1086.51
+100915,2025-01-24,North America,Mexico,Furniture,Standing Desk,SMB,B. Nguyen,3,489.64,0.1,1322.03
+100189,2025-01-24,Europe,Italy,Office Supplies,Printer Paper,Enterprise,F. Larsson,10,24.31,0.16,204.2
+100262,2025-01-25,Europe,United Kingdom,Electronics,Monitor,Consumer,D. Rossi,1,234.84,0.0,234.84
+100841,2025-01-25,North America,Mexico,Furniture,Standing Desk,SMB,A. Fischer,1,465.34,0.08,428.11
+100217,2025-01-25,North America,United States,Software,CRM License,SMB,D. Rossi,3,319.69,0.08,882.34
+100314,2025-01-26,Latin America,Brazil,Office Supplies,Pen Set,SMB,C. Okafor,6,14.6,0.1,78.84
+100774,2025-01-26,Europe,Italy,Electronics,Headphones,SMB,C. Okafor,4,135.84,0.07,505.32
+100865,2025-01-27,Europe,Spain,Furniture,Standing Desk,SMB,E. Haddad,3,471.51,0.04,1357.95
+101100,2025-01-27,North America,Mexico,Electronics,Monitor,Consumer,A. Fischer,6,240.51,0.06,1356.48
+100377,2025-01-28,North America,Mexico,Electronics,Headphones,SMB,B. Nguyen,5,127.37,0.1,573.17
+100316,2025-01-28,North America,Mexico,Office Supplies,Notebook,Enterprise,A. Fischer,8,8.47,0.08,62.34
+101041,2025-01-29,Europe,Spain,Electronics,Monitor,Consumer,E. Haddad,3,253.9,0.02,746.47
+100547,2025-01-30,Europe,United Kingdom,Electronics,Smartphone,SMB,E. Haddad,5,680.69,0.11,3029.07
+100671,2025-01-30,North America,United States,Office Supplies,Stapler,Enterprise,D. Rossi,11,12.79,0.09,128.03
+100103,2025-01-30,Asia Pacific,India,Office Supplies,Notebook,SMB,E. Haddad,2,7.24,0.05,13.76
+101084,2025-02-01,Latin America,Argentina,Office Supplies,Notebook,SMB,F. Larsson,6,7.15,0.04,44.89
+101097,2025-02-01,North America,Canada,Furniture,Bookshelf,Consumer,B. Nguyen,2,160.2,0.02,342.25
+101207,2025-02-01,North America,Canada,Electronics,Monitor,SMB,D. Rossi,6,216.75,0.0,1417.54
+101152,2025-02-02,Europe,Italy,Software,CRM License,SMB,B. Nguyen,4,319.92,0.08,1283.26
+101394,2025-02-02,Asia Pacific,Singapore,Furniture,Standing Desk,Enterprise,B. Nguyen,5,484.31,0.16,2217.17
+100595,2025-02-02,North America,United States,Electronics,Monitor,Enterprise,B. Nguyen,6,258.76,0.13,1472.29
+100683,2025-02-04,Europe,Germany,Office Supplies,Notebook,SMB,E. Haddad,4,7.52,0.04,31.48
+100909,2025-02-04,Europe,France,Furniture,Standing Desk,Enterprise,C. Okafor,11,451.53,0.09,4926.6
+101036,2025-02-04,Asia Pacific,India,Furniture,Office Chair,Consumer,C. Okafor,3,222.0,0.0,725.94
+101211,2025-02-04,Asia Pacific,Japan,Furniture,Bookshelf,SMB,A. Fischer,4,170.15,0.08,682.51
+101309,2025-02-05,Europe,Spain,Electronics,Monitor,SMB,F. Larsson,3,255.19,0.09,759.37
+100286,2025-02-06,North America,United States,Electronics,Laptop,SMB,E. Haddad,5,986.05,0.07,4997.79
+100247,2025-02-06,North America,United States,Electronics,Laptop,SMB,A. Fischer,2,976.58,0.0,2128.94
+101365,2025-02-06,Latin America,Argentina,Electronics,Smartphone,SMB,D. Rossi,5,711.73,0.11,3452.25
+100710,2025-02-07,Latin America,Argentina,Office Supplies,Notebook,SMB,D. Rossi,4,7.19,0.0,31.35
+101189,2025-02-07,Latin America,Brazil,Electronics,Headphones,Consumer,E. Haddad,1,138.98,0.08,139.37
+100504,2025-02-07,North America,United States,Software,CRM License,SMB,A. Fischer,7,326.58,0.06,2342.3
+100970,2025-02-07,Latin America,Chile,Electronics,Laptop,Consumer,B. Nguyen,1,912.41,0.01,984.58
+100936,2025-02-07,Asia Pacific,Japan,Software,Security Suite,Consumer,A. Fischer,2,412.53,0.02,881.33
+100283,2025-02-07,Asia Pacific,Singapore,Electronics,Monitor,SMB,B. Nguyen,7,238.77,0.0,1821.82
+100079,2025-02-08,North America,Canada,Electronics,Smartphone,Enterprise,E. Haddad,13,659.34,0.14,8034.85
+101019,2025-02-08,North America,United States,Electronics,Headphones,SMB,D. Rossi,4,133.88,0.0,583.72
+100400,2025-02-08,Europe,Spain,Electronics,Monitor,Enterprise,C. Okafor,9,247.36,0.14,2086.88
+100037,2025-02-10,North America,United States,Furniture,Office Chair,SMB,C. Okafor,4,204.22,0.05,845.88
+100799,2025-02-10,Europe,Spain,Electronics,Laptop,Consumer,B. Nguyen,1,1001.91,0.02,1070.24
+100993,2025-02-12,Latin America,Chile,Electronics,Headphones,SMB,F. Larsson,4,127.89,0.14,479.54
+100874,2025-02-12,North America,Mexico,Electronics,Headphones,Enterprise,C. Okafor,3,130.78,0.14,367.78
+100850,2025-02-14,Asia Pacific,Singapore,Software,Security Suite,SMB,B. Nguyen,8,437.3,0.07,3546.33
+100578,2025-02-15,Europe,Italy,Furniture,Office Chair,SMB,F. Larsson,3,176.76,0.08,531.76
+101104,2025-02-16,Asia Pacific,Australia,Office Supplies,Pen Set,Enterprise,B. Nguyen,17,14.58,0.2,216.13
+100145,2025-02-16,North America,Canada,Electronics,Monitor,SMB,D. Rossi,5,223.63,0.0,1218.78
+101070,2025-02-18,Europe,Italy,Electronics,Headphones,Consumer,E. Haddad,2,122.83,0.0,267.77
+101274,2025-02-19,Latin America,Chile,Furniture,Bookshelf,Consumer,E. Haddad,2,157.2,0.0,342.7
+100960,2025-02-19,North America,Canada,Office Supplies,Printer Paper,SMB,F. Larsson,4,27.6,0.09,109.51
+100814,2025-02-19,North America,United States,Furniture,Office Chair,Enterprise,B. Nguyen,9,226.59,0.15,1889.42
+101001,2025-02-21,Asia Pacific,Singapore,Furniture,Standing Desk,SMB,C. Okafor,2,497.78,0.0,1085.16
+100889,2025-02-21,Asia Pacific,Japan,Office Supplies,Notebook,SMB,F. Larsson,4,8.18,0.04,34.24
+100089,2025-02-21,North America,United States,Office Supplies,Pen Set,Enterprise,C. Okafor,10,15.03,0.12,144.17
+100289,2025-02-21,Asia Pacific,Australia,Office Supplies,Pen Set,SMB,D. Rossi,6,15.68,0.08,94.34
+101067,2025-02-23,North America,United States,Furniture,Standing Desk,Consumer,F. Larsson,1,479.0,0.06,490.78
+101170,2025-02-23,North America,United States,Electronics,Laptop,SMB,D. Rossi,5,993.2,0.14,4655.13
+100361,2025-02-23,North America,Canada,Electronics,Smartphone,Enterprise,E. Haddad,11,731.9,0.19,7108.14
+101007,2025-02-23,Europe,United Kingdom,Furniture,Office Chair,SMB,E. Haddad,6,207.39,0.05,1288.51
+100820,2025-02-24,Asia Pacific,Singapore,Office Supplies,Printer Paper,SMB,B. Nguyen,6,23.82,0.04,149.55
+101090,2025-02-24,Europe,France,Office Supplies,Printer Paper,Enterprise,D. Rossi,9,25.07,0.12,216.42
+100730,2025-02-24,Europe,France,Electronics,Headphones,Enterprise,B. Nguyen,10,127.99,0.02,1367.19
+100338,2025-02-25,Latin America,Argentina,Electronics,Laptop,Enterprise,C. Okafor,9,999.91,0.01,9711.03
+100687,2025-02-25,Latin America,Argentina,Office Supplies,Stapler,Consumer,C. Okafor,2,12.14,0.0,26.47
+100737,2025-02-25,North America,Mexico,Electronics,Laptop,Enterprise,F. Larsson,7,980.12,0.12,6580.92
+100345,2025-02-26,North America,United States,Office Supplies,Pen Set,Enterprise,D. Rossi,8,15.27,0.08,122.5
+101322,2025-02-26,North America,United States,Office Supplies,Printer Paper,SMB,F. Larsson,4,25.0,0.03,105.73
+100790,2025-02-26,Latin America,Chile,Electronics,Headphones,SMB,E. Haddad,2,124.15,0.0,270.65
+100787,2025-02-27,North America,Mexico,Office Supplies,Pen Set,Consumer,E. Haddad,1,16.78,0.03,17.74
+100375,2025-02-28,Europe,Italy,Office Supplies,Pen Set,Enterprise,D. Rossi,8,15.5,0.05,128.4
+100917,2025-02-28,Latin America,Argentina,Office Supplies,Printer Paper,Enterprise,A. Fischer,12,25.31,0.04,317.81
+100113,2025-02-28,Europe,Germany,Office Supplies,Printer Paper,SMB,C. Okafor,7,22.86,0.0,174.42
+100364,2025-03-01,Europe,Italy,Office Supplies,Stapler,Enterprise,C. Okafor,13,12.11,0.0,181.97
+101228,2025-03-01,North America,Canada,Office Supplies,Notebook,SMB,E. Haddad,5,7.37,0.02,41.74
+100517,2025-03-02,Latin America,Argentina,Office Supplies,Pen Set,SMB,D. Rossi,7,14.67,0.09,108.01
+100953,2025-03-02,Asia Pacific,Singapore,Furniture,Bookshelf,Enterprise,D. Rossi,7,155.56,0.13,1095.04
+100613,2025-03-03,North America,Mexico,Office Supplies,Pen Set,Consumer,B. Nguyen,1,15.38,0.04,17.07
+100081,2025-03-03,Europe,France,Electronics,Smartphone,Enterprise,B. Nguyen,7,675.89,0.12,4812.51
+100294,2025-03-03,Asia Pacific,Singapore,Furniture,Bookshelf,SMB,D. Rossi,8,156.84,0.05,1377.8
+101150,2025-03-03,North America,Mexico,Office Supplies,Stapler,Enterprise,F. Larsson,12,11.99,0.16,139.7
+101162,2025-03-04,North America,Mexico,Electronics,Smartphone,SMB,F. Larsson,9,738.11,0.06,7217.82
+100886,2025-03-05,North America,Mexico,Furniture,Standing Desk,SMB,E. Haddad,5,490.77,0.07,2637.82
+100772,2025-03-05,Asia Pacific,Japan,Electronics,Smartphone,Consumer,D. Rossi,3,742.47,0.02,2523.14
+100935,2025-03-05,North America,Canada,Electronics,Smartphone,SMB,D. Rossi,6,732.44,0.08,4673.32
+100876,2025-03-05,North America,Canada,Software,CRM License,SMB,C. Okafor,3,316.6,0.06,1031.99
+100419,2025-03-05,Europe,United Kingdom,Electronics,Headphones,SMB,C. Okafor,3,132.46,0.01,454.73
+100890,2025-03-07,Asia Pacific,Singapore,Office Supplies,Pen Set,SMB,D. Rossi,6,15.91,0.13,96.0
+100626,2025-03-07,Asia Pacific,India,Furniture,Office Chair,Consumer,A. Fischer,1,210.45,0.02,238.39
+101195,2025-03-08,Europe,Germany,Software,Security Suite,Enterprise,F. Larsson,7,400.95,0.02,3179.28
+100806,2025-03-09,Europe,France,Furniture,Bookshelf,SMB,C. Okafor,5,159.05,0.05,873.26
+100532,2025-03-10,North America,Canada,Software,CRM License,SMB,E. Haddad,6,347.34,0.07,2240.29
+100211,2025-03-10,Asia Pacific,Japan,Office Supplies,Stapler,SMB,D. Rossi,4,11.4,0.0,52.71
+100022,2025-03-11,North America,United States,Electronics,Laptop,SMB,D. Rossi,5,944.45,0.16,4585.04
+100857,2025-03-11,Europe,Spain,Furniture,Bookshelf,Consumer,D. Rossi,2,180.47,0.05,396.34
+100367,2025-03-11,Europe,Spain,Furniture,Standing Desk,Enterprise,D. Rossi,10,403.67,0.1,4199.36
+100100,2025-03-11,Latin America,Chile,Electronics,Monitor,Enterprise,F. Larsson,6,243.61,0.05,1605.03
+100066,2025-03-12,Europe,Italy,Software,CRM License,SMB,A. Fischer,3,316.29,0.0,1096.78
+100317,2025-03-14,North America,United States,Electronics,Monitor,Consumer,B. Nguyen,1,254.54,0.01,291.28
+100438,2025-03-15,Asia Pacific,Japan,Electronics,Laptop,Enterprise,C. Okafor,10,1015.24,0.15,9974.75
+101395,2025-03-16,Asia Pacific,Japan,Software,CRM License,Enterprise,B. Nguyen,13,329.05,0.19,4005.02
+101127,2025-03-17,Asia Pacific,India,Electronics,Laptop,Consumer,C. Okafor,5,911.84,0.07,4901.02
+101283,2025-03-17,North America,Canada,Electronics,Laptop,Enterprise,D. Rossi,10,933.14,0.16,9060.26
+101092,2025-03-17,North America,Mexico,Office Supplies,Pen Set,SMB,E. Haddad,4,16.08,0.15,63.19
+100484,2025-03-17,Asia Pacific,Singapore,Electronics,Headphones,Enterprise,B. Nguyen,13,142.25,0.08,1966.52
+100732,2025-03-17,Asia Pacific,Japan,Electronics,Monitor,Consumer,D. Rossi,1,248.25,0.04,275.47
+100939,2025-03-18,Asia Pacific,Singapore,Electronics,Smartphone,Consumer,D. Rossi,3,743.0,0.0,2576.47
+101300,2025-03-18,North America,Mexico,Office Supplies,Notebook,Enterprise,D. Rossi,8,7.07,0.15,55.57
+101047,2025-03-19,Europe,United Kingdom,Electronics,Headphones,SMB,F. Larsson,9,136.07,0.08,1302.29
+101386,2025-03-19,North America,United States,Electronics,Monitor,Enterprise,C. Okafor,3,241.3,0.09,761.44
+101388,2025-03-20,Latin America,Argentina,Furniture,Office Chair,SMB,A. Fischer,5,203.79,0.07,1095.34
+101192,2025-03-20,Latin America,Brazil,Furniture,Standing Desk,Enterprise,D. Rossi,11,460.76,0.15,4979.67
+101052,2025-03-21,Europe,Germany,Software,Analytics Suite,Consumer,C. Okafor,2,615.4,0.08,1308.85
+100007,2025-03-21,Europe,Spain,Furniture,Office Chair,Enterprise,C. Okafor,6,197.43,0.14,1177.54
+100964,2025-03-21,Europe,United Kingdom,Furniture,Office Chair,Enterprise,B. Nguyen,4,194.85,0.11,801.8
+100498,2025-03-23,Latin America,Chile,Furniture,Standing Desk,Enterprise,C. Okafor,9,484.72,0.07,4689.55
+100255,2025-03-23,Latin America,Argentina,Electronics,Smartphone,Enterprise,C. Okafor,6,727.15,0.16,4236.13
+101334,2025-03-24,North America,Canada,Office Supplies,Stapler,Enterprise,A. Fischer,8,12.24,0.16,95.07
+101342,2025-03-24,North America,Mexico,Office Supplies,Pen Set,Enterprise,F. Larsson,10,15.54,0.0,179.62
+100038,2025-03-25,Europe,Germany,Furniture,Office Chair,SMB,D. Rossi,6,242.73,0.07,1565.57
+100766,2025-03-26,North America,Canada,Electronics,Smartphone,SMB,B. Nguyen,2,761.24,0.11,1566.23
+101003,2025-03-26,Asia Pacific,India,Furniture,Office Chair,Enterprise,F. Larsson,5,216.77,0.08,1152.58
+101381,2025-03-26,Europe,Italy,Electronics,Smartphone,Consumer,A. Fischer,3,755.27,0.0,2619.01
+100041,2025-03-27,Latin America,Argentina,Electronics,Headphones,SMB,A. Fischer,2,136.17,0.08,289.61
+100705,2025-03-27,Europe,France,Furniture,Office Chair,Consumer,D. Rossi,2,215.45,0.04,478.15
+100621,2025-03-27,Europe,Germany,Electronics,Smartphone,SMB,F. Larsson,4,750.78,0.11,3089.42
+100692,2025-03-27,Europe,Spain,Software,Analytics Suite,Enterprise,E. Haddad,12,659.09,0.09,8319.21
+100591,2025-03-27,North America,Canada,Electronics,Smartphone,Enterprise,,8,695.65,0.07,5982.44
+100666,2025-03-28,Europe,Italy,Electronics,Headphones,Consumer,A. Fischer,2,119.78,0.0,276.9
+101066,2025-03-28,Europe,United Kingdom,Electronics,Laptop,SMB,F. Larsson,1,1028.63,0.12,1046.3
+101138,2025-03-28,Latin America,Chile,Office Supplies,Printer Paper,Consumer,C. Okafor,1,25.49,0.09,26.81
+100513,2025-03-29,North America,Canada,Software,Security Suite,SMB,D. Rossi,3,383.28,0.13,1156.3
+100204,2025-03-30,Asia Pacific,India,Electronics,Monitor,Consumer,D. Rossi,2,232.6,0.04,516.21
+100092,2025-03-30,Asia Pacific,Japan,Furniture,Standing Desk,Consumer,C. Okafor,1,469.53,0.0,542.72
+100394,2025-03-31,Asia Pacific,Japan,Furniture,Bookshelf,SMB,E. Haddad,2,165.62,0.1,344.59
+100775,2025-03-31,North America,Canada,Furniture,Standing Desk,Consumer,B. Nguyen,4,531.62,0.04,2359.65
+100748,2025-03-31,North America,United States,Furniture,Standing Desk,SMB,B. Nguyen,1,495.01,0.05,543.57
+101328,2025-04-02,North America,Canada,Electronics,Laptop,Consumer,B. Nguyen,1,936.85,0.0,1105.48
+100919,2025-04-02,Europe,Spain,Electronics,Monitor,Consumer,A. Fischer,1,219.53,0.01,256.45
+100236,2025-04-02,North America,Mexico,Software,Security Suite,Enterprise,A. Fischer,10,397.15,0.16,3936.55
+101214,2025-04-02,Latin America,Chile,Electronics,Headphones,SMB,E. Haddad,4,131.78,0.06,584.68
+100653,2025-04-03,North America,Canada,Electronics,Monitor,Consumer,A. Fischer,1,235.41,0.0,277.78
+100672,2025-04-03,North America,Mexico,Electronics,Laptop,Consumer,E. Haddad,3,864.7,0.0,3061.04
+101247,2025-04-03,Asia Pacific,India,Furniture,Office Chair,Enterprise,F. Larsson,9,224.4,0.18,1954.16
+100008,2025-04-03,Asia Pacific,Australia,Software,CRM License,Consumer,B. Nguyen,1,320.62,0.01,374.55
+100387,2025-04-03,North America,United States,Electronics,Monitor,SMB,D. Rossi,3,255.77,0.02,887.32
+100292,2025-04-04,North America,United States,Electronics,Headphones,SMB,C. Okafor,4,117.06,0.01,547.0
+100167,2025-04-04,Asia Pacific,Australia,Electronics,Laptop,SMB,C. Okafor,2,1024.17,0.09,2199.51
+101380,2025-04-04,Asia Pacific,Singapore,Electronics,Laptop,Enterprise,B. Nguyen,9,1000.15,0.09,9665.65
+100305,2025-04-04,North America,Canada,Electronics,Laptop,SMB,A. Fischer,8,904.16,0.01,8449.92
+100715,2025-04-04,Europe,Spain,Office Supplies,Notebook,SMB,B. Nguyen,2,7.73,0.21,14.41
+101197,2025-04-04,North America,United States,Electronics,Monitor,Consumer,D. Rossi,5,245.49,0.0,1448.39
+101111,2025-04-06,Europe,France,Office Supplies,Printer Paper,Consumer,C. Okafor,2,24.08,0.04,54.56
+101340,2025-04-06,Europe,Spain,Electronics,Headphones,Consumer,E. Haddad,3,127.73,0.0,452.16
+101337,2025-04-06,North America,United States,Office Supplies,Pen Set,Enterprise,E. Haddad,7,16.49,0.17,113.05
+100234,2025-04-06,Europe,United Kingdom,Electronics,Headphones,Enterprise,B. Nguyen,8,136.7,0.13,1122.69
+101250,2025-04-06,Europe,Spain,Electronics,Monitor,Enterprise,B. Nguyen,10,250.98,0.01,2931.95
+101341,2025-04-06,Europe,France,Electronics,Monitor,Consumer,C. Okafor,5,272.97,0.0,1610.52
+100675,2025-04-07,North America,United States,Software,Security Suite,SMB,E. Haddad,3,373.37,0.1,1189.56
+100628,2025-04-07,North America,Mexico,Office Supplies,Pen Set,SMB,B. Nguyen,5,15.38,0.09,82.58
+100519,2025-04-08,Europe,United Kingdom,Electronics,Monitor,Consumer,F. Larsson,5,239.55,0.0,1413.34
+100481,2025-04-08,North America,United States,Furniture,Office Chair,Enterprise,A. Fischer,8,212.76,0.17,1667.02
+100144,2025-04-08,Europe,Spain,Electronics,Laptop,SMB,A. Fischer,5,857.31,0.1,4552.32
+100344,2025-04-08,Europe,United Kingdom,Office Supplies,Pen Set,Consumer,D. Rossi,1,15.53,0.15,15.58
+101258,2025-04-08,North America,United States,Software,Security Suite,Enterprise,B. Nguyen,12,385.75,0.18,4479.02
+100749,2025-04-09,Europe,United Kingdom,Electronics,Headphones,SMB,C. Okafor,2,124.93,0.15,250.61
+100607,2025-04-09,Latin America,Chile,Electronics,Laptop,SMB,A. Fischer,1,940.76,0.0,1110.1
+101157,2025-04-09,Asia Pacific,Australia,Office Supplies,Pen Set,Enterprise,D. Rossi,7,15.59,0.1,115.9
+100751,2025-04-09,Asia Pacific,Japan,Furniture,Standing Desk,Consumer,F. Larsson,1,425.91,0.05,477.45
+100087,2025-04-10,Latin America,Brazil,Furniture,Bookshelf,Enterprise,E. Haddad,11,174.28,0.11,2013.32
+100877,2025-04-10,Asia Pacific,Australia,Software,Security Suite,Consumer,C. Okafor,1,401.14,0.0,473.35
+100662,2025-04-12,Europe,Italy,Electronics,Smartphone,SMB,B. Nguyen,3,729.36,0.09,2349.56
+100618,2025-04-12,Europe,Germany,Electronics,Laptop,Enterprise,E. Haddad,14,1042.97,0.16,14473.09
+100726,2025-04-12,North America,Canada,Office Supplies,Notebook,Enterprise,A. Fischer,12,7.49,0.2,84.85
+101296,2025-04-13,North America,Mexico,Furniture,Standing Desk,SMB,B. Nguyen,2,494.27,0.08,1073.16
+100882,2025-04-13,North America,Canada,Electronics,Smartphone,Consumer,F. Larsson,4,769.67,0.03,3523.86
+101208,2025-04-14,North America,Canada,Software,CRM License,SMB,F. Larsson,3,313.61,0.01,1099.08
+101024,2025-04-15,Europe,France,Electronics,Laptop,Enterprise,D. Rossi,8,1010.48,0.1,8585.04
+100485,2025-04-16,North America,United States,Software,Analytics Suite,Enterprise,F. Larsson,10,692.48,0.12,7190.71
+101318,2025-04-16,North America,Canada,Software,CRM License,SMB,F. Larsson,1,360.79,0.05,404.45
+100062,2025-04-17,North America,Mexico,Office Supplies,Notebook,SMB,B. Nguyen,4,7.48,0.08,32.48
+100767,2025-04-18,Asia Pacific,Australia,Office Supplies,Stapler,SMB,E. Haddad,3,13.17,0.06,43.82
+101071,2025-04-18,Europe,Spain,Office Supplies,Printer Paper,Consumer,C. Okafor,5,26.46,0.0,156.11
+100544,2025-04-18,Asia Pacific,Japan,Office Supplies,Pen Set,SMB,C. Okafor,2,14.88,0.08,32.31
+101215,2025-04-18,Asia Pacific,India,Software,Security Suite,Enterprise,F. Larsson,15,404.04,0.07,6650.9
+100148,2025-04-18,Europe,France,Furniture,Standing Desk,Enterprise,D. Rossi,10,468.38,0.08,5084.73
+100067,2025-04-19,Asia Pacific,India,Electronics,Headphones,SMB,A. Fischer,7,141.13,0.15,990.87
+100402,2025-04-20,Latin America,Chile,Electronics,Smartphone,Consumer,B. Nguyen,1,662.29,0.05,742.43
+100642,2025-04-20,North America,Canada,Office Supplies,Stapler,SMB,F. Larsson,6,12.6,0.0,89.21
+101225,2025-04-20,North America,Canada,Electronics,Smartphone,Consumer,F. Larsson,2,685.84,0.06,1521.47
+101367,2025-04-21,North America,Mexico,Software,Analytics Suite,Consumer,B. Nguyen,1,567.37,0.01,662.8
+100201,2025-04-21,Asia Pacific,Japan,Furniture,Bookshelf,Consumer,C. Okafor,3,169.97,0.0,601.69
+100689,2025-04-21,Europe,Spain,Electronics,Laptop,Enterprise,E. Haddad,13,914.22,0.09,12761.96
+100467,2025-04-24,North America,Mexico,Office Supplies,Notebook,Enterprise,C. Okafor,9,8.38,0.13,77.43
+100014,2025-04-24,North America,United States,Software,Analytics Suite,Consumer,A. Fischer,3,628.16,0.01,2201.45
+100430,2025-04-24,Europe,Germany,Furniture,Office Chair,Consumer,A. Fischer,1,215.64,0.0,254.46
+101106,2025-04-24,North America,United States,Furniture,Standing Desk,Consumer,B. Nguyen,3,438.78,0.0,1553.28
+100494,2025-04-24,Latin America,Brazil,Office Supplies,Printer Paper,SMB,D. Rossi,3,25.96,0.0,91.9
+100228,2025-04-24,North America,United States,Office Supplies,Printer Paper,SMB,C. Okafor,6,24.71,0.07,162.7
+100728,2025-04-24,North America,Mexico,Office Supplies,Notebook,SMB,F. Larsson,2,7.94,0.09,17.05
+101324,2025-04-24,North America,United States,Electronics,Monitor,SMB,E. Haddad,4,234.69,0.02,1085.58
+101336,2025-04-24,North America,Canada,Software,CRM License,Consumer,E. Haddad,3,353.28,0.04,1200.59
+100078,2025-04-25,North America,Mexico,Office Supplies,Pen Set,SMB,A. Fischer,5,13.77,0.05,77.18
+101191,2025-04-26,Europe,Germany,Electronics,Headphones,Consumer,F. Larsson,2,132.11,0.0,311.78
+100505,2025-04-26,Europe,Germany,Electronics,Smartphone,Enterprise,A. Fischer,9,774.09,0.19,6658.88
+100773,2025-04-27,Asia Pacific,Australia,Electronics,Smartphone,SMB,A. Fischer,2,736.95,0.08,1600.07
+101065,2025-04-27,North America,Mexico,Electronics,Laptop,Enterprise,C. Okafor,14,924.17,0.18,12519.18
+101183,2025-04-27,Europe,France,Electronics,Monitor,Consumer,E. Haddad,3,237.52,0.01,832.41
+101145,2025-04-28,Europe,United Kingdom,Electronics,Monitor,Enterprise,A. Fischer,9,254.13,0.17,2240.05
+100248,2025-04-29,Europe,France,Furniture,Standing Desk,Consumer,C. Okafor,2,462.95,0.0,1092.56
+101121,2025-04-30,Asia Pacific,India,Electronics,Laptop,SMB,D. Rossi,3,889.57,0.06,2960.13
+100431,2025-04-30,North America,Canada,Electronics,Headphones,Enterprise,F. Larsson,11,133.82,0.2,1389.59
+101235,2025-05-01,Asia Pacific,Singapore,Furniture,Standing Desk,Consumer,F. Larsson,5,499.15,0.0,2884.8
+100721,2025-05-01,North America,Mexico,Electronics,Headphones,SMB,C. Okafor,2,120.03,0.13,241.41
+100073,2025-05-01,Asia Pacific,India,Electronics,Smartphone,SMB,A. Fischer,3,710.26,0.0,2462.94
+100241,2025-05-01,North America,United States,Electronics,Smartphone,Consumer,A. Fischer,1,731.68,0.0,845.74
+100655,2025-05-03,North America,United States,Electronics,Monitor,SMB,F. Larsson,5,231.71,0.08,1232.02
+100977,2025-05-03,Latin America,Brazil,Electronics,Smartphone,SMB,C. Okafor,6,705.95,0.08,4504.3
+101317,2025-05-03,Asia Pacific,Singapore,Electronics,Headphones,Consumer,C. Okafor,1,131.6,0.0,152.11
+100341,2025-05-03,North America,United States,Furniture,Office Chair,Enterprise,D. Rossi,11,192.48,0.11,2178.12
+100535,2025-05-03,North America,Mexico,Office Supplies,Printer Paper,SMB,C. Okafor,10,24.33,0.0,281.23
+101209,2025-05-04,North America,Mexico,Electronics,Laptop,Enterprise,C. Okafor,9,948.68,0.21,7796.57
+101379,2025-05-05,Latin America,Argentina,Electronics,Laptop,Enterprise,D. Rossi,10,963.89,0.02,10918.63
+100287,2025-05-06,Europe,Germany,Office Supplies,Pen Set,Consumer,D. Rossi,2,16.39,0.0,37.89
+101359,2025-05-06,Europe,United Kingdom,Office Supplies,Notebook,SMB,D. Rossi,2,9.16,0.03,20.54
+100893,2025-05-07,Europe,Spain,Furniture,Standing Desk,SMB,E. Haddad,2,480.23,0.06,1043.57
+100765,2025-05-07,Asia Pacific,Singapore,Office Supplies,Stapler,SMB,F. Larsson,5,11.89,0.02,67.34
+101091,2025-05-08,Asia Pacific,Japan,Electronics,Smartphone,Enterprise,F. Larsson,10,629.06,0.04,6980.36
+100927,2025-05-08,North America,Canada,Electronics,Monitor,SMB,A. Fischer,6,236.95,0.0,1643.32
+101353,2025-05-08,Europe,Spain,Electronics,Smartphone,SMB,D. Rossi,4,687.78,0.07,2957.38
+100777,2025-05-09,Europe,Spain,Electronics,Headphones,SMB,C. Okafor,1,115.14,0.07,123.77
+100645,2025-05-09,North America,Canada,Furniture,Bookshelf,Enterprise,B. Nguyen,10,156.23,0.15,1534.96
+100918,2025-05-09,North America,Mexico,Electronics,Smartphone,SMB,E. Haddad,2,706.56,0.08,1502.73
+100665,2025-05-10,Europe,Spain,Software,Analytics Suite,Enterprise,A. Fischer,9,513.97,0.1,4812.13
+100162,2025-05-10,Latin America,Brazil,Furniture,Standing Desk,SMB,A. Fischer,8,524.45,0.07,4510.16
+100521,2025-05-10,Europe,Italy,Furniture,Office Chair,SMB,E. Haddad,4,217.71,0.09,916.0
+100133,2025-05-10,North America,United States,Office Supplies,Notebook,SMB,A. Fischer,7,7.91,0.02,62.72
+101088,2025-05-11,North America,United States,Furniture,Bookshelf,Enterprise,D. Rossi,13,150.02,0.15,1916.13
+100952,2025-05-12,Europe,United Kingdom,Software,CRM License,SMB,E. Haddad,6,366.44,0.02,2490.55
+100032,2025-05-12,Asia Pacific,Singapore,Electronics,Laptop,Enterprise,F. Larsson,4,997.28,0.02,4518.74
+101022,2025-05-12,North America,United States,Software,Analytics Suite,Enterprise,B. Nguyen,10,669.39,0.12,6808.89
+101074,2025-05-12,Asia Pacific,Australia,Software,Security Suite,Consumer,B. Nguyen,1,425.12,0.08,452.08
+101344,2025-05-13,North America,Canada,Electronics,Headphones,SMB,C. Okafor,3,130.45,0.06,425.21
+101260,2025-05-13,Asia Pacific,Australia,Software,Analytics Suite,SMB,A. Fischer,4,675.04,0.05,2965.02
+100024,2025-05-13,Asia Pacific,Singapore,Software,Security Suite,Consumer,D. Rossi,2,403.8,0.04,896.15
+101307,2025-05-13,Asia Pacific,Singapore,Electronics,Monitor,Enterprise,A. Fischer,6,231.36,0.19,1299.69
+101131,2025-05-13,Latin America,Argentina,Furniture,Office Chair,Enterprise,E. Haddad,7,232.61,0.22,1468.03
+100116,2025-05-15,Europe,Italy,Electronics,Monitor,SMB,B. Nguyen,6,236.95,0.08,1511.86
+100660,2025-05-15,North America,Mexico,Electronics,Smartphone,Enterprise,C. Okafor,16,714.26,0.0,13209.63
+101102,2025-05-15,North America,Canada,Software,Analytics Suite,Consumer,A. Fischer,3,629.4,0.11,1942.46
+100451,2025-05-16,North America,United States,Office Supplies,Pen Set,Consumer,C. Okafor,3,15.02,0.0,52.08
+101029,2025-05-16,Europe,Spain,Software,Analytics Suite,SMB,B. Nguyen,2,596.98,0.07,1283.47
+100784,2025-05-17,North America,Mexico,Furniture,Standing Desk,Enterprise,D. Rossi,5,468.11,0.14,2326.65
+100769,2025-05-17,North America,United States,Electronics,Laptop,SMB,D. Rossi,2,992.48,0.02,2248.5
+100974,2025-05-17,Asia Pacific,Australia,Electronics,Smartphone,SMB,C. Okafor,6,724.29,0.02,4922.71
+100800,2025-05-18,Europe,Italy,Office Supplies,Pen Set,Consumer,F. Larsson,3,14.04,0.02,47.71
+101026,2025-05-18,North America,United States,Electronics,Smartphone,Enterprise,B. Nguyen,8,663.02,0.08,5640.52
+101061,2025-05-18,Latin America,Argentina,Software,Analytics Suite,SMB,D. Rossi,5,656.37,0.02,3717.57
+100154,2025-05-19,North America,Mexico,Office Supplies,Stapler,Enterprise,E. Haddad,9,11.2,0.18,95.54
+100306,2025-05-20,Asia Pacific,Singapore,Furniture,Office Chair,Enterprise,A. Fischer,8,206.78,0.1,1720.9
+100346,2025-05-20,North America,Mexico,Electronics,Smartphone,SMB,D. Rossi,9,674.62,0.08,6456.6
+100786,2025-05-20,North America,Mexico,Furniture,Office Chair,Consumer,B. Nguyen,1,207.9,0.05,228.29
+101109,2025-05-20,North America,Mexico,Office Supplies,Pen Set,SMB,D. Rossi,1,16.46,0.05,18.07
+100632,2025-05-20,Europe,Spain,Electronics,Headphones,SMB,D. Rossi,3,133.53,0.06,435.25
+101167,2025-05-21,Asia Pacific,Australia,Electronics,Monitor,Consumer,B. Nguyen,3,241.43,0.0,837.2
+100260,2025-05-21,Asia Pacific,Australia,Software,Security Suite,Enterprise,A. Fischer,7,383.59,0.03,3010.59
+100480,2025-05-22,North America,United States,Office Supplies,Notebook,Consumer,C. Okafor,1,7.5,0.0,8.67
+100634,2025-05-22,North America,United States,Office Supplies,Pen Set,Enterprise,B. Nguyen,8,15.52,0.08,132.03
+100437,2025-05-23,North America,Canada,Office Supplies,Stapler,SMB,D. Rossi,3,11.37,0.01,39.03
+100810,2025-05-24,North America,Canada,Furniture,Office Chair,Consumer,A. Fischer,1,196.56,0.05,215.84
+100789,2025-05-24,North America,Mexico,Software,Security Suite,Enterprise,C. Okafor,8,426.53,0.08,3628.62
+101216,2025-05-25,Latin America,Argentina,Electronics,Smartphone,Enterprise,B. Nguyen,17,774.73,0.07,14157.83
+100324,2025-05-25,North America,Mexico,Office Supplies,Printer Paper,SMB,F. Larsson,2,27.07,0.12,55.07
+101146,2025-05-25,Latin America,Brazil,Electronics,Headphones,SMB,E. Haddad,3,125.11,0.0,433.84
+100426,2025-05-25,Asia Pacific,Australia,Furniture,Office Chair,SMB,A. Fischer,5,204.87,0.04,1136.67
+100663,2025-05-25,Asia Pacific,Japan,Office Supplies,Stapler,SMB,E. Haddad,3,12.4,0.04,41.28
+100444,2025-05-25,North America,United States,Electronics,Headphones,Enterprise,E. Haddad,9,131.33,0.19,1106.64
+100633,2025-05-26,Europe,Italy,Office Supplies,Printer Paper,SMB,,4,25.6,0.13,102.98
+100163,2025-05-26,North America,United States,Electronics,Monitor,Consumer,E. Haddad,2,243.04,0.05,533.76
+101339,2025-05-27,Europe,Germany,Electronics,Smartphone,Enterprise,C. Okafor,2,770.79,0.17,1478.97
+100706,2025-05-27,North America,Canada,Software,Analytics Suite,Enterprise,D. Rossi,8,611.35,0.11,5031.35
+100609,2025-05-27,Europe,Italy,Office Supplies,Pen Set,Consumer,A. Fischer,2,15.67,0.04,34.78
+100033,2025-05-27,Asia Pacific,Singapore,Office Supplies,Notebook,Enterprise,E. Haddad,9,7.6,0.09,71.95
+101148,2025-05-28,North America,United States,Electronics,Monitor,SMB,A. Fischer,4,218.56,0.0,1010.52
+100826,2025-05-28,North America,United States,Furniture,Bookshelf,Consumer,B. Nguyen,1,160.35,0.0,185.35
+100495,2025-05-29,Europe,Spain,Office Supplies,Pen Set,SMB,B. Nguyen,4,15.18,0.05,66.68
+101392,2025-05-29,Europe,France,Software,CRM License,SMB,D. Rossi,3,360.12,0.1,1123.89
+101118,2025-05-29,Europe,Germany,Electronics,Monitor,Enterprise,F. Larsson,7,255.23,0.15,1755.35
+100290,2025-05-29,North America,Mexico,Office Supplies,Pen Set,Enterprise,C. Okafor,6,14.16,0.07,91.33
+100794,2025-05-29,Asia Pacific,India,Electronics,Headphones,Enterprise,F. Larsson,12,124.11,0.11,1532.12
+100500,2025-05-30,North America,Mexico,Electronics,Headphones,SMB,E. Haddad,4,131.27,0.11,540.17
+100183,2025-05-30,Europe,United Kingdom,Office Supplies,Printer Paper,Consumer,C. Okafor,2,26.81,0.11,55.16
+100830,2025-05-30,North America,United States,Electronics,Monitor,SMB,D. Rossi,4,266.82,0.0,1233.65
+100868,2025-05-31,North America,Canada,Electronics,Smartphone,Consumer,D. Rossi,1,714.77,0.1,743.57
+100571,2025-06-01,Asia Pacific,Japan,Furniture,Bookshelf,SMB,F. Larsson,6,161.07,0.02,1032.33
+100352,2025-06-02,Europe,Germany,Furniture,Office Chair,SMB,D. Rossi,3,200.75,0.08,603.94
+100120,2025-06-03,Asia Pacific,Japan,Electronics,Monitor,Enterprise,B. Nguyen,10,240.36,0.11,2331.73
+100327,2025-06-03,North America,United States,Electronics,Laptop,SMB,D. Rossi,1,886.09,0.02,946.52
+100569,2025-06-03,Europe,Germany,Software,Analytics Suite,Consumer,A. Fischer,3,602.49,0.08,1812.53
+100524,2025-06-03,Europe,Germany,Software,Analytics Suite,SMB,F. Larsson,1,632.93,0.03,669.2
+100256,2025-06-04,Asia Pacific,Australia,Software,Analytics Suite,Consumer,E. Haddad,1,618.71,0.0,674.39
+101156,2025-06-05,Latin America,Chile,Electronics,Headphones,Consumer,B. Nguyen,1,132.58,0.0,144.51
+100744,2025-06-05,Europe,Germany,Electronics,Monitor,Consumer,C. Okafor,3,237.72,0.09,707.38
+100700,2025-06-06,Europe,Germany,Electronics,Headphones,SMB,C. Okafor,6,138.65,0.12,797.96
+100581,2025-06-06,North America,United States,Furniture,Standing Desk,SMB,D. Rossi,8,465.82,0.0,4061.95
+100321,2025-06-06,North America,Canada,Software,Security Suite,Enterprise,D. Rossi,12,358.34,0.08,4312.12
+101243,2025-06-06,Europe,United Kingdom,Software,Analytics Suite,Enterprise,F. Larsson,12,564.61,0.18,6055.78
+100020,2025-06-06,Europe,France,Electronics,Laptop,SMB,F. Larsson,1,929.01,0.08,931.61
+100411,2025-06-07,Latin America,Chile,Electronics,Laptop,Consumer,A. Fischer,4,912.67,0.0,3979.24
+100963,2025-06-07,North America,Mexico,Electronics,Smartphone,SMB,C. Okafor,4,753.47,0.07,3055.17
+101059,2025-06-07,North America,United States,Furniture,Office Chair,Enterprise,F. Larsson,13,194.08,0.12,2420.1
+101023,2025-06-07,Europe,Germany,Office Supplies,Notebook,Enterprise,B. Nguyen,9,7.26,0.07,66.24
+100557,2025-06-08,North America,United States,Software,CRM License,Consumer,E. Haddad,1,351.32,0.05,363.79
+100822,2025-06-08,Europe,France,Software,Security Suite,Consumer,D. Rossi,1,409.32,0.08,410.47
+100269,2025-06-08,North America,Mexico,Electronics,Smartphone,SMB,A. Fischer,2,710.0,0.09,1408.5
+100198,2025-06-08,North America,Mexico,Electronics,Monitor,Consumer,F. Larsson,2,209.77,0.07,425.29
+100846,2025-06-09,Asia Pacific,Singapore,Furniture,Office Chair,SMB,F. Larsson,3,213.55,0.01,691.33
+100738,2025-06-09,Asia Pacific,Australia,Software,CRM License,Enterprise,F. Larsson,9,345.04,0.16,2843.27
+101177,2025-06-09,Latin America,Brazil,Software,Analytics Suite,SMB,E. Haddad,3,620.55,0.14,1745.11
+101030,2025-06-11,North America,Canada,Furniture,Bookshelf,SMB,C. Okafor,3,154.78,0.0,506.13
+100716,2025-06-11,North America,United States,Electronics,Monitor,Enterprise,D. Rossi,12,252.52,0.15,2807.52
+100441,2025-06-12,Europe,Spain,Office Supplies,Stapler,SMB,C. Okafor,2,12.03,0.04,25.18
+101171,2025-06-12,North America,United States,Electronics,Monitor,Enterprise,D. Rossi,8,246.2,0.05,2039.52
+100994,2025-06-12,Latin America,Brazil,Electronics,Laptop,Enterprise,D. Rossi,5,882.99,0.14,4138.57
+100762,2025-06-12,Europe,Germany,Software,CRM License,Consumer,C. Okafor,1,339.07,0.07,343.72
+100397,2025-06-12,Latin America,Brazil,Software,Analytics Suite,Consumer,D. Rossi,4,587.43,0.0,2561.19
+100093,2025-06-13,Europe,Spain,Furniture,Office Chair,Consumer,A. Fischer,2,215.26,0.0,469.27
+100989,2025-06-13,Asia Pacific,Australia,Electronics,Smartphone,Consumer,B. Nguyen,2,716.69,0.04,1499.89
+100973,2025-06-13,North America,Mexico,Furniture,Bookshelf,SMB,C. Okafor,3,158.29,0.02,507.26
+101292,2025-06-13,Asia Pacific,Japan,Furniture,Office Chair,Enterprise,D. Rossi,11,198.19,0.06,2233.72
+100778,2025-06-14,Asia Pacific,Australia,Furniture,Standing Desk,SMB,B. Nguyen,5,544.78,0.08,2731.53
+101011,2025-06-14,North America,Mexico,Electronics,Laptop,Consumer,D. Rossi,6,1023.46,0.0,6693.43
+100691,2025-06-14,Europe,France,Electronics,Smartphone,SMB,B. Nguyen,5,697.86,0.06,3575.14
+100852,2025-06-15,North America,United States,Office Supplies,Pen Set,Enterprise,C. Okafor,7,17.18,0.13,114.04
+100107,2025-06-15,Latin America,Brazil,Software,CRM License,SMB,D. Rossi,9,281.51,0.04,2651.15
+100378,2025-06-15,Europe,France,Software,CRM License,Enterprise,E. Haddad,8,345.24,0.04,2890.07
+100704,2025-06-17,Asia Pacific,India,Furniture,Office Chair,SMB,C. Okafor,5,204.84,0.06,1049.4
+100458,2025-06-18,North America,Canada,Electronics,Monitor,Consumer,B. Nguyen,3,267.47,0.09,795.91
+100385,2025-06-18,Europe,France,Software,CRM License,SMB,B. Nguyen,5,363.7,0.1,1783.95
+101158,2025-06-18,North America,United States,Office Supplies,Notebook,SMB,A. Fischer,6,7.69,0.07,46.77
+100382,2025-06-19,Europe,Italy,Electronics,Laptop,SMB,E. Haddad,4,974.44,0.11,3781.22
+100885,2025-06-19,Asia Pacific,Singapore,Software,Analytics Suite,Enterprise,B. Nguyen,13,624.56,0.26,6549.01
+100118,2025-06-19,Europe,France,Furniture,Standing Desk,SMB,D. Rossi,3,453.21,0.14,1274.52
+101073,2025-06-20,Asia Pacific,Singapore,Electronics,Smartphone,SMB,E. Haddad,4,750.95,0.0,3274.14
+100598,2025-06-20,Europe,Spain,Office Supplies,Notebook,Consumer,E. Haddad,5,7.26,0.02,38.78
+100572,2025-06-20,North America,United States,Software,Security Suite,Enterprise,C. Okafor,5,352.52,0.06,1805.96
+100492,2025-06-21,Asia Pacific,Singapore,Software,CRM License,Enterprise,A. Fischer,6,334.83,0.18,1795.63
+100362,2025-06-23,North America,United States,Electronics,Laptop,SMB,E. Haddad,3,909.59,0.0,2974.36
+100759,2025-06-24,Europe,Italy,Electronics,Headphones,SMB,D. Rossi,5,129.54,0.12,621.27
+100320,2025-06-25,North America,United States,Electronics,Laptop,SMB,A. Fischer,1,874.1,0.0,952.77
+100594,2025-06-25,Europe,Spain,Office Supplies,Pen Set,SMB,A. Fischer,2,14.98,0.09,29.72
+100509,2025-06-25,Europe,Germany,Office Supplies,Pen Set,Consumer,B. Nguyen,1,15.35,0.0,16.73
+101139,2025-06-25,Asia Pacific,Singapore,Electronics,Smartphone,Enterprise,F. Larsson,5,674.04,0.17,3049.02
+100805,2025-06-26,North America,Canada,Office Supplies,Pen Set,Consumer,A. Fischer,2,14.54,0.08,29.16
+100870,2025-06-27,North America,United States,Office Supplies,Printer Paper,SMB,B. Nguyen,3,23.81,0.0,77.86
+100149,2025-06-29,Asia Pacific,Japan,Software,CRM License,SMB,B. Nguyen,6,303.22,0.02,1943.4
+100301,2025-06-29,North America,United States,Office Supplies,Notebook,SMB,F. Larsson,3,7.88,0.04,24.74
+100947,2025-06-30,North America,Canada,Electronics,Headphones,SMB,B. Nguyen,3,132.74,0.02,425.38
+101033,2025-06-30,North America,United States,Furniture,Bookshelf,Enterprise,B. Nguyen,4,161.69,0.03,683.82
+100944,2025-06-30,Europe,United Kingdom,Office Supplies,Notebook,SMB,B. Nguyen,1,8.51,0.07,8.63
+101028,2025-07-02,Europe,Italy,Furniture,Bookshelf,Consumer,F. Larsson,1,154.92,0.0,154.92
+100599,2025-07-02,North America,Mexico,Software,Security Suite,SMB,C. Okafor,4,433.87,0.05,1648.71
+100656,2025-07-02,Asia Pacific,Singapore,Furniture,Standing Desk,SMB,E. Haddad,6,532.51,0.07,2971.41
+100195,2025-07-03,Asia Pacific,Australia,Office Supplies,Stapler,SMB,E. Haddad,2,10.7,0.15,18.19
+100268,2025-07-04,Latin America,Chile,Software,CRM License,Consumer,E. Haddad,2,341.83,0.02,669.99
+100205,2025-07-04,Latin America,Brazil,Electronics,Laptop,Enterprise,A. Fischer,7,910.1,0.1,5733.63
+100313,2025-07-04,Europe,United Kingdom,Furniture,Office Chair,Enterprise,D. Rossi,6,194.68,0.08,1074.63
+100682,2025-07-04,Europe,United Kingdom,Software,Security Suite,SMB,A. Fischer,5,423.9,0.09,1928.74
+100122,2025-07-05,North America,United States,Furniture,Office Chair,SMB,E. Haddad,6,196.55,0.06,1108.54
+101218,2025-07-05,North America,Mexico,Office Supplies,Notebook,SMB,A. Fischer,3,8.09,0.08,22.33
+100401,2025-07-06,Europe,Spain,Electronics,Smartphone,SMB,F. Larsson,1,730.9,0.04,701.66
+101303,2025-07-07,North America,United States,Electronics,Monitor,Enterprise,D. Rossi,12,263.32,0.11,2812.26
+100309,2025-07-07,Europe,United Kingdom,Electronics,Headphones,SMB,C. Okafor,7,134.58,0.09,857.27
+100339,2025-07-07,Europe,Italy,Office Supplies,Stapler,Enterprise,C. Okafor,9,12.92,0.07,108.14
+100840,2025-07-07,Europe,Germany,Electronics,Laptop,SMB,B. Nguyen,3,959.39,0.08,2647.92
+100694,2025-07-08,Europe,Italy,Electronics,Smartphone,SMB,A. Fischer,2,707.77,0.15,1203.21
+101043,2025-07-08,Europe,France,Electronics,Headphones,Enterprise,A. Fischer,11,138.95,0.23,1176.91
+100342,2025-07-08,Europe,France,Electronics,Monitor,SMB,C. Okafor,2,233.91,0.1,421.04
+100643,2025-07-08,North America,Mexico,Electronics,Headphones,Enterprise,F. Larsson,13,130.99,0.19,1379.32
+100295,2025-07-08,Europe,United Kingdom,Furniture,Standing Desk,Enterprise,F. Larsson,11,533.29,0.12,5162.25
+100926,2025-07-10,Europe,Spain,Electronics,Laptop,Enterprise,E. Haddad,9,896.79,0.05,7667.55
+100351,2025-07-10,Asia Pacific,Australia,Electronics,Laptop,SMB,E. Haddad,3,910.76,0.08,2513.7
+100271,2025-07-10,Asia Pacific,Australia,Electronics,Laptop,Consumer,D. Rossi,3,946.57,0.03,2754.52
+101276,2025-07-12,Europe,Italy,Furniture,Standing Desk,SMB,C. Okafor,5,478.85,0.02,2346.36
+100832,2025-07-12,Europe,Spain,Software,Analytics Suite,Enterprise,A. Fischer,9,659.4,0.08,5459.83
+101299,2025-07-13,Asia Pacific,Japan,Electronics,Smartphone,Enterprise,E. Haddad,12,672.73,0.15,6861.85
+100479,2025-07-14,Asia Pacific,Singapore,Electronics,Smartphone,Enterprise,E. Haddad,11,714.55,0.12,6916.84
+101044,2025-07-14,Latin America,Chile,Office Supplies,Pen Set,SMB,E. Haddad,4,14.83,0.03,57.54
+101200,2025-07-15,Europe,Germany,Office Supplies,Notebook,Enterprise,A. Fischer,12,7.92,0.06,89.34
+101114,2025-07-15,Europe,Italy,Electronics,Monitor,SMB,D. Rossi,3,228.13,0.08,629.64
+100743,2025-07-15,North America,Mexico,Furniture,Bookshelf,Enterprise,B. Nguyen,10,168.06,0.03,1630.18
+100928,2025-07-16,North America,Canada,Electronics,Laptop,SMB,F. Larsson,6,930.03,0.2,4464.14
+100276,2025-07-16,North America,Mexico,Electronics,Laptop,SMB,E. Haddad,1,969.36,0.07,901.5
+100420,2025-07-16,North America,Canada,Electronics,Monitor,Enterprise,D. Rossi,5,256.73,0.08,1180.96
+100931,2025-07-17,Europe,Italy,Software,Analytics Suite,Enterprise,D. Rossi,10,599.35,0.09,5454.08
+101360,2025-07-17,Asia Pacific,Japan,Furniture,Standing Desk,Enterprise,E. Haddad,15,491.62,0.15,6268.16
+101075,2025-07-18,Europe,Spain,Software,Security Suite,SMB,B. Nguyen,3,369.8,0.07,1031.74
+101330,2025-07-18,North America,Mexico,Electronics,Smartphone,Enterprise,E. Haddad,4,720.73,0.02,2825.26
+100208,2025-07-18,North America,United States,Office Supplies,Stapler,Enterprise,D. Rossi,11,11.87,0.14,112.29
+101188,2025-07-19,North America,Mexico,Furniture,Office Chair,Consumer,,2,192.48,0.0,384.96
+100128,2025-07-19,North America,Canada,Electronics,Headphones,Consumer,C. Okafor,2,137.71,0.05,261.65
+100593,2025-07-20,Europe,France,Software,Security Suite,Consumer,E. Haddad,1,425.97,0.0,425.97
+101141,2025-07-22,Asia Pacific,Australia,Furniture,Office Chair,Enterprise,F. Larsson,10,212.65,0.16,1786.26
+100486,2025-07-22,Europe,Italy,Office Supplies,Printer Paper,Consumer,E. Haddad,2,28.85,0.02,56.55
+100068,2025-07-22,North America,United States,Electronics,Headphones,SMB,F. Larsson,4,137.56,0.04,528.23
+100266,2025-07-22,North America,Mexico,Electronics,Monitor,SMB,C. Okafor,4,247.08,0.16,830.19
+101096,2025-07-24,North America,Mexico,Office Supplies,Printer Paper,Consumer,B. Nguyen,3,23.54,0.04,67.8
+101254,2025-07-25,North America,Mexico,Furniture,Bookshelf,SMB,C. Okafor,4,171.64,0.14,590.44
+100206,2025-07-25,Asia Pacific,Singapore,Electronics,Headphones,SMB,D. Rossi,1,124.89,0.09,113.65
+101137,2025-07-25,North America,Canada,Office Supplies,Printer Paper,SMB,F. Larsson,2,21.81,0.13,37.95
+101282,2025-07-25,Asia Pacific,Singapore,Electronics,Smartphone,SMB,F. Larsson,6,685.15,0.07,3823.14
+100253,2025-07-25,Asia Pacific,Australia,Electronics,Monitor,SMB,A. Fischer,2,239.12,0.04,459.11
+100114,2025-07-26,North America,Canada,Office Supplies,Notebook,SMB,B. Nguyen,3,8.82,0.08,24.34
+100816,2025-07-27,Europe,United Kingdom,Office Supplies,Pen Set,SMB,D. Rossi,5,14.9,0.05,70.77
+100112,2025-07-27,Europe,Spain,Software,CRM License,SMB,C. Okafor,3,331.94,0.13,866.36
+100600,2025-07-28,Europe,Germany,Software,CRM License,SMB,A. Fischer,1,349.62,0.01,346.12
+100570,2025-07-28,Latin America,Brazil,Furniture,Bookshelf,SMB,C. Okafor,3,161.92,0.07,451.76
+100029,2025-07-28,Europe,Italy,Office Supplies,Printer Paper,SMB,E. Haddad,4,25.58,0.11,91.06
+100782,2025-07-30,Europe,France,Electronics,Smartphone,SMB,D. Rossi,5,678.4,0.04,3256.32
+100667,2025-07-30,North America,Mexico,Electronics,Smartphone,Enterprise,C. Okafor,11,699.41,0.11,6847.22
+100185,2025-07-30,North America,United States,Office Supplies,Notebook,Enterprise,A. Fischer,16,7.2,0.14,99.07
+100303,2025-07-31,Asia Pacific,Singapore,Electronics,Laptop,SMB,C. Okafor,8,932.65,0.02,7311.98
+100686,2025-07-31,North America,Canada,Electronics,Monitor,Enterprise,C. Okafor,7,220.84,0.12,1360.37
+100913,2025-07-31,Europe,United Kingdom,Electronics,Headphones,SMB,C. Okafor,6,118.11,0.09,644.88
+101242,2025-08-02,North America,United States,Furniture,Standing Desk,Consumer,A. Fischer,2,469.97,0.03,829.69
+100140,2025-08-02,North America,Mexico,Software,Analytics Suite,Consumer,F. Larsson,2,635.42,0.06,1087.08
+100139,2025-08-02,Europe,United Kingdom,Office Supplies,Pen Set,Enterprise,B. Nguyen,15,15.58,0.08,195.65
+100542,2025-08-04,Europe,Spain,Electronics,Monitor,SMB,C. Okafor,4,238.74,0.03,842.94
+100520,2025-08-04,Europe,United Kingdom,Furniture,Office Chair,SMB,B. Nguyen,3,214.48,0.02,573.82
+100507,2025-08-05,Europe,Italy,Electronics,Laptop,SMB,D. Rossi,6,986.58,0.07,5009.66
+101051,2025-08-05,North America,Canada,Office Supplies,Stapler,Enterprise,E. Haddad,11,13.47,0.1,121.35
+100082,2025-08-05,North America,Mexico,Electronics,Laptop,SMB,,5,949.74,0.11,3845.97
+101229,2025-08-05,Europe,Germany,Software,Security Suite,Enterprise,C. Okafor,8,432.59,0.15,2676.87
+100962,2025-08-06,Asia Pacific,Singapore,Furniture,Standing Desk,SMB,B. Nguyen,2,457.2,0.07,773.86
+100518,2025-08-06,Europe,France,Electronics,Smartphone,Enterprise,D. Rossi,11,796.4,0.05,7573.37
+101202,2025-08-08,North America,Canada,Electronics,Smartphone,SMB,A. Fischer,3,696.89,0.04,1826.41
+100417,2025-08-08,North America,United States,Office Supplies,Pen Set,Enterprise,F. Larsson,12,15.03,0.07,152.64
+100638,2025-08-08,Asia Pacific,Singapore,Furniture,Standing Desk,Enterprise,A. Fischer,2,465.2,0.1,762.0
+100620,2025-08-08,Europe,France,Electronics,Laptop,SMB,C. Okafor,5,876.02,0.03,3866.31
+100462,2025-08-10,Europe,Spain,Office Supplies,Stapler,SMB,E. Haddad,5,10.82,0.1,44.31
+100333,2025-08-11,North America,Canada,Furniture,Office Chair,SMB,D. Rossi,4,180.04,0.08,602.92
+100061,2025-08-11,North America,Mexico,Software,Security Suite,Enterprise,B. Nguyen,11,418.38,0.03,4062.34
+100374,2025-08-11,North America,United States,Office Supplies,Pen Set,Enterprise,B. Nguyen,5,14.06,0.1,57.58
+100477,2025-08-11,Asia Pacific,India,Office Supplies,Pen Set,Consumer,D. Rossi,2,14.33,0.04,25.04
+100740,2025-08-12,Asia Pacific,India,Office Supplies,Stapler,SMB,B. Nguyen,3,14.09,0.12,33.85
+101298,2025-08-12,North America,Mexico,Electronics,Headphones,Enterprise,A. Fischer,7,134.85,0.17,712.97
+101108,2025-08-13,Asia Pacific,Australia,Office Supplies,Stapler,Enterprise,B. Nguyen,9,13.13,0.16,90.33
+100617,2025-08-14,Latin America,Argentina,Electronics,Monitor,Enterprise,D. Rossi,12,245.39,0.16,2250.91
+100956,2025-08-14,Asia Pacific,Japan,Software,Analytics Suite,Enterprise,D. Rossi,6,593.75,0.03,3144.62
+100725,2025-08-14,North America,Canada,Electronics,Smartphone,Consumer,D. Rossi,5,719.38,0.0,3273.18
+100017,2025-08-14,Europe,France,Software,Analytics Suite,Enterprise,F. Larsson,5,713.65,0.21,2565.21
+101368,2025-08-15,Asia Pacific,India,Electronics,Monitor,SMB,F. Larsson,5,251.58,0.03,1110.35
+100098,2025-08-16,North America,Mexico,Furniture,Standing Desk,SMB,C. Okafor,5,488.7,0.02,2179.11
+101117,2025-08-16,North America,United States,Electronics,Smartphone,Consumer,C. Okafor,3,749.85,0.03,1985.68
+100160,2025-08-16,Europe,Spain,Office Supplies,Notebook,Enterprise,A. Fischer,4,8.03,0.06,27.48
+101366,2025-08-17,North America,Mexico,Office Supplies,Stapler,SMB,D. Rossi,2,10.7,0.09,17.72
+100997,2025-08-17,North America,United States,Software,CRM License,SMB,A. Fischer,2,344.0,0.04,601.04
+101375,2025-08-17,Asia Pacific,Japan,Office Supplies,Printer Paper,Consumer,D. Rossi,2,25.94,0.0,47.21
+101083,2025-08-18,Latin America,Chile,Office Supplies,Stapler,Enterprise,C. Okafor,6,11.78,0.07,59.82
+100836,2025-08-18,North America,Canada,Software,CRM License,Consumer,B. Nguyen,3,371.74,0.07,943.81
+100412,2025-08-19,North America,United States,Office Supplies,Stapler,Enterprise,F. Larsson,6,12.57,0.16,57.65
+100434,2025-08-19,North America,Mexico,Software,CRM License,SMB,C. Okafor,4,283.45,0.11,918.26
+101175,2025-08-20,North America,Canada,Electronics,Monitor,SMB,F. Larsson,5,249.75,0.16,954.54
+100969,2025-08-20,North America,United States,Electronics,Laptop,Enterprise,C. Okafor,11,1065.73,0.16,8961.08
+101013,2025-08-21,North America,Mexico,Electronics,Monitor,SMB,C. Okafor,6,253.23,0.04,1327.33
+100030,2025-08-22,Europe,Spain,Office Supplies,Pen Set,SMB,F. Larsson,6,17.09,0.05,88.65
+100190,2025-08-22,Asia Pacific,India,Electronics,Smartphone,Consumer,D. Rossi,3,640.41,0.0,1748.32
+100159,2025-08-22,North America,Mexico,Electronics,Monitor,Consumer,F. Larsson,4,243.93,0.05,843.51
+100015,2025-08-22,North America,Mexico,Office Supplies,Notebook,Enterprise,A. Fischer,7,7.57,0.15,40.99
+100125,2025-08-23,Europe,France,Electronics,Headphones,Consumer,A. Fischer,4,133.92,0.0,487.47
+100812,2025-08-23,Asia Pacific,Japan,Electronics,Laptop,Enterprise,A. Fischer,10,874.41,0.15,6763.56
+101168,2025-08-25,Europe,France,Office Supplies,Printer Paper,SMB,F. Larsson,5,26.51,0.07,112.18
+101154,2025-08-25,North America,United States,Electronics,Laptop,SMB,B. Nguyen,3,866.27,0.13,2057.48
+100904,2025-08-25,Europe,Germany,Office Supplies,Pen Set,Enterprise,D. Rossi,5,15.2,0.11,61.55
+101174,2025-08-27,Asia Pacific,Australia,Electronics,Monitor,Consumer,A. Fischer,1,252.91,0.04,220.94
+100824,2025-08-27,Asia Pacific,Singapore,Electronics,Monitor,SMB,D. Rossi,7,251.4,0.12,1409.25
+101078,2025-08-27,Asia Pacific,India,Electronics,Laptop,SMB,D. Rossi,2,902.95,0.08,1511.9
+100553,2025-08-27,Europe,France,Electronics,Smartphone,SMB,D. Rossi,1,753.04,0.03,664.71
+100709,2025-08-28,Europe,Germany,Software,Security Suite,SMB,C. Okafor,3,378.78,0.0,1034.07
+100608,2025-08-28,Europe,United Kingdom,Electronics,Monitor,Enterprise,F. Larsson,12,252.93,0.08,2541.04
+101249,2025-08-29,Asia Pacific,Australia,Electronics,Monitor,Consumer,C. Okafor,3,210.66,0.01,569.35
+100516,2025-08-29,North America,Mexico,Electronics,Headphones,SMB,D. Rossi,5,143.92,0.11,582.8
+100168,2025-08-29,Latin America,Chile,Electronics,Laptop,Consumer,D. Rossi,1,888.58,0.02,792.44
+100590,2025-08-29,North America,United States,Office Supplies,Stapler,Consumer,D. Rossi,1,11.18,0.07,9.46
+100823,2025-08-29,North America,Canada,Software,Security Suite,Consumer,A. Fischer,3,396.79,0.0,1083.24
+100452,2025-08-30,North America,Mexico,Office Supplies,Notebook,SMB,E. Haddad,6,8.95,0.1,43.98
+100803,2025-08-30,North America,Mexico,Electronics,Headphones,Consumer,C. Okafor,3,124.77,0.0,340.62
+100174,2025-08-30,Asia Pacific,India,Electronics,Laptop,SMB,F. Larsson,5,964.06,0.11,3903.96
+101219,2025-08-30,North America,Mexico,Electronics,Headphones,Enterprise,C. Okafor,9,130.39,0.14,918.39
+100026,2025-08-30,North America,Canada,Office Supplies,Pen Set,Enterprise,E. Haddad,14,16.05,0.16,171.76
+101064,2025-08-31,Europe,Germany,Electronics,Laptop,Consumer,C. Okafor,2,936.41,0.03,1653.14
+101221,2025-09-01,Latin America,Chile,Office Supplies,Printer Paper,Enterprise,E. Haddad,8,24.16,0.11,145.2
+100530,2025-09-03,Europe,Italy,Software,CRM License,Enterprise,B. Nguyen,13,331.49,0.1,3273.85
+100213,2025-09-03,Latin America,Chile,Office Supplies,Pen Set,Enterprise,F. Larsson,14,15.5,0.1,164.86
+100592,2025-09-03,North America,Mexico,Software,Analytics Suite,SMB,D. Rossi,4,571.39,0.07,1794.23
+101172,2025-09-04,North America,Canada,Electronics,Smartphone,SMB,B. Nguyen,6,767.6,0.0,3887.66
+100839,2025-09-04,Asia Pacific,India,Office Supplies,Notebook,Consumer,F. Larsson,2,7.57,0.08,11.76
+100027,2025-09-05,Asia Pacific,India,Software,CRM License,Enterprise,F. Larsson,12,346.21,0.12,3086.07
+100615,2025-09-06,North America,Mexico,Electronics,Smartphone,SMB,B. Nguyen,5,784.76,0.0,3312.14
+101259,2025-09-06,North America,Mexico,Office Supplies,Notebook,Enterprise,B. Nguyen,5,7.79,0.07,30.58
+100232,2025-09-06,North America,United States,Software,CRM License,Enterprise,A. Fischer,13,329.96,0.13,3150.11
+100798,2025-09-06,Europe,Germany,Electronics,Smartphone,SMB,C. Okafor,7,695.86,0.16,3453.83
+100199,2025-09-06,Asia Pacific,India,Software,Security Suite,Consumer,F. Larsson,2,414.95,0.05,665.5
+100703,2025-09-07,Europe,Spain,Electronics,Smartphone,Enterprise,D. Rossi,8,769.52,0.0,5196.51
+100450,2025-09-08,Latin America,Chile,Electronics,Smartphone,SMB,E. Haddad,8,699.81,0.08,4347.7
+101323,2025-09-08,North America,Canada,Office Supplies,Pen Set,Enterprise,F. Larsson,11,12.88,0.06,112.42
+101325,2025-09-08,Asia Pacific,Australia,Electronics,Laptop,SMB,E. Haddad,3,928.88,0.0,2352.25
+101099,2025-09-09,North America,United States,Electronics,Smartphone,Consumer,A. Fischer,3,742.4,0.0,1880.01
+100562,2025-09-09,North America,Canada,Furniture,Standing Desk,SMB,C. Okafor,5,450.13,0.12,1671.83
+100722,2025-09-10,Latin America,Argentina,Software,Security Suite,Enterprise,B. Nguyen,9,450.1,0.14,2940.71
+100601,2025-09-10,Europe,United Kingdom,Office Supplies,Printer Paper,SMB,B. Nguyen,3,26.49,0.07,62.39
+100587,2025-09-10,Asia Pacific,Australia,Office Supplies,Notebook,Enterprise,A. Fischer,10,8.3,0.09,63.76
+100733,2025-09-10,North America,Canada,Office Supplies,Pen Set,Enterprise,C. Okafor,2,14.63,0.12,21.73
+100640,2025-09-11,Europe,Germany,Office Supplies,Notebook,SMB,E. Haddad,6,7.89,0.07,37.16
+100525,2025-09-11,Latin America,Argentina,Office Supplies,Notebook,Enterprise,E. Haddad,6,8.59,0.21,34.37
+100548,2025-09-11,Europe,Italy,Office Supplies,Printer Paper,SMB,A. Fischer,3,25.2,0.15,54.24
+100147,2025-09-13,North America,Mexico,Software,Security Suite,Consumer,B. Nguyen,1,338.24,0.09,259.82
+101335,2025-09-13,North America,Mexico,Office Supplies,Notebook,SMB,A. Fischer,7,8.19,0.14,41.62
+101289,2025-09-14,Europe,France,Electronics,Smartphone,Enterprise,E. Haddad,8,731.43,0.1,4445.36
+101198,2025-09-14,North America,Mexico,Office Supplies,Stapler,SMB,F. Larsson,3,11.79,0.1,26.87
+100281,2025-09-15,Latin America,Argentina,Furniture,Standing Desk,Enterprise,E. Haddad,8,453.88,0.12,2697.21
+100512,2025-09-15,Asia Pacific,Singapore,Office Supplies,Pen Set,Enterprise,E. Haddad,11,17.19,0.1,143.65
+101308,2025-09-16,North America,Canada,Electronics,Laptop,Consumer,A. Fischer,1,918.9,0.08,713.61
+100745,2025-09-16,North America,United States,Furniture,Standing Desk,Enterprise,A. Fischer,2,561.38,0.1,852.97
+100985,2025-09-16,Latin America,Chile,Electronics,Monitor,Consumer,C. Okafor,1,229.48,0.12,170.46
+100091,2025-09-16,Europe,Germany,Electronics,Smartphone,Consumer,F. Larsson,2,704.31,0.02,1165.26
+101256,2025-09-17,Asia Pacific,Japan,Electronics,Smartphone,SMB,C. Okafor,4,729.51,0.02,2413.9
+101232,2025-09-18,Europe,Italy,Office Supplies,Notebook,Consumer,D. Rossi,1,8.28,0.01,6.92
+100097,2025-09-18,Latin America,Brazil,Office Supplies,Stapler,Enterprise,E. Haddad,9,12.92,0.07,91.28
+100503,2025-09-18,Asia Pacific,India,Electronics,Monitor,SMB,C. Okafor,3,235.42,0.0,596.16
+100998,2025-09-18,North America,Canada,Office Supplies,Notebook,Enterprise,B. Nguyen,6,7.87,0.09,36.27
+101332,2025-09-18,North America,Canada,Furniture,Standing Desk,Enterprise,A. Fischer,7,514.57,0.16,2554.02
+100034,2025-09-19,Asia Pacific,Japan,Electronics,Laptop,SMB,D. Rossi,3,942.53,0.0,2386.81
+100627,2025-09-20,Latin America,Argentina,Electronics,Smartphone,SMB,F. Larsson,3,702.22,0.03,1724.92
+100071,2025-09-20,Asia Pacific,Australia,Software,Security Suite,Consumer,D. Rossi,1,417.11,0.09,320.4
+101009,2025-09-21,North America,United States,Electronics,Laptop,Consumer,D. Rossi,3,908.35,0.03,2231.25
+100699,2025-09-21,North America,Mexico,Office Supplies,Stapler,SMB,E. Haddad,3,11.32,0.06,26.95
+100747,2025-09-23,North America,Mexico,Electronics,Laptop,Enterprise,C. Okafor,11,1002.7,0.06,8751.72
+100466,2025-09-25,Europe,France,Electronics,Headphones,SMB,F. Larsson,4,121.79,0.05,390.66
+100464,2025-09-25,Europe,France,Furniture,Standing Desk,SMB,B. Nguyen,4,461.69,0.04,1496.52
+101383,2025-09-25,Europe,United Kingdom,Office Supplies,Notebook,Enterprise,B. Nguyen,7,7.25,0.08,39.41
+101178,2025-09-26,North America,Canada,Furniture,Bookshelf,SMB,D. Rossi,2,144.25,0.14,209.43
+100556,2025-09-27,North America,Mexico,Office Supplies,Pen Set,Enterprise,E. Haddad,7,14.72,0.2,69.58
+100063,2025-09-27,Europe,Germany,Electronics,Headphones,Enterprise,D. Rossi,9,133.05,0.03,980.46
+100871,2025-09-27,Asia Pacific,Japan,Furniture,Standing Desk,Consumer,B. Nguyen,3,448.23,0.08,1044.27
+100802,2025-09-27,Europe,Germany,Electronics,Smartphone,SMB,,4,672.06,0.11,2019.57
+101291,2025-09-28,Asia Pacific,India,Electronics,Laptop,SMB,C. Okafor,3,956.37,0.08,2228.11
+100055,2025-09-28,Asia Pacific,India,Furniture,Bookshelf,SMB,F. Larsson,6,155.6,0.04,756.54
+101055,2025-09-29,Latin America,Argentina,Furniture,Bookshelf,SMB,E. Haddad,6,170.57,0.09,786.13
+101281,2025-09-29,North America,Canada,Office Supplies,Notebook,Consumer,E. Haddad,2,8.05,0.04,13.05
+101271,2025-09-30,North America,Mexico,Furniture,Bookshelf,Enterprise,E. Haddad,11,155.5,0.14,1241.72
+100490,2025-10-01,Europe,United Kingdom,Electronics,Laptop,SMB,A. Fischer,1,951.98,0.03,757.2
+101241,2025-10-01,North America,Canada,Electronics,Smartphone,SMB,B. Nguyen,3,684.54,0.12,1481.89

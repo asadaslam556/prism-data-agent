@@ -1,0 +1,22 @@
+[project]
+name = "ai-data-analyst-agent-backend"
+version = "1.5.0"
+description = "Agentic AI data analyst: natural-language questions to SQL, pandas and charts, orchestrated with LangGraph on a local Ollama model."
+readme = "README.md"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B"]
+ignore = ["E501"]

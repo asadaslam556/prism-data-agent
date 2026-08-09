@@ -1,0 +1,60 @@
+# Security
+
+## What this app does that's risky
+
+It executes SQL and Python written by a language model. That's the core
+feature and the core risk, and it's handled in layers:
+
+1. **Static checks first.** SQL must be a single SELECT/WITH statement with no
+   write/DDL keywords (token-level check, then a LIMIT gets appended). Python is
+   AST-walked: no imports, no dunder access, no eval/exec/open/getattr, and no
+   pandas/numpy calls that reach the filesystem. That last one is the easiest to
+   overlook -- pandas is a filesystem library, and `df.to_csv("/etc/cron.d/x")`
+   is an ordinary attribute call on a name the snippet is supposed to have. The
+   readers and writers (`to_csv`, `read_pickle`, `np.save`, `savefig`, ...) are
+   named and blocked; anything that only moves data around in memory is not.
+2. **Constrained execution.** Approved snippets run in a namespace containing
+   only `df`, `pd`, `np` (plus `plt` for charts) and about twenty allow-listed
+   builtins, against a copy of the data, with stdout captured. The one exception
+   is a narrow `__import__` that returns already-loaded numpy/pandas internals
+   and refuses everything else -- numpy imports lazily partway through ordinary
+   calls, and without it `df['x'].values.mean()` fails.
+3. **A watchdog on execution time.** Nothing in the AST guard rejects
+   `while True:`, and in CPython a tight loop doesn't just hang its own request,
+   it starves every other thread of the GIL. Snippets are stopped once they pass
+   `SANDBOX_TIMEOUT_SECONDS`.
+4. **A bounded loop.** The planner has a hard step cap shared across all parallel
+   branches, so a stuck agent ends with a best-effort answer instead of running
+   forever, and the verifier can only send work back a fixed number of times.
+5. **Server limits.** Upload size cap, session cap with LRU eviction, session
+   TTL, request ids on every response.
+
+## What it deliberately does not claim
+
+This is hardening for a local, single-user tool. CPython cannot be made fully
+safe from inside the process, and I'd rather name the gaps than imply there
+aren't any:
+
+- **The watchdog can't interrupt a single long call in C.** It checks the clock
+  between Python lines, so a runaway loop gets stopped but one enormous
+  allocation (`[0] * 10**10`) can still hurt before it returns.
+- **There is no memory cap.** Same reason -- limiting it properly means limiting
+  the process, which would take the server down with it.
+- **The denylist is a denylist.** It names the pandas/numpy escape routes I found
+  by going looking for them. A method I haven't thought of is a method that
+  isn't on the list.
+- **`/api/connect` will dial any URL you give it.** That is the feature, but on a
+  network with internal services it is also a request-forgery vector.
+- **There is no authentication or rate limiting.** Anyone who can reach the port
+  can run queries.
+
+For untrusted or multi-tenant deployment, run the execution step in a separate
+process with OS-level resource limits (or a container sandbox), connect databases
+with read-only credentials, and put the API behind auth and a rate limiter. None
+of that is included here because it depends entirely on where you deploy.
+
+## Reporting
+
+If you find a way through the guardrails, please open a GitHub issue with a
+minimal reproduction (or email the maintainer if the repo lists one). Include
+the generated code that got through and what it managed to do.
