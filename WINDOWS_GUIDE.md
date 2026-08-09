@@ -26,8 +26,8 @@ or **Docker** (one command, best for a clean demo). Start with manual.
 ### Step 1. Get the code and the model
 
 ```powershell
-git clone https://github.com/<your-username>/prism.git
-cd prism
+git clone https://github.com/asadaslam556/prism-data-agent.git
+cd prism-data-agent
 ollama pull qwen2.5
 ```
 
@@ -79,7 +79,7 @@ The `model` field confirms which model the backend will actually use.
 Open a **second** PowerShell window. Leave the backend running in the first.
 
 ```powershell
-cd prism\frontend
+cd prism-data-agent\frontend
 npm install
 npm run dev
 ```

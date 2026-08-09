@@ -127,7 +127,7 @@ The project was built against a small local model first, which forced a useful d
 ## Project structure
 
 ```
-prism/
+prism-data-agent/
 ├── backend/
 │   ├── app/
 │   │   ├── agent/                # LangGraph orchestration

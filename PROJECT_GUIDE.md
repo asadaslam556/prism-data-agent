@@ -283,12 +283,12 @@ Kept here deliberately, they're the most instructive part of the build.
 ## 10. Publishing to GitHub
 
 ```bash
-cd prism
+cd prism-data-agent
 git init
 git add .
 git commit -m "Prism: LangGraph + FastAPI + React, local-first via Ollama"
 git branch -M main
-git remote add origin https://github.com/<your-username>/prism.git
+git remote add origin https://github.com/asadaslam556/prism-data-agent.git
 git push -u origin main
 ```
 
