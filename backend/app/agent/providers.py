@@ -177,11 +177,14 @@ def _openai(model: str):
     if settings.llm_top_p is not None:
         kwargs["top_p"] = settings.llm_top_p
     # Provider-specific switches the OpenAI schema has no field for -- thinking
-    # mode being the one that matters here. model_kwargs is passed straight
-    # through to the underlying client call.
+    # mode being the one that matters here. extra_body is a declared ChatOpenAI
+    # field and the documented route for non-standard, provider-specific keys.
+    # model_kwargs is for standard OpenAI parameters ChatOpenAI has no field
+    # for, and its contents are flattened into the top level of the request --
+    # a different thing, and not what this needs.
     extra = settings.extra_body
     if extra:
-        kwargs["model_kwargs"] = {"extra_body": extra}
+        kwargs["extra_body"] = extra
     # Same rule as the anthropic builder: only pass base_url when it has a
     # value, so the client keeps its own default when it doesn't.
     base_url = settings.openai_base_url or os.environ.get("OPENAI_BASE_URL")

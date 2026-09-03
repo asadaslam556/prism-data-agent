@@ -55,10 +55,12 @@ class Settings(BaseSettings):
     # Raw JSON merged into the request body, for provider-specific switches the
     # OpenAI schema has no field for. Two shapes worth knowing, because they are
     # not interchangeable:
-    #   DeepSeek direct : {"thinking": {"type": "enabled"}}
+    #   DeepSeek direct : {"thinking": {"type": "disabled"}}   ("enabled" turns it on)
     #   NVIDIA NIM      : {"chat_template_kwargs": {"thinking": true}}
-    # Leave blank for non-thinking mode, which is the faster default and the one
-    # this agent is built around.
+    # Blank means "send nothing" -- which is NOT the same as non-thinking mode.
+    # DeepSeek's V4 models think by DEFAULT, and thinking mode rejects the
+    # forced tool choice this agent's structured calls rely on, so on DeepSeek
+    # a blank value means every question fails. See backend/.env.example.
     llm_extra_body: str | None = None
 
     # --- Ollama ---------------------------------------------------------------

@@ -19,11 +19,11 @@ sqlalchemy>=2.0
 sqlparse>=0.5                  # used by the SQL guardrail to check statements
 
 # --- Agent / LLM ---
-langgraph>=1.0                 # the agent graph itself
-langchain-core>=0.3            # message types shared by every provider
+langgraph==1.2.11              # the agent graph itself
+langchain-core==1.6.1          # message types shared by every provider
 langchain-ollama>=0.2          # LLM_PROVIDER=ollama  (local, default)
 langchain-anthropic>=0.3       # LLM_PROVIDER=anthropic  (Claude, incl. gateways)
-langchain-openai>=0.3          # LLM_PROVIDER=openai  (OpenAI + any compatible endpoint)
+langchain-openai==1.6.0        # LLM_PROVIDER=openai  (OpenAI + any compatible endpoint)
 
 # --- Config ---
 pydantic>=2.7
