@@ -15,15 +15,18 @@ be matched to the stack trace in the server log.
 """
 from __future__ import annotations
 
+import base64
 import io
 import json
+import os
+import secrets
 import time
 import uuid
 
 import pandas as pd
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
 from app import __version__, config
 from app.agent import graph, providers
@@ -71,6 +74,57 @@ async def request_context(request: Request, call_next):
             request.method, request.url.path, response.status_code, elapsed_ms, rid,
         )
     return response
+
+
+# --------------------------------------------------------- access control
+# Set APP_USERNAME and APP_PASSWORD to put the whole app behind a browser login
+# prompt. Both blank -- the default -- means no auth at all, which is what you
+# want on a laptop. Set them on anything that has a public URL: this app has no
+# other access control and your API key pays for every question asked.
+# Through settings, not os.environ directly. pydantic-settings reads .env
+# into the Settings object without touching the real environment, so
+# os.environ.get here saw nothing when the values came from a .env file
+# and the login was silently skipped. Settings covers both paths.
+_AUTH_USER = (config.settings.app_username or os.environ.get("APP_USERNAME", "")).strip()
+_AUTH_PASS = (config.settings.app_password or os.environ.get("APP_PASSWORD", "")).strip()
+_AUTH_ON = bool(_AUTH_USER and _AUTH_PASS)
+
+# Hosting platforms ping this to decide whether the container is alive and
+# can't send credentials, so it stays open. It leaks nothing but the model name.
+_AUTH_EXEMPT = frozenset({"/api/health"})
+
+
+def _credentials_ok(header: str | None) -> bool:
+    if not header or not header.lower().startswith("basic "):
+        return False
+    try:
+        decoded = base64.b64decode(header.split(" ", 1)[1]).decode("utf-8")
+    except Exception:
+        return False
+    user, _, password = decoded.partition(":")
+    # Both halves compared every time. Short-circuiting on the username would
+    # let an attacker learn it from how quickly the request comes back.
+    user_ok = secrets.compare_digest(user, _AUTH_USER)
+    pass_ok = secrets.compare_digest(password, _AUTH_PASS)
+    return user_ok and pass_ok
+
+
+@app.middleware("http")
+async def require_login(request: Request, call_next):
+    # Registered unconditionally and the switch checked per request, rather
+    # than wrapping the registration in `if _AUTH_ON`. Middleware can't be
+    # removed once the app object exists, so registering conditionally means a
+    # stray APP_USERNAME in the environment turns every test into a 401 with
+    # no way to switch it back off.
+    if not _AUTH_ON or request.url.path in _AUTH_EXEMPT:
+        return await call_next(request)
+    if not _credentials_ok(request.headers.get("authorization")):
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Authentication required."},
+            headers={"WWW-Authenticate": 'Basic realm="Prism"'},
+        )
+    return await call_next(request)
 
 
 def _dataset_info(session: session_store.DatasetSession) -> DatasetInfo:
@@ -150,6 +204,12 @@ async def upload(file: UploadFile = File(...)) -> DatasetInfo:  # noqa: B008 (Fa
 
 @app.post("/api/connect", response_model=DatasetInfo)
 def connect(request: ConnectDBRequest) -> DatasetInfo:
+    # This endpoint dials whatever SQLAlchemy URL it is handed. That is a
+    # reasonable thing to allow on your own machine and a bad thing to expose
+    # to a network, so a deployment can switch it off (ENABLE_DB_CONNECT=false)
+    # and keep sample + CSV upload.
+    if not config.settings.enable_db_connect:
+        raise HTTPException(403, "Database connections are disabled on this deployment.")
     try:
         session = session_store.create_from_url(request.db_url, request.table)
     except Exception as exc:
@@ -188,3 +248,29 @@ def query_stream(request: QueryRequest) -> StreamingResponse:
             yield f"event: error\ndata: {json.dumps({'message': str(exc)})}\n\n"
 
     return StreamingResponse(event_source(), media_type="text/event-stream")
+
+
+# --------------------------------------------------------------- frontend
+# The Docker image builds the React app and drops it next to the package, so
+# one container serves both and there is no CORS to configure. Running locally
+# the folder isn't there -- Vite serves the app and proxies /api back here --
+# and this whole block is skipped.
+_DIST = config.settings.frontend_dist_path
+
+if _DIST.is_dir():
+    _DIST_ROOT = _DIST.resolve()
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def spa(full_path: str) -> FileResponse:
+        """Serve a built asset, or index.html so a hard refresh still works."""
+        # Registered after every real route, so anything still landing here
+        # under /api is a genuine 404 rather than a page request.
+        if full_path.startswith("api/"):
+            raise HTTPException(404, "Not found")
+        if full_path:
+            candidate = (_DIST_ROOT / full_path).resolve()
+            # Resolve first, then confirm the result is still inside dist --
+            # otherwise ../../etc/passwd walks straight out of it.
+            if candidate.is_file() and _DIST_ROOT in candidate.parents:
+                return FileResponse(candidate)
+        return FileResponse(_DIST_ROOT / "index.html")

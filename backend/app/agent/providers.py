@@ -174,6 +174,14 @@ def _openai(model: str):
     }
     if settings.llm_temperature is not None:
         kwargs["temperature"] = settings.llm_temperature
+    if settings.llm_top_p is not None:
+        kwargs["top_p"] = settings.llm_top_p
+    # Provider-specific switches the OpenAI schema has no field for -- thinking
+    # mode being the one that matters here. model_kwargs is passed straight
+    # through to the underlying client call.
+    extra = settings.extra_body
+    if extra:
+        kwargs["model_kwargs"] = {"extra_body": extra}
     # Same rule as the anthropic builder: only pass base_url when it has a
     # value, so the client keeps its own default when it doesn't.
     base_url = settings.openai_base_url or os.environ.get("OPENAI_BASE_URL")

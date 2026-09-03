@@ -96,3 +96,66 @@ def test_provider_outage_reaches_the_client_as_a_normal_response(monkeypatch):
     assert response.status_code == 200  # not a 500 -- it's an expected condition
     body = response.json()
     assert body["error"] and "ollama" in body["error"]
+
+
+# ------------------------------------------------------------ browser login
+
+# APP_USERNAME / APP_PASSWORD used to be read straight from os.environ, so
+# setting them in backend/.env did nothing at all: pydantic-settings loads a
+# .env into the Settings object without touching the real environment. The
+# login looked configured and was silently off. They go through settings now.
+
+def test_auth_credentials_can_come_from_the_env_file():
+    from app.config import Settings
+
+    loaded = Settings(app_username="demo", app_password="secret123")
+    assert loaded.app_username == "demo"
+    assert loaded.app_password == "secret123"
+
+
+def test_auth_is_off_when_credentials_are_blank():
+    from app.config import Settings
+
+    blank = Settings(app_username="", app_password="")
+    assert not (blank.app_username and blank.app_password)
+
+
+@pytest.mark.parametrize(
+    "user,password,expected",
+    [
+        ("demo", "secret123", True),
+        ("demo", "wrong", False),
+        ("wrong", "secret123", False),
+        ("", "", False),
+    ],
+)
+def test_credential_comparison(monkeypatch, user, password, expected):
+    import base64
+
+    from app import main
+
+    monkeypatch.setattr(main, "_AUTH_USER", "demo")
+    monkeypatch.setattr(main, "_AUTH_PASS", "secret123")
+    header = "Basic " + base64.b64encode(f"{user}:{password}".encode()).decode()
+    assert main._credentials_ok(header) is expected
+
+
+def test_malformed_auth_headers_are_rejected(monkeypatch):
+    from app import main
+
+    monkeypatch.setattr(main, "_AUTH_USER", "demo")
+    monkeypatch.setattr(main, "_AUTH_PASS", "secret123")
+    for bad in (None, "", "Bearer abc", "Basic !!!not-base64!!!", "Basic"):
+        assert main._credentials_ok(bad) is False
+
+
+def test_a_password_containing_a_colon_still_works(monkeypatch):
+    """partition() splits on the first colon, so the password keeps the rest."""
+    import base64
+
+    from app import main
+
+    monkeypatch.setattr(main, "_AUTH_USER", "demo")
+    monkeypatch.setattr(main, "_AUTH_PASS", "pa:ss:word")
+    header = "Basic " + base64.b64encode(b"demo:pa:ss:word").decode()
+    assert main._credentials_ok(header) is True

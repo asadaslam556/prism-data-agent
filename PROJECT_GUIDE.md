@@ -10,7 +10,7 @@ A full-stack, fully local "AI data analyst". You bring data (CSV upload, SQL dat
 
 Everything runs on your machine: the LLM (via Ollama), the database, the code sandbox. No API keys, no data leaves your computer.
 
-**Stack:** FastAPI (Python) backend · LangGraph parallel agent graph · pluggable LLM providers (Ollama default; Claude/OpenAI via one env var) · React + Vite frontend · SQLite/SQLAlchemy data layer · matplotlib charts · pytest (168 tests) · Docker Compose · GitHub Actions CI.
+**Stack:** FastAPI (Python) backend · LangGraph parallel agent graph · pluggable LLM providers (Ollama default; Claude/OpenAI via one env var) · React + Vite frontend · SQLite/SQLAlchemy data layer · matplotlib charts · pytest (176 tests) · Docker Compose · GitHub Actions CI.
 
 ---
 
@@ -56,7 +56,7 @@ Everything runs on your machine: the LLM (via Ollama), the database, the code sa
 | `main.py` | The FastAPI app: upload/connect/sample endpoints, sync + **SSE streaming** query endpoints, request ids on every response, timing logs, an upload size cap, and a JSON 500 handler that echoes the request id. |
 | `schemas.py` / `config.py` | API models; settings (all overridable via environment variables). |
 
-**Tests** (`tests/`), 168 tests, LLM fully mocked so they run anywhere (including CI) without Ollama: guardrails, sandbox, data layer, API endpoints, the worker loop (re-analyse cycle, fallback, budget), the orchestration layer (decomposition, genuine thread-level parallelism, the shared budget under concurrency, branch isolation, verifier retries and their bound, one branch failing without sinking the rest), streaming serialization regressions, provider selection/outages, session eviction, and the server limits.
+**Tests** (`tests/`), 176 tests, LLM fully mocked so they run anywhere (including CI) without Ollama: guardrails, sandbox, data layer, API endpoints, the worker loop (re-analyse cycle, fallback, budget), the orchestration layer (decomposition, genuine thread-level parallelism, the shared budget under concurrency, branch isolation, verifier retries and their bound, one branch failing without sinking the rest), streaming serialization regressions, provider selection/outages, session eviction, and the server limits.
 
 **Sample data**, `data/samples/sales.csv`: 1,400 synthetic sales orders (2024-01 → 2025-10) across 4 regions, 4 categories, 3 customer segments, with realistic trend, seasonality, and 12 deliberate NULLs in `sales_rep` (which, it turns out, earn their keep, see §7).
 
@@ -180,7 +180,7 @@ Frontend at http://localhost:5173, API at :8000, Ollama at :11434.
 ```bash
 cd backend
 pip install -r requirements-dev.txt
-python -m pytest        # 168 tests; no Ollama needed (LLM is mocked)
+python -m pytest        # 176 tests; no Ollama needed (LLM is mocked)
 ruff check app tests list_models.py    # lint
 ```
 
@@ -194,23 +194,28 @@ Set as environment variables or in `backend/.env` (copy from `.env.example`):
 | --- | --- | --- |
 | `LLM_PROVIDER` | `ollama` | `ollama`, `anthropic`, or `openai` |
 | `LLM_MODEL` | provider default | Override the model for any provider |
+| `LLM_TEMPERATURE` | `0.0` | Deterministic output. Blank omits it from the request |
+| `LLM_TOP_P` | | Nucleus sampling. Blank leaves it to the provider |
+| `LLM_MAX_TOKENS` | `2048` | Ceiling on what the model may write per call |
+| `LLM_REQUEST_TIMEOUT` | `180` | Seconds per LLM call (old OLLAMA_* names still work) |
+| `LLM_EXTRA_BODY` | | Raw JSON merged into the request, for provider-specific switches like thinking mode |
 | `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` | |  Only when using a hosted provider |
-| `OPENAI_BASE_URL` | |  Any OpenAI-compatible server (LM Studio, vLLM, ...) |
+| `ANTHROPIC_BASE_URL` / `OPENAI_BASE_URL` | |  Any OpenAI-compatible server (LM Studio, vLLM, ...) |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Where Ollama listens |
 | `OLLAMA_MODEL` | `qwen2.5` | Ollama's default model |
-| `LLM_TEMPERATURE` | `0.0` | Deterministic output |
-| `LLM_REQUEST_TIMEOUT` | `120` | Seconds per LLM call (old OLLAMA_* names still work) |
 | `MAX_AGENT_STEPS` | `16` | Total planner steps, shared across every branch |
 | `MAX_PARALLEL_BRANCHES` | `3` | Most sub-questions at once (`1` = classic single loop) |
 | `MAX_VERIFY_PASSES` | `1` | How often the verifier may send work back |
 | `ENABLE_VERIFIER` | `true` | Turn verification off entirely |
+| `MAX_SQL_ROWS` | `1000` | Row limit appended to queries |
+| `SQL_RETRY_ATTEMPTS` | `1` | Extra tries after failed SQL |
+| `SANDBOX_TIMEOUT_SECONDS` | `30` | Wall-clock cap on one generated snippet |
 | `MAX_UPLOAD_MB` | `25` | Reject bigger uploads with a 413 |
 | `MAX_SESSIONS` | `24` | Oldest session evicted past this |
 | `SESSION_TTL_MINUTES` | `120` | Idle sessions expire |
 | `LOG_LEVEL` | `INFO` | App log verbosity |
-| `MAX_AGENT_STEPS` | `8` | Hard cap on planner loops |
-| `MAX_SQL_ROWS` | `1000` | Row limit appended to queries |
-| `SQL_RETRY_ATTEMPTS` | `1` | Extra tries after failed SQL |
+| `APP_USERNAME` / `APP_PASSWORD` | | Set both to put the whole app behind a browser login. Blank means no prompt |
+| `ENABLE_DB_CONNECT` | `true` | Turns `/api/connect` off. The deployment image sets it `false` |
 
 ---
 
@@ -218,7 +223,7 @@ Set as environment variables or in `backend/.env` (copy from `.env.example`):
 
 Every claim below was executed, not assumed:
 
-- **168/168 backend tests pass**, guardrails, sandbox, data layer, API, the worker loop, the orchestration layer (decomposition, parallelism, verifier, isolation), serialization regressions, provider selection/caching/outages, session eviction and TTL, upload cap, the 500 handler. The suite was also re-run from a fresh unzip of the final artifact.
+- **176/176 backend tests pass**, guardrails, sandbox, data layer, API, the worker loop, the orchestration layer (decomposition, parallelism, verifier, isolation), serialization regressions, provider selection/caching/outages, session eviction and TTL, upload cap, the 500 handler. The suite was also re-run from a fresh unzip of the final artifact.
 - **Lint clean** (`ruff`) and every Python file compiles.
 - **Frontend `npm ci` from the shipped lockfile + production build**: zero errors, exactly what the CI pipeline runs.
 - **Live end-to-end over real HTTP**: a fake Ollama server implementing the real chat protocol (NDJSON streaming + structured output) was stood up, the real backend pointed at it, and the full stack driven with an adversarial question producing NULL groups, integer columns and a chart. The complete loop ran (`plan → sql → plan → chart → plan → interpret`), and every SSE frame passed **browser-strict** JSON parsing.
@@ -292,7 +297,7 @@ git remote add origin https://github.com/asadaslam556/prism-data-agent.git
 git push -u origin main
 ```
 
-CI runs automatically on the first push: lint, 168 tests, frontend build.
+CI runs automatically on the first push: lint, 176 tests, frontend build.
 
 ---
 
@@ -303,7 +308,7 @@ The strongest threads to pull on:
 - **"I built the orchestration explicitly."** Not a prebuilt ReAct helper, a LangGraph state machine whose loop, fallback and budget are unit-tested properties. The UI trace is the literal execution path.
 - **"Local models forced better engineering."** Weaker SQL meant validation, retries with error feedback, heuristic fallbacks, and a step budget, the system assumes the model will fail and stays safe anyway.
 - **"Running generated code is the real risk, and it's layered."** AST guard before execution, allow-listed builtins during, bounded loop around, plus an honest README note about what a hardened deployment would add.
-- **"Testing without the model."** 168 tests with the LLM mocked verify everything around it; a fake Ollama server verifies the real client protocol end-to-end. Model quality changes answers, not safety.
+- **"Testing without the model."** 176 tests with the LLM mocked verify everything around it; a fake Ollama server verifies the real client protocol end-to-end. Model quality changes answers, not safety.
 - **"It's a graph of agent loops, not one loop."** The orchestrator decides how many independent sub-questions a request contains, runs a worker for each concurrently, merges them, and hands the result to a *separate* verifier, rather than the planner that did the work grading itself. Each branch keeps its own isolated state; only summaries cross back. Simple questions still collapse to one branch, so the complexity only appears when it earns its keep.
 - **"Adding parallelism is where the real bugs live."** Threads surfaced a deadlock in matplotlib's global state, silent data corruption in the shared SQLite connection, and a lost-update race in the step counter, all found by stress-testing rather than by the test suite, all fixed at the source, all pinned by regression tests.
 - **"The guard was looking for the wrong thing."** The sandbox blocked `open` and `__import__` but let `df.to_csv()` write files, because pandas is a filesystem library and that's just an attribute call. A denylist only covers what you thought to look for, which is exactly why SECURITY.md names the gaps instead of claiming there aren't any.

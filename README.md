@@ -11,7 +11,7 @@
 ![LangGraph](https://img.shields.io/badge/LangGraph-parallel%20agent%20graph-1C3C3C)
 ![React](https://img.shields.io/badge/React-frontend-61DAFB?logo=react&logoColor=black)
 ![LLM](https://img.shields.io/badge/LLM-Ollama%20%7C%20Claude%20%7C%20OpenAI-000000?logo=ollama&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-168%20passing-12A150)
+![Tests](https://img.shields.io/badge/tests-176%20passing-12A150)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 Runs fully local by default. The model (via [Ollama](https://ollama.com)), the database and the analysis sandbox all sit on your machine, so there are no API keys and no data leaves the box. If you'd rather use a hosted model, one environment variable switches the whole thing to Claude or GPT. The provider layer is pluggable.
@@ -37,6 +37,52 @@ Bar and line charts are redrawn as interactive SVG, so you can hover any bar or 
 ![Total revenue by region, one of the charts the agent produced from the bundled sample](docs/images/revenue-by-region.png)
 
 ## Architecture
+
+### The whole system
+
+One React app, one FastAPI process, one agent. The provider and the data source are both swappable, and neither the agent nor the UI knows which one is active.
+
+```mermaid
+flowchart TB
+    subgraph browser["Browser"]
+        UI["React + Vite console"]
+    end
+
+    subgraph server["FastAPI process"]
+        API["REST endpoints<br/>/api/sample · /api/upload · /api/connect"]
+        SSE["SSE stream<br/>/api/query/stream"]
+        AG["LangGraph agent"]
+        HK["Hooks<br/>SQL + Python guardrails, step budget"]
+        SB["Sandbox<br/>restricted namespace, watchdog"]
+    end
+
+    subgraph providers["LLM provider (pluggable)"]
+        OL["Ollama<br/>local"]
+        AN["Anthropic"]
+        OA["OpenAI-compatible<br/>incl. DeepSeek"]
+    end
+
+    subgraph data["Data layer"]
+        CSV["CSV upload"]
+        SAMP["Bundled sample"]
+        DB["SQLAlchemy database"]
+    end
+
+    UI -->|question| SSE
+    UI -->|load data| API
+    SSE --> AG
+    API --> data
+    AG --> HK
+    HK --> SB
+    AG -->|complete / structured| providers
+    AG -->|read-only SELECT| data
+    AG -.->|step events, live| SSE
+    SSE -.->|token stream| UI
+```
+
+Every node execution pushes an event onto the stream as it finishes, so the UI reports parallel branches live and interleaved rather than in one lump at the end.
+
+### The agent, two levels
 
 Two levels, both built as explicit [LangGraph](https://langchain-ai.github.io/langgraph/) state machines.
 
@@ -73,11 +119,96 @@ flowchart LR
 
 *"Revenue by region and by category"* becomes two branches running concurrently. *"Total revenue by region"* stays a single branch and behaves exactly like the original loop. The extra machinery only shows up when the question genuinely has independent parts.
 
-Three ideas organise the codebase:
+### How the code is organised
 
-- **Skills** (`backend/app/skills/`) are the agent's capabilities as pluggable modules: `sql`, `python`, `chart`, `interpret`. Each exposes `NAME`, `DESCRIPTION` and `run(...)`, and returns a uniform `SkillResult`. Adding a capability means adding a file.
-- **Hooks** (`backend/app/hooks/`) are the cross-cutting guardrails wrapped around every step: SQL and Python safety validation, a budget tracker that caps the loop, and structured logging.
-- **The graph** (`backend/app/agent/graph.py`) holds both state machines. Every node execution streams to the UI over Server-Sent Events as it happens, so parallel branches report live and interleaved rather than in a lump at the end.
+Three ideas, and each one is a directory:
+
+```mermaid
+flowchart LR
+    subgraph agent["agent/ — orchestration"]
+        G["graph.py<br/>both state machines"]
+        ST["state.py<br/>AgentState · BranchState"]
+        PR["prompts.py"]
+        LLM["llm.py<br/>complete / structured"]
+        PROV["providers.py<br/>@register per backend"]
+    end
+
+    subgraph skills["skills/ — capabilities"]
+        SQ["sql_skill"]
+        PY["python_skill"]
+        CH["chart_skill"]
+        IN["interpret_skill"]
+    end
+
+    subgraph hooks["hooks/ — guardrails"]
+        SAF["safety.py<br/>SQL + Python AST checks"]
+        CO["cost.py<br/>shared step budget"]
+        LO["logging_hook.py"]
+    end
+
+    subgraph svc["services/ + data/"]
+        SESS["session.py<br/>dataset sessions, LRU + TTL"]
+        SAND["sandbox.py<br/>restricted exec + watchdog"]
+        CONN["connectors.py<br/>SQLAlchemy + introspection"]
+    end
+
+    G --> skills
+    G --> LLM
+    LLM --> PROV
+    skills --> hooks
+    skills --> svc
+```
+
+- **Skills** are the agent's capabilities as pluggable modules. Each exposes `NAME`, `DESCRIPTION` and `run(...)`, and returns a uniform `SkillResult`. Adding a capability means adding a file and one line in `skills/__init__.py`.
+- **Hooks** are the cross-cutting guardrails wrapped around every step: SQL and Python safety validation, a budget tracker that caps the loop, structured logging.
+- **The graph** holds both state machines and the streaming plumbing.
+
+### A question, end to end
+
+What actually happens between pressing enter and seeing an answer:
+
+```mermaid
+sequenceDiagram
+    participant U as Browser
+    participant A as FastAPI
+    participant O as Orchestrator
+    participant B as Branch worker
+    participant M as LLM
+    participant D as Data
+
+    U->>A: POST /api/query/stream
+    A->>O: start run
+    O->>M: decompose the question
+    M-->>O: sub-questions
+    O-->>U: step: decomposed into N parts
+
+    par Branch 1
+        O->>B: sub-question 1
+        loop until done or budget spent
+            B->>M: plan next action
+            M-->>B: sql / python / chart / done
+            B->>D: read-only SELECT
+            D-->>B: rows
+            B-->>U: step event, live
+        end
+    and Branch 2
+        O->>B: sub-question 2
+        Note over B: same loop, isolated state
+        B-->>U: step event, live
+    end
+
+    O->>O: merge branch results
+    O->>M: verify: does this answer it?
+    alt gap found
+        M-->>O: send back, bounded retry
+        O->>O: decompose again
+    else looks complete
+        M-->>O: ok
+    end
+    O->>M: interpret into prose
+    M-->>O: answer
+    O-->>U: final: answer + charts + tables + SQL
+```
 
 There's a deeper walkthrough of the state design, streaming and trade-offs in [`docs/architecture.md`](docs/architecture.md).
 
@@ -101,6 +232,23 @@ export LLM_PROVIDER=openai
 export OPENAI_API_KEY=sk-...
 export LLM_MODEL=gpt-4o-mini
 ```
+
+**DeepSeek**, which speaks the OpenAI schema, so it runs through the same `openai` provider with a different base URL:
+
+```bash
+export LLM_PROVIDER=openai
+export OPENAI_API_KEY=sk-...
+export OPENAI_BASE_URL=https://api.deepseek.com/v1
+export LLM_MODEL=deepseek-v4-flash
+export LLM_EXTRA_BODY='{"thinking": {"type": "disabled"}}'
+```
+
+That last line isn't optional, and it's worth knowing why. DeepSeek's V4 models run in **thinking mode by default**, and thinking mode refuses a forced tool choice — it returns `400 Thinking mode does not support this tool_choice`. The agent's planner, decomposer and verifier all ask for structured output, which is exactly that kind of forced call, so without `LLM_EXTRA_BODY` every question fails. Turning thinking off also makes the whole thing considerably faster, since none of the token budget goes to reasoning the agent never reads.
+
+Two more DeepSeek-specific notes:
+
+- **Use the short model name.** `deepseek-v4-flash` works; the NVIDIA-style `deepseek-ai/deepseek-v4-flash-0731` is NIM's naming and 404s on DeepSeek's own endpoint.
+- **Keys start with `sk-`**, and come from https://platform.deepseek.com → API keys. It's prepaid, so the account needs a balance before the first question.
 
 Whichever provider answers is shown in the pill in the app header, so you always know what produced an answer.
 
@@ -151,7 +299,7 @@ prism-data-agent/
 │   │   ├── config.py             # settings (env-overridable)
 │   │   └── main.py               # FastAPI app + SSE streaming endpoint
 │   ├── data/samples/sales.csv
-│   ├── tests/                    # 168 tests, LLM fully mocked (run anywhere)
+│   ├── tests/                    # 176 tests, LLM fully mocked (run anywhere)
 │   ├── list_models.py            # ask the configured endpoint what it serves
 │   ├── requirements.txt
 │   └── requirements-dev.txt
@@ -166,7 +314,9 @@ prism-data-agent/
 ├── docs/
 │   ├── architecture.md
 │   └── images/                   # demo gif, diagram, screenshots
-├── docker-compose.yml            # ollama + backend + frontend
+├── Dockerfile                    # single image: React build + API, for deployment
+├── docker-compose.yml            # ollama + backend + frontend, for local work
+├── RENDER.md                     # deploying the single image
 └── .github/workflows/ci.yml      # lint + tests + frontend build
 ```
 
@@ -225,8 +375,10 @@ Everything is an environment variable. Copy `backend/.env.example` to `backend/.
 | `LLM_PROVIDER` | `ollama` | `ollama`, `anthropic` or `openai` |
 | `LLM_MODEL` | provider default | Overrides the model for whichever provider is active |
 | `LLM_TEMPERATURE` | `0.0` | Leave blank to omit it from the request |
+| `LLM_TOP_P` | | Nucleus sampling. Blank leaves it to the provider |
 | `LLM_MAX_TOKENS` | `2048` | Ceiling on what the model may write per call |
 | `LLM_REQUEST_TIMEOUT` | `180` | Seconds per call. One question is several calls |
+| `LLM_EXTRA_BODY` | | Raw JSON merged into the request, for provider-specific switches like thinking mode |
 | `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` | | Only for hosted providers |
 | `ANTHROPIC_BASE_URL` / `OPENAI_BASE_URL` | | Point at a gateway or compatible server |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Where Ollama listens |
@@ -241,6 +393,8 @@ Everything is an environment variable. Copy `backend/.env.example` to `backend/.
 | `MAX_UPLOAD_MB` | `25` | Upload size cap |
 | `MAX_SESSIONS` / `SESSION_TTL_MINUTES` | `24` / `120` | Session eviction |
 | `LOG_LEVEL` | `INFO` | App log verbosity |
+| `APP_USERNAME` / `APP_PASSWORD` | | Set both to put the whole app behind a browser login. Blank means no prompt |
+| `ENABLE_DB_CONNECT` | `true` | Turns `/api/connect` off. The deployment image sets it `false` |
 
 ## Testing
 
@@ -251,7 +405,7 @@ python -m pytest
 ruff check app tests list_models.py
 ```
 
-168 tests, and the LLM is mocked in every one of them, so the suite runs anywhere including CI without Ollama installed. What's under test is everything around the model:
+176 tests, and the LLM is mocked in every one of them, so the suite runs anywhere including CI without Ollama installed. What's under test is everything around the model:
 
 - the SQL guardrail and the Python AST guardrail
 - the sandbox, including the filesystem escape routes and the execution watchdog
@@ -266,7 +420,38 @@ Model quality changes the answers. It shouldn't change whether the system is saf
 
 ## Security model
 
-Running model-generated SQL and Python is the central risk here, and it's handled in layers.
+Running model-generated SQL and Python is the central risk here, and it's handled in layers. Anything the model writes has to get through all of them:
+
+```mermaid
+flowchart TB
+    M["Model writes SQL or Python"]
+
+    M --> L1
+    subgraph L1["1 · Static checks, before anything runs"]
+        S1["SQL: single SELECT/WITH only<br/>keyword blocklist, LIMIT appended"]
+        S2["Python: AST walk<br/>no imports, dunders, eval/exec/open/getattr<br/>no pandas/numpy calls that touch the filesystem"]
+    end
+
+    L1 -->|rejected| R(["Refused, planner retries"])
+    L1 -->|passes| L2
+
+    subgraph L2["2 · Constrained execution"]
+        E1["Namespace holds only df, pd, np, plt<br/>~20 allow-listed builtins"]
+        E2["Runs against a copy of the data<br/>stdout captured"]
+    end
+
+    L2 --> L3
+    subgraph L3["3 · Watchdog"]
+        W["Stopped past SANDBOX_TIMEOUT_SECONDS<br/>catches while True, which the AST guard can't"]
+    end
+
+    L3 --> L4
+    subgraph L4["4 · Bounded loop"]
+        BU["Step budget shared across every branch<br/>verifier retries capped"]
+    end
+
+    L4 --> OK(["Result returned"])
+```
 
 **SQL** is parsed with `sqlparse`. Only a single `SELECT` or `WITH` statement passes, there's a token-level keyword blocklist (`DROP`, `INSERT`, `PRAGMA`, `ATTACH` and friends), and a `LIMIT` is appended automatically.
 

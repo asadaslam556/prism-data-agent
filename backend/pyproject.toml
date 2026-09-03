@@ -1,6 +1,6 @@
 [project]
 name = "ai-data-analyst-agent-backend"
-version = "1.5.0"
+version = "1.6.1"
 description = "Agentic AI data analyst: natural-language questions to SQL, pandas and charts, orchestrated with LangGraph on a local Ollama model."
 readme = "README.md"
 requires-python = ">=3.11"

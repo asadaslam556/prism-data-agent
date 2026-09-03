@@ -69,7 +69,7 @@ Then run the activate line again. This resets when you close the terminal.
 Check it worked by opening http://localhost:8000/api/health. You should see:
 
 ```json
-{"status":"ok","version":"1.5.0","provider":"ollama","model":"qwen2.5"}
+{"status":"ok","version":"1.6.1","provider":"ollama","model":"qwen2.5"}
 ```
 
 The `model` field confirms which model the backend will actually use.
@@ -115,6 +115,18 @@ docker compose exec ollama ollama pull your-model-name
 
 Stop everything with `docker compose down`.
 
+**This stack ignores `backend\.env`.** The compose file passes the backend only
+`OLLAMA_BASE_URL`, `LLM_PROVIDER` and `OLLAMA_MODEL`, so it always runs Ollama
+no matter what your `.env` says. If you want to run the DeepSeek setup in a
+container, use the single deployment image instead:
+
+```powershell
+docker build -t prism .
+docker run --rm -p 7860:7860 --env-file backend\.env prism
+```
+
+That one reads your `.env` and serves the whole app on http://localhost:7860.
+
 ---
 
 ## Setting environment variables in PowerShell
@@ -132,13 +144,87 @@ These last only for the current terminal. For anything permanent, put it in
 
 ---
 
+## Using DeepSeek instead of Ollama
+
+DeepSeek speaks the OpenAI schema, so it runs through the `openai` provider
+with a different base URL. Copy `backend\.env.example` to `backend\.env` and
+set:
+
+```dotenv
+LLM_PROVIDER=openai
+LLM_MODEL=deepseek-v4-flash
+OPENAI_API_KEY=sk-your-real-key
+OPENAI_BASE_URL=https://api.deepseek.com/v1
+LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}
+```
+
+That last line is required. DeepSeek's V4 models think by default, and thinking
+mode refuses a forced tool choice, which is what the agent uses for its planner,
+decomposer and verifier. Without it every question fails with
+`400 Thinking mode does not support this tool_choice`.
+
+Use the short model name. The long `deepseek-ai/deepseek-v4-flash-0731` is
+NVIDIA's naming and 404s on DeepSeek's own endpoint. Keys start with `sk-`, not
+`nvapi-`, and come from https://platform.deepseek.com. The API is prepaid, so
+whatever you top up is the most you can spend.
+
+Ollama doesn't need to be running when you're on DeepSeek.
+
+---
+
+## Starting clean
+
+Config is read once when the server boots, and `uvicorn --reload` only watches
+`.py` files. **Editing `backend\.env` does nothing until you stop the server
+with Ctrl+C and start it again.** If a setting change seems to have no effect,
+that is almost always why, and it is worth checking before anything else.
+
+Make sure nothing is still holding the port:
+
+```powershell
+netstat -ano | findstr :8000
+```
+
+More than one PID means an old server is still running from a previous session.
+Kill it with `taskkill /PID <pid> /F`, then start again.
+
+If you want a genuinely clean baseline, rebuild both halves:
+
+```powershell
+cd backend
+Remove-Item -Recurse -Force .venv
+Get-ChildItem -Recurse -Directory -Filter __pycache__ | Remove-Item -Recurse -Force
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
+
+cd ..\frontend
+Remove-Item -Recurse -Force node_modules
+npm cache clean --force
+npm install
+```
+
+Docker is the one place a real build cache exists, so it needs an explicit flag:
+
+```powershell
+docker build --no-cache -t prism .
+```
+
+Worth being honest about what this does: clearing `.venv` and `node_modules`
+almost never fixes a bug. Python re-reads your own `.py` files on every start,
+and `node_modules` has nothing to do with a backend error. It rules out
+dependency-version confusion, which is occasionally the problem. The restart is
+the part that usually matters.
+
+---
+
 ## Running the checks
 
 ```powershell
 cd backend
 .venv\Scripts\Activate.ps1
 pip install -r requirements-dev.txt
-python -m pytest                          # 168 tests, no Ollama needed
+python -m pytest                          # 176 tests, no Ollama needed
 ruff check app tests list_models.py       # lint
 
 cd ..\frontend
@@ -157,6 +243,8 @@ These are exactly what CI runs, so if they pass locally you're in good shape.
 | `python` or `node` not recognised | Not on PATH. Reinstall Python with "Add python.exe to PATH" ticked, or restart the terminal after installing. |
 | Answers fail instantly, log shows connection errors to `11434` | Ollama isn't running. Start the Ollama app from the Start menu. |
 | Error saying the model was not found | Model not pulled: `ollama pull qwen2.5`, or whatever `OLLAMA_MODEL` is set to. |
+| Changed `.env` but nothing happened | Config is read once at startup. Stop the server with Ctrl+C and start it again. `--reload` only watches `.py` files. |
+| Questions fail with "Thinking mode does not support this tool_choice" | On DeepSeek, set `LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}` in `backend\.env`, then restart the server. |
 | Health shows a different model than you set | `backend\.env` wasn't picked up. Confirm the file is named exactly `.env` and not `.env.txt`, then restart the backend. |
 | Port 8000 or 5173 already in use | Use another port: `uvicorn app.main:app --reload --port 8001` or `npm run dev -- --port 5174`. |
 | First answer is very slow | The model loads into RAM on first use. Later questions are much faster. Keep Ollama running. |

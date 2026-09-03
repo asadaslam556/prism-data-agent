@@ -1,4 +1,67 @@
 # Changelog
+## 1.6.1
+
+Fixed:
+
+- `llm.structured()` sent no explicit `method` to `with_structured_output()`,
+  so LangChain used its response_format-based default. DeepSeek's API rejects
+  that outright -- `response_format: {"type": "json_schema"}` comes back
+  `400 This response_format type is unavailable now`, a documented limitation
+  on their side, not an outage. Forced to `method="function_calling"` instead,
+  which routes through `tools`/`tool_choice` and is what DeepSeek's own docs
+  point to. One call site in `llm.py` feeds every structured call in the agent
+  (decomposer, planner, verifier), so the one-line fix covers all three.
+  Anthropic and Ollama were unaffected -- they already answer structured
+  requests through tool calling, not response_format -- so this makes
+  OpenAI-compatible endpoints consistent with the other two rather than
+  changing their behaviour.
+
+- That fix traded one 400 for another. DeepSeek's V4 models run in thinking mode
+  by default, and thinking mode refuses a *forced* tool choice -- which is
+  exactly what `method="function_calling"` sends. The error changes to
+  `400 Thinking mode does not support this tool_choice`. The cure is
+  `LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}`, which turns thinking off
+  and is also faster, since none of the token budget goes to reasoning the agent
+  never reads. The setting itself already shipped in 1.6.0; what was missing was
+  anything telling you that DeepSeek needs it. Now documented in `README.md`,
+  `backend/.env.example` and `RENDER.md`. Suppressing `tool_choice` instead was
+  considered and rejected: it lets the model answer in plain text roughly half
+  the time, which would make the planner unreliable.
+
+- `backend/.env.example` claimed thinking mode was off by default and that
+  blank meant non-thinking. Both were wrong for DeepSeek V4 and would have sent
+  the next person down the same dead end.
+
+## 1.6.0
+
+Deployment. The app can now run as a single container and sit on a public URL
+without being open to everyone who finds it.
+
+- **One image serves both halves.** A root `Dockerfile` builds the React app and
+  hands it to FastAPI, so there is one process, one port and no CORS to
+  configure. `docker-compose.yml` is unchanged and still runs the three-service
+  local stack with Ollama.
+- **Optional browser login.** Set `APP_USERNAME` and `APP_PASSWORD` and every
+  route, frontend included, sits behind an HTTP Basic prompt. Both blank means
+  no prompt, so nothing changes locally. `/api/health` stays open for platform
+  liveness checks.
+- **`/api/connect` can be switched off** with `ENABLE_DB_CONNECT=false`, which
+  the deployment image sets. It dials arbitrary URLs, which is a feature on a
+  laptop and a request-forgery vector on a network.
+- **`LLM_TOP_P` and `LLM_EXTRA_BODY`.** `extra_body` carries provider-specific
+  switches the OpenAI schema has no field for, thinking mode being the one that
+  matters. Shapes differ per provider and are not interchangeable.
+- **Listens on `$PORT`** when the host sets one, 7860 otherwise. A hardcoded
+  port means traffic arrives where nothing is bound and health checks fail.
+- Eight tests for the login path, including malformed headers and passwords
+  containing colons. 176 total.
+
+Fixed:
+
+- Credentials set in `backend/.env` were ignored. They were read straight from
+  `os.environ`, and pydantic-settings loads a `.env` into the Settings object
+  without touching the real environment, so the login looked configured and was
+  silently off. Both sources work now.
 
 ## 1.5.0
 

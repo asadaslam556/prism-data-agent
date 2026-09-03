@@ -44,14 +44,30 @@ aren't any:
   by going looking for them. A method I haven't thought of is a method that
   isn't on the list.
 - **`/api/connect` will dial any URL you give it.** That is the feature, but on a
-  network with internal services it is also a request-forgery vector.
-- **There is no authentication or rate limiting.** Anyone who can reach the port
-  can run queries.
+  network with internal services it is also a request-forgery vector. Set
+  `ENABLE_DB_CONNECT=false` to turn the endpoint off and keep the sample and CSV
+  upload; the deployment image in `Dockerfile` does exactly that.
+- **There is no rate limiting.** Nothing stops one authenticated user asking a
+  thousand questions, and on a hosted model each one costs money.
 
-For untrusted or multi-tenant deployment, run the execution step in a separate
-process with OS-level resource limits (or a container sandbox), connect databases
-with read-only credentials, and put the API behind auth and a rate limiter. None
-of that is included here because it depends entirely on where you deploy.
+## Deploying it somewhere
+
+Setting `APP_USERNAME` and `APP_PASSWORD` puts every route, the frontend
+included, behind an HTTP Basic prompt. Credentials are compared with
+`secrets.compare_digest`, both halves every time, so a wrong username doesn't
+come back faster than a wrong password. `/api/health` stays open so a platform
+can run its liveness check. Leave both blank -- the default -- and there is no
+prompt at all, which is the right setting on a laptop.
+
+Basic auth sends credentials on every request, base64-encoded, not hashed. That
+is fine over HTTPS, which every managed host terminates for you, and not fine
+over plain HTTP. It is a keep-strangers-out measure, not a user system: there is
+one credential pair, no sessions and no lockout after repeated failures.
+
+For untrusted or multi-tenant deployment you still want more: run the execution
+step in a separate process with OS-level resource limits, connect databases with
+read-only credentials, and add a real rate limiter. None of that is included
+here because it depends entirely on where you deploy.
 
 ## Reporting
 

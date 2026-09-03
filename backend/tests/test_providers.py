@@ -84,7 +84,15 @@ class _DownClient:
     def invoke(self, *_args, **_kwargs):
         raise ConnectionError("connection refused on purpose")
 
-    def with_structured_output(self, _schema):
+    # method=None: llm.structured() now passes method="function_calling"
+    # explicitly (DeepSeek rejects the response_format-based default). Real
+    # chat model classes accept and ignore it when unused; these fakes need
+    # to accept it too, or the call itself raises a TypeError before the
+    # test ever reaches the behaviour it means to exercise -- and that
+    # TypeError's "unexpected keyword argument" wording matches this file's
+    # own rejected-request heuristic, so it fails silently wrong rather than
+    # loudly wrong.
+    def with_structured_output(self, _schema, method=None):
         return self
 
 
@@ -100,7 +108,7 @@ def test_structured_raises_on_outage_but_none_on_bad_output(monkeypatch):
         llm.structured("system", "user", graph.NextStep)
 
     class Confused:
-        def with_structured_output(self, _schema):
+        def with_structured_output(self, _schema, method=None):
             return self
 
         def invoke(self, *_args, **_kwargs):
@@ -267,7 +275,7 @@ def test_a_refused_request_stops_instead_of_falling_back(monkeypatch):
 
     class Refusing:
 
-        def with_structured_output(self, _schema):
+        def with_structured_output(self, _schema, method=None):
 
             return self
 

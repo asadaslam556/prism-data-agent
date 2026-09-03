@@ -43,6 +43,22 @@ def shipped_defaults(monkeypatch):
         monkeypatch.delenv(name, raising=False)
 
 
+@pytest.fixture(autouse=True)
+def no_browser_login(monkeypatch):
+    """Keep the login prompt out of the way of the API tests.
+
+    _AUTH_ON is decided once at import time from settings or the environment,
+    so a developer with APP_USERNAME set in their shell or their .env would
+    otherwise watch every request in this suite come back 401. The auth logic
+    itself is covered directly in test_server_ops.py.
+    """
+    from app import main
+
+    monkeypatch.setattr(main, "_AUTH_ON", False)
+    for name in ("APP_USERNAME", "APP_PASSWORD"):
+        monkeypatch.delenv(name, raising=False)
+
+
 @pytest.fixture()
 def sample_df() -> pd.DataFrame:
     return pd.DataFrame(

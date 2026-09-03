@@ -14,6 +14,10 @@ build/
 coverage.xml
 htmlcov/
 
+# Frontend build the Dockerfile copies to backend/static. Built in the image,
+# never committed.
+backend/static/
+
 # Node
 node_modules/
 dist/

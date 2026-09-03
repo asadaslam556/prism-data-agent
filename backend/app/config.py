@@ -3,6 +3,7 @@ see .env.example for the full list.
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from pydantic import AliasChoices, Field, field_validator
@@ -46,6 +47,20 @@ class Settings(BaseSettings):
     # of tokens thinking out loud and blow straight through the timeout.
     llm_max_tokens: int = 2048
 
+    # Nucleus sampling. Left unset the provider uses its own default, which is
+    # what you want most of the time. Some hosted models publish a recommended
+    # pairing (DeepSeek suggests 0.95) and reject or degrade without it.
+    llm_top_p: float | None = None
+
+    # Raw JSON merged into the request body, for provider-specific switches the
+    # OpenAI schema has no field for. Two shapes worth knowing, because they are
+    # not interchangeable:
+    #   DeepSeek direct : {"thinking": {"type": "enabled"}}
+    #   NVIDIA NIM      : {"chat_template_kwargs": {"thinking": true}}
+    # Leave blank for non-thinking mode, which is the faster default and the one
+    # this agent is built around.
+    llm_extra_body: str | None = None
+
     # --- Ollama ---------------------------------------------------------------
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "qwen2.5"
@@ -85,14 +100,45 @@ class Settings(BaseSettings):
     max_sessions: int = 24        # oldest dataset session gets evicted past this
     session_ttl_minutes: int = 120
 
+    # --- Deployment -----------------------------------------------------------
+    # Where the built React app lives. The Docker image puts it here; in local
+    # dev it doesn't exist because Vite serves the frontend itself, and the
+    # static mount is skipped.
+    frontend_dist_path: Path = BASE_DIR / "static"
+
+    # /api/connect takes an arbitrary SQLAlchemy URL and dials it. Fine on a
+    # laptop. On anything reachable from the internet it is an SSRF vector into
+    # whatever network the container sits in, so the Docker image turns it off.
+    enable_db_connect: bool = True
+
     # --- Data -----------------------------------------------------------------
     sample_data_path: Path = BASE_DIR / "data" / "samples" / "sales.csv"
     default_table_name: str = "data"
 
     # --- API ------------------------------------------------------------------
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    # Browser login. Both blank means no auth, which is what you want on a
+    # laptop. Set both on anything with a public URL: there is no other access
+    # control here and your API key pays for every question asked.
+    app_username: str = ""
+    app_password: str = ""
+
     log_level: str = "INFO"
 
+
+    @property
+    def extra_body(self) -> dict | None:
+        """LLM_EXTRA_BODY parsed, or None when it's blank."""
+        raw = (self.llm_extra_body or "").strip()
+        if not raw:
+            return None
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"LLM_EXTRA_BODY is not valid JSON: {exc}") from exc
+        if not isinstance(parsed, dict):
+            raise ValueError("LLM_EXTRA_BODY must be a JSON object.")
+        return parsed
 
     @field_validator("ollama_model", mode="before")
     @classmethod
@@ -107,7 +153,7 @@ class Settings(BaseSettings):
             return "qwen2.5"
         return value
 
-    @field_validator("llm_temperature", mode="before")
+    @field_validator("llm_temperature", "llm_top_p", mode="before")
     @classmethod
     def _blank_means_omit(cls, value):
         """An empty or 'none' value means don't send temperature at all."""

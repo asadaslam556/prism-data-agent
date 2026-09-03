@@ -1,0 +1,40 @@
+# Never let a real .env near the image. Keys come from Space secrets.
+**/.env
+**/.env.*
+!**/.env.example
+
+# Rebuilt inside the image
+**/node_modules
+**/dist
+**/build
+
+# Python scratch
+**/__pycache__
+**/*.py[cod]
+**/.venv
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/.coverage
+**/htmlcov
+
+# Not needed at runtime. docs/images alone is ~15 MB of screenshots and the
+# demo gif, and every byte of it would otherwise be uploaded as build context.
+docs/
+.github/
+*.md
+!backend/README.md
+Makefile
+docker-compose.yml
+backend/tests/
+backend/Dockerfile
+frontend/Dockerfile
+frontend/nginx.conf
+
+# VCS and editors
+.git
+.gitignore
+.gitattributes
+.vscode/
+.idea/
+.DS_Store
