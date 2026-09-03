@@ -18,6 +18,23 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Installable as an app on a phone home screen. crossorigin here is not
+         decorative: a manifest is fetched without credentials by default, so
+         behind the optional APP_USERNAME/APP_PASSWORD login it would 401 and
+         the install prompt would silently never appear. -->
+    <link
+      rel="manifest"
+      href="/manifest.webmanifest"
+      crossorigin="use-credentials"
+    />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#101828" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- iOS ignores the manifest and reads these instead. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Prism" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   </head>
   <body>
     <div id="root"></div>
