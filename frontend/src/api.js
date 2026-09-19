@@ -66,6 +66,7 @@ export async function streamQuery({ sessionId, question, history, onStep, onFina
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
+  let settled = false;
 
   const handleFrame = (frame) => {
     let event = "message";
@@ -77,8 +78,13 @@ export async function streamQuery({ sessionId, question, history, onStep, onFina
     if (!data) return;
     const payload = JSON.parse(data);
     if (event === "step") onStep?.(payload);
-    else if (event === "final") onFinal?.(payload);
-    else if (event === "error") onError?.(new Error(payload.message || "Agent error"));
+    else if (event === "final") {
+      settled = true;
+      onFinal?.(payload);
+    } else if (event === "error") {
+      settled = true;
+      onError?.(new Error(payload.message || "Agent error"));
+    }
   };
 
   try {
@@ -93,7 +99,12 @@ export async function streamQuery({ sessionId, question, history, onStep, onFina
         if (frame.trim()) handleFrame(frame);
       }
     }
+    if (buffer.trim()) handleFrame(buffer);
   } catch (error) {
+    settled = true;
     onError?.(error);
   }
+  // The server restarted or the connection dropped mid-run. Without this the
+  // UI would sit on "Working..." forever, waiting for a final event.
+  if (!settled) onError?.(new Error("The connection closed before the answer arrived."));
 }

@@ -18,7 +18,6 @@ from __future__ import annotations
 import base64
 import io
 import json
-import os
 import secrets
 import time
 import uuid
@@ -40,7 +39,7 @@ from app.schemas import (
 )
 from app.services import session as session_store
 
-app = FastAPI(title="AI Data Analyst Agent", version=__version__)
+app = FastAPI(title="Prism", version=__version__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -81,12 +80,11 @@ async def request_context(request: Request, call_next):
 # prompt. Both blank -- the default -- means no auth at all, which is what you
 # want on a laptop. Set them on anything that has a public URL: this app has no
 # other access control and your API key pays for every question asked.
-# Through settings, not os.environ directly. pydantic-settings reads .env
-# into the Settings object without touching the real environment, so
-# os.environ.get here saw nothing when the values came from a .env file
-# and the login was silently skipped. Settings covers both paths.
-_AUTH_USER = (config.settings.app_username or os.environ.get("APP_USERNAME", "")).strip()
-_AUTH_PASS = (config.settings.app_password or os.environ.get("APP_PASSWORD", "")).strip()
+# Read through settings, which covers both the real environment and
+# backend/.env. os.environ alone misses the .env file, and the login used to
+# be silently off because of it.
+_AUTH_USER = config.settings.app_username.strip()
+_AUTH_PASS = config.settings.app_password.strip()
 _AUTH_ON = bool(_AUTH_USER and _AUTH_PASS)
 
 # Hosting platforms ping this to decide whether the container is alive and
@@ -181,8 +179,10 @@ async def upload(file: UploadFile = File(...)) -> DatasetInfo:  # noqa: B008 (Fa
     if not file.filename or not file.filename.lower().endswith((".csv", ".tsv")):
         raise HTTPException(400, "Please upload a .csv or .tsv file.")
 
-    raw = await file.read()
     limit = config.settings.max_upload_mb * 1024 * 1024
+    # One byte past the limit is enough to know it's too big, without pulling
+    # a multi-gigabyte file into memory first.
+    raw = await file.read(limit + 1)
     if len(raw) > limit:
         raise HTTPException(
             413, f"File is too large. The limit is {config.settings.max_upload_mb} MB."

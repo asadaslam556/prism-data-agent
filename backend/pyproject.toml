@@ -1,9 +1,13 @@
 [project]
-name = "ai-data-analyst-agent-backend"
-version = "1.6.1"
-description = "Agentic AI data analyst: natural-language questions to SQL, pandas and charts, orchestrated with LangGraph on a local Ollama model."
+name = "prism-backend"
+version = "1.7.0"
+description = "Backend for Prism: plain-English questions turned into SQL, pandas and charts by a LangGraph agent."
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Asad Aslam" }]
+# Dependencies live in requirements.txt / requirements-dev.txt. This file only
+# carries metadata and tool config; the app is run from source, not installed.
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

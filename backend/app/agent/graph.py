@@ -222,7 +222,6 @@ def _heuristic_action(state: BranchState) -> Action:
 def plan_node(state: BranchState) -> dict:
     budget: BudgetTracker = state["budget"]
     step = budget.record_step()
-    budget.record_llm_call()
     branch = state.get("branch_id", 0)
 
     if budget.exhausted:
@@ -290,16 +289,12 @@ def python_node(state: BranchState) -> dict:
                               "ok" if ok else "retry",
                               {"result": result.payload.get("result", "")}, branch=branch))
     }
+    # A rejected attempt shows in the trace as a retry but isn't carried on the
+    # branch -- the planner gets another go and usually gets it right.
     if ok:
         update["python_code"] = result.payload["code"]
         update["python_result"] = result.payload["result"]
-        # a previous attempt may have been rejected; it recovered, so the
-        # branch is not in an error state any more
         update["error"] = ""
-    else:
-        # visible in the trace as a retry, but not carried on the branch --
-        # the planner gets another go and usually gets it right
-        update["last_attempt_error"] = result.error
     return update
 
 
@@ -316,8 +311,6 @@ def chart_node(state: BranchState) -> dict:
         update["chart_png"] = result.payload["png_base64"]
         update["chart_code"] = result.payload.get("code", "")
         update["error"] = ""
-    else:
-        update["last_attempt_error"] = result.error
     return update
 
 
@@ -359,7 +352,6 @@ def decompose_node(state: AgentState) -> dict:
     """Work out how many independent pieces this question really has."""
     budget: BudgetTracker = state["budget"]
     step = budget.record_step()
-    budget.record_llm_call()
 
     feedback = state.get("verify_notes", "") if state.get("passes", 0) else ""
     plan = llm.structured(
@@ -503,7 +495,6 @@ def verify_node(state: AgentState) -> dict:
                                       "Step budget is spent; answering with what we have."))}
 
     step = budget.record_step()
-    budget.record_llm_call()
     call = llm.structured(prompts.VERIFY_SYSTEM,
                           prompts.verify_user(state["question"], _branches_summary(state)),
                           Verdict)

@@ -1,4 +1,4 @@
-# Never let a real .env near the image. Keys come from Space secrets.
+# Never let a real .env near the image. Keys come from the host's secrets.
 **/.env
 **/.env.*
 !**/.env.example
@@ -23,7 +23,6 @@
 docs/
 .github/
 *.md
-!backend/README.md
 Makefile
 docker-compose.yml
 backend/tests/

@@ -1,38 +1,45 @@
 # Contributing
 
-Thanks for looking at the code. Here's the short version of how to work on it.
+Thanks for taking a look. Here's how to work on it.
 
 ## Setup
 
-Backend: `cd backend && python -m venv .venv`, activate it, then
-`pip install -r requirements-dev.txt`. Frontend: `cd frontend && npm install`.
-You only need Ollama running to use the app; the test suite mocks the LLM.
-
-## Before you open a PR
+Backend:
 
 ```bash
 cd backend
-ruff check app tests list_models.py   # lint
-python -m pytest         # all of it, no network needed
-cd ../frontend
-npm run build            # catches JSX/JS breakage
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
 ```
 
-CI runs exactly these on Python 3.11 and 3.12, so if they pass locally you're
-in good shape.
+Frontend:
 
-## What goes where
+```bash
+cd frontend
+npm install
+```
 
-- New agent capability -> `backend/app/skills/` (see the pattern in any skill,
-  then register it in `skills/__init__.py`, add a node in `agent/graph.py`,
-  and mention it in the planner prompt).
-- New LLM provider -> one builder function in `backend/app/agent/providers.py`
-  with `@register("name")` on it. Keep heavy SDK imports inside the function.
-- Guardrail changes -> `backend/app/hooks/safety.py`, and please add tests.
-  This file is the reason the app is safe to point at real data.
+You only need Ollama (or a hosted provider key) to use the app. The test suite mocks the model.
+
+## Before opening a PR
+
+```bash
+cd backend
+ruff check app tests list_models.py
+python -m pytest
+cd ../frontend
+npm run build
+```
+
+CI runs the same checks on Python 3.11 and 3.12, plus a build of the deployment image, so if they pass locally you're in good shape.
+
+## Where things go
+
+- **A new agent capability** goes in `backend/app/skills/`. Copy the shape of an existing skill, add a node for it in `agent/graph.py`, and add the action to the planner prompt in `agent/prompts.py`.
+- **A new LLM provider** is one builder function in `backend/app/agent/providers.py` with `@register("name")` on it. Keep the SDK import inside the function.
+- **Guardrail changes** go in `backend/app/hooks/safety.py` or `backend/app/services/sandbox.py`, and need tests. These two files are what make it reasonable to point the app at real data. If you find a way past them, see [SECURITY.md](SECURITY.md) before opening a public issue.
 
 ## Style
 
-Ruff is the linter and the config lives in `pyproject.toml`. Match the
-surrounding code, keep comments short, and don't add dependencies without a
-reason you can defend in the PR description.
+Ruff is the linter; its config is in `backend/pyproject.toml`. Match the surrounding code, keep comments short and about *why*, and don't add a dependency without a reason you can explain in the PR description. Add a line to [CHANGELOG.md](CHANGELOG.md) for anything user-visible.

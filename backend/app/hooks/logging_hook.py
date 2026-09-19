@@ -10,7 +10,7 @@ import logging
 
 from app.config import settings
 
-logger = logging.getLogger("data_analyst_agent")
+logger = logging.getLogger("prism")
 
 if not logger.handlers:
     _handler = logging.StreamHandler()

@@ -6,10 +6,12 @@ a single-user tool. Two things keep memory honest on a long-running server:
 a cap on how many sessions we hold (oldest gets evicted, LRU-style) and a TTL
 so abandoned sessions don't hang around with an open engine.
 
-Swap this module for Redis or a DB if you ever need multi-process.
+FastAPI serves sync endpoints from a threadpool, so the registry is guarded by
+a lock. Swap this module for Redis or a DB if you ever need multi-process.
 """
 from __future__ import annotations
 
+import threading
 import time
 import uuid
 from collections import OrderedDict
@@ -38,10 +40,15 @@ class DatasetSession:
 
 
 _SESSIONS: OrderedDict[str, DatasetSession] = OrderedDict()
+_LOCK = threading.Lock()
 
 
 def _new_id() -> str:
     return uuid.uuid4().hex[:12]
+
+
+def _expired(session: DatasetSession) -> bool:
+    return time.monotonic() - session.last_used > settings.session_ttl_minutes * 60
 
 
 def _drop(session_id: str, reason: str) -> None:
@@ -57,27 +64,34 @@ def _drop(session_id: str, reason: str) -> None:
 
 
 def _evict_if_needed() -> None:
+    # TTL is otherwise only checked when a session is asked for, so one nobody
+    # comes back to would keep its engine until the cap pushed it out.
+    for session_id in [sid for sid, s in _SESSIONS.items() if _expired(s)]:
+        _drop(session_id, "expired")
     while len(_SESSIONS) > settings.max_sessions:
-        oldest = next(iter(_SESSIONS))
-        _drop(oldest, "evicted, session cap reached")
+        _drop(next(iter(_SESSIONS)), "evicted, session cap reached")
+
+
+def _open(engine: Engine, table: str | None, source: str) -> DatasetSession:
+    try:
+        schema = connectors.introspect(engine, table)
+    except Exception:
+        engine.dispose()  # a bad table name shouldn't leak a connection pool
+        raise
+    return _register(engine, schema, source)
 
 
 def create_from_csv(csv_path: str, table_name: str, source: str) -> DatasetSession:
-    engine = connectors.engine_from_csv(csv_path, table_name)
-    schema = connectors.introspect(engine, table_name)
-    return _register(engine, schema, source)
+    return _open(connectors.engine_from_csv(csv_path, table_name), table_name, source)
 
 
 def create_from_dataframe(df: pd.DataFrame, table_name: str, source: str) -> DatasetSession:
-    engine = connectors.engine_from_dataframe(df, table_name)
-    schema = connectors.introspect(engine, table_name)
-    return _register(engine, schema, source)
+    return _open(connectors.engine_from_dataframe(df, table_name), table_name, source)
 
 
 def create_from_url(db_url: str, table: str | None) -> DatasetSession:
     engine = connectors.engine_from_url(db_url)
-    schema = connectors.introspect(engine, table)
-    return _register(engine, schema, f"db:{engine.dialect.name}")
+    return _open(engine, table, f"db:{engine.dialect.name}")
 
 
 def _register(engine: Engine, schema: connectors.Schema, source: str) -> DatasetSession:
@@ -88,21 +102,20 @@ def _register(engine: Engine, schema: connectors.Schema, source: str) -> Dataset
         schema=schema,
         source=source,
     )
-    _SESSIONS[session.session_id] = session
-    _evict_if_needed()
+    with _LOCK:
+        _SESSIONS[session.session_id] = session
+        _evict_if_needed()
     return session
 
 
 def get(session_id: str) -> DatasetSession:
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        raise KeyError(session_id)
-
-    ttl = settings.session_ttl_minutes * 60
-    if time.monotonic() - session.last_used > ttl:
-        _drop(session_id, "expired")
-        raise KeyError(session_id)
-
-    session.last_used = time.monotonic()
-    _SESSIONS.move_to_end(session_id)
-    return session
+    with _LOCK:
+        session = _SESSIONS.get(session_id)
+        if session is None:
+            raise KeyError(session_id)
+        if _expired(session):
+            _drop(session_id, "expired")
+            raise KeyError(session_id)
+        session.last_used = time.monotonic()
+        _SESSIONS.move_to_end(session_id)
+        return session

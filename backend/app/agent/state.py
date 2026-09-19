@@ -41,9 +41,6 @@ class AgentState(TypedDict, total=False):
     # what goes out
     answer: str
     error: str
-    # a rejected snippet the planner then recovered from. Kept apart
-    # from `error` so a retry doesn't render as a failed answer.
-    last_attempt_error: str
     steps: int
     trace: Annotated[list[dict[str, Any]], operator.add]
 

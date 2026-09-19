@@ -246,9 +246,9 @@ export default function DataChart({ sql, fallbackPng, chartCode }) {
                 </text>
                 <rect
                   className={`chart-bar${hovered === index ? " chart-bar-hot" : ""}`}
-                  x={pad.left}
+                  x={Math.min(xFor(0), xFor(point.value))}
                   y={y + (ROW_HEIGHT - barHeight) / 2}
-                  width={Math.max(1, xFor(point.value) - pad.left)}
+                  width={Math.max(1, Math.abs(xFor(point.value) - xFor(0)))}
                   height={barHeight}
                   rx="2"
                 />

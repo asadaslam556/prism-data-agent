@@ -1,8 +1,8 @@
 """Bits shared by all skills.
 
 A skill is one capability (sql, python, chart, interpret) in one module, all
-returning the same SkillResult shape. New capability = new file + a line in
-the registry + a mention in the planner prompt.
+returning the same SkillResult shape. New capability = new file + a node in
+the graph + a mention in the planner prompt.
 """
 from __future__ import annotations
 

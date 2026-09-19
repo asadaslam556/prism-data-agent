@@ -1,3 +1,3 @@
-"""AI Data Analyst Agent -- FastAPI backend."""
+"""Prism -- FastAPI backend for the data analyst agent."""
 
-__version__ = "1.6.1"
+__version__ = "1.7.0"

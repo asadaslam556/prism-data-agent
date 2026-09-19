@@ -18,6 +18,31 @@ def test_existing_limit_is_preserved():
     assert "LIMIT 10" in sql
 
 
+@pytest.mark.parametrize(
+    "sql",
+    [
+        # a LIMIT inside a subquery doesn't bound the outer query
+        "SELECT * FROM (SELECT * FROM data LIMIT 5) t CROSS JOIN data",
+        # nor does one in a comment
+        "SELECT * FROM data -- limit",
+    ],
+)
+def test_limit_elsewhere_in_the_query_does_not_count(sql):
+    assert validate_sql(sql, max_rows=500).rstrip().endswith("LIMIT 500")
+
+
+@pytest.mark.parametrize(
+    "sql,expected",
+    [
+        ("SELECT * FROM data LIMIT 100000", "LIMIT 500"),
+        ("SELECT * FROM data LIMIT 100000 OFFSET 10", "LIMIT 500 OFFSET 10"),
+        ("SELECT * FROM data LIMIT 10, 100000", "LIMIT 10, 500"),
+    ],
+)
+def test_a_limit_above_the_cap_is_clamped(sql, expected):
+    assert validate_sql(sql, max_rows=500).endswith(expected)
+
+
 def test_with_cte_is_allowed():
     sql = validate_sql(
         "WITH r AS (SELECT region, revenue FROM data) SELECT region, SUM(revenue) FROM r GROUP BY region",

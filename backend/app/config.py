@@ -13,7 +13,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent  # .../backend
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    # Anchored to backend/ so the file is found whichever directory the server
+    # is started from.
+    model_config = SettingsConfigDict(
+        env_file=BASE_DIR / ".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
     # --- LLM provider selection ----------------------------------------------
     # Which backend to talk to. "ollama" needs nothing but a running Ollama;
@@ -126,7 +130,6 @@ class Settings(BaseSettings):
     app_password: str = ""
 
     log_level: str = "INFO"
-
 
     @property
     def extra_body(self) -> dict | None:

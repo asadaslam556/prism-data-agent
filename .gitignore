@@ -5,36 +5,37 @@ __pycache__/
 .venv/
 venv/
 env/
+*.egg-info/
+build/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
-*.egg-info/
-build/
 .coverage
+.coverage.*
 coverage.xml
 htmlcov/
+.ipynb_checkpoints/
 
-# Frontend build the Dockerfile copies to backend/static. Built in the image,
-# never committed.
-backend/static/
-
-# Node
+# Frontend build output. The Dockerfile builds it into backend/static inside
+# the image; neither is ever committed.
 node_modules/
 dist/
 dist-ssr/
+backend/static/
 .vite/
 *.tsbuildinfo
+.eslintcache
 npm-debug.log*
+yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Environment. Keep the examples, never the real thing.
+# Environment files hold real keys. Only the examples are committed.
 .env
 .env.*
 !.env.example
-!frontend/.env.example
 
-# Local databases. Anything connected through /api/connect, plus scratch files.
+# Local databases: anything connected through /api/connect, plus scratch files
 *.db
 *.sqlite
 *.sqlite3
@@ -44,9 +45,7 @@ pnpm-debug.log*
 logs/
 tmp/
 *.bak
-
-# Agent tooling
-.claude/
+*.orig
 
 # Editors
 .vscode/
@@ -58,5 +57,6 @@ tmp/
 # OS
 .DS_Store
 Thumbs.db
+ehthumbs.db
 desktop.ini
 $RECYCLE.BIN/

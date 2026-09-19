@@ -1,5 +1,5 @@
 # Everything in requirements.txt, plus the tooling CI runs.
 -r requirements.txt
 
-pytest>=8.0                    # tests all mock the model -- run `pytest --collect-only -q` for the exact count
+pytest>=8.0                    # the model is mocked in every test
 ruff>=0.5                      # linter; config lives in pyproject.toml

@@ -126,6 +126,66 @@ def test_ordinary_analysis_code_still_passes(code, sample_df):
     assert outcome.result is not None
 
 
+# ------------------------------------------------- routes through the libraries
+
+# pandas, numpy and pyplot import os, sys and subprocess at module level, so any
+# submodule used to be a way out: pd.io.common.os.remove(...) passed the guard
+# and ran. Each of these was a working escape before the module views, the
+# private-attribute rule and the audit hook went in.
+
+@pytest.mark.parametrize(
+    "code",
+    [
+        "g = (x for x in [1])\nresult = g.gi_frame.f_back",
+        "result = pd._module",
+        "result = df.query('@df.sum.__globals__')",
+        "df.apply('to_pickle', path='x.pkl')",
+        "df.values.dump('x.pkl')",
+        "fig = plt.figure()\nfig.canvas.print_png('x.png')",
+        "result = plt.backend_registry.load_backend_module('module://os')",
+        "result = pd.ExcelFile('/etc/hostname')",
+        "plt.pause(10 ** 9)",
+    ],
+)
+def test_library_escape_routes_are_blocked(code):
+    with pytest.raises(SafetyError):
+        validate_python(code)
+
+
+@pytest.mark.parametrize(
+    "code",
+    [
+        "result = pd.io.common.os.getcwd()",
+        "result = plt.sys.modules['subprocess']",
+        "result = np.f2py",
+    ],
+)
+def test_module_views_refuse_submodules(code, sample_df):
+    validate_python(code)  # nothing here the AST guard can name
+    with pytest.raises(RuntimeError, match="not available"):
+        sandbox.run_analysis(code, sample_df, with_plot=True)
+
+
+def test_module_views_keep_the_numeric_submodules(sample_df):
+    code = (
+        "rng = np.random.default_rng(0)\n"
+        "ok = pd.api.types.is_numeric_dtype(df['revenue'])\n"
+        "result = (ok, float(np.linalg.norm([3, 4])), rng.integers(1, 2))"
+    )
+    validate_python(code)
+    assert sandbox.run_analysis(code, sample_df).result == (True, 5.0, 1)
+
+
+def test_file_writes_are_refused_at_runtime(tmp_path, sample_df):
+    """The audit hook catches what the AST guard can't read, like a name built at runtime."""
+    target = tmp_path / "x.pkl"
+    code = f"df.apply('to_' + 'pickle', path={str(target)!r})"
+    validate_python(code)
+    with pytest.raises(RuntimeError, match="PermissionError"):
+        sandbox.run_analysis(code, sample_df)
+    assert not target.exists()
+
+
 @pytest.mark.parametrize(
     "module",
     ["os", "sys", "subprocess", "importlib", "builtins", "shutil", "socket"],

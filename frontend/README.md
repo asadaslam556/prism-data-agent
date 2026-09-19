@@ -12,7 +12,8 @@ npm run preview    # serve the production build locally
 
 The dev server proxies `/api` to the backend on port 8000 (see
 `vite.config.js`), so no CORS configuration is needed while developing. In the
-Docker image, nginx proxies the same path.
+docker-compose stack nginx proxies the same path, and in the single deployment
+image FastAPI serves the built app itself.
 
 Set `VITE_API_BASE` only for a split deployment where the backend lives on a
 different host. Copy `.env.example` to `.env` if you need it.
@@ -30,5 +31,5 @@ different host. Copy `.env.example` to `.env` if you need it.
 | `components/Markdown.jsx` | Renders the model's markdown answers |
 | `components/ResultView.jsx` | Answer, charts, tables, generated code |
 
-No runtime dependencies beyond React. Markdown rendering and charting are both
-hand-rolled to keep the bundle small and avoid injecting model text as HTML.
+There are no runtime dependencies beyond React. Markdown rendering and charts are
+written by hand to keep the bundle small and to never inject model text as HTML.

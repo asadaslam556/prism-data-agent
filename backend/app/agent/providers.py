@@ -119,8 +119,6 @@ def _anthropic(model: str):
             "pip install langchain-anthropic"
         ) from exc
 
-    import os
-
     key = settings.anthropic_api_key or os.environ.get("ANTHROPIC_API_KEY")
     if not key:
         raise ProviderError(
@@ -157,8 +155,6 @@ def _openai(model: str):
             "LLM_PROVIDER=openai needs the langchain-openai package: "
             "pip install langchain-openai"
         ) from exc
-
-    import os
 
     key = settings.openai_api_key or os.environ.get("OPENAI_API_KEY")
     if not key:

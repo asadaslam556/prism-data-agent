@@ -1,7 +1,58 @@
 # Changelog
+
+All notable changes to Prism. Versions follow [semantic versioning](https://semver.org).
+
+## 1.7.0
+
+A security and housekeeping release. The sandbox had real escape routes, and
+they're closed.
+
+### Security
+- **The sandbox could reach `os` through the libraries it was given.** pandas,
+  numpy and pyplot import `os`, `sys` and `subprocess` at module level, so
+  `pd.io.common.os.remove(...)` and `plt.sys.modules["subprocess"]` passed every
+  check and ran. Snippets now get read-only views of `pd`, `np` and `plt` that
+  refuse to return submodules, apart from a short allowlist (`np.random`,
+  `np.linalg`, `pd.api.types` and a few others).
+- **More routes the AST guard missed:** frame introspection
+  (`gen.gi_frame.f_back.f_globals`), `df.query()` (pandas evaluates the string
+  itself, attribute access included), method names passed as strings
+  (`df.apply("to_pickle", path=...)`), `ndarray.dump`, `canvas.print_png`,
+  `pd.ExcelFile`, and matplotlib's backend loader, which imports any module by
+  name. All rejected now, along with any private attribute.
+- **A runtime backstop.** An audit hook refuses file writes, processes, sockets
+  and ctypes while a snippet runs, however the call was reached.
+- **The SQL row cap could be dodged.** A `LIMIT` in a subquery or a comment
+  counted as "has a limit", leaving the outer query unbounded, and a model-chosen
+  `LIMIT 100000` was kept. Only a trailing `LIMIT` counts now, clamped to
+  `MAX_SQL_ROWS`.
+
+### Fixed
+- The UI waited forever if the stream closed without a final event (server
+  restart, dropped connection). It now shows an error.
+- Horizontal bar charts drew negative values from the axis minimum instead of
+  from zero.
+- An oversized upload was read fully into memory before being rejected. Only one
+  byte past the limit is read now.
+- The session registry is locked. FastAPI serves sync endpoints from a
+  threadpool, and concurrent eviction could mutate it mid-iteration.
+- Expired sessions are dropped when new ones load, not only when someone asks
+  for them again, so abandoned engines don't pile up.
+- A failed connection (say, a bad table name) no longer leaks its connection pool.
+- `backend/.env` is found relative to the backend folder, not whatever directory
+  the server was started from.
+
+### Changed
+- The guides moved into `docs/`: `docs/guide.md`, `docs/windows.md` and
+  `docs/deploy-render.md`. All docs were revised for accuracy.
+- CI builds the deployment image, and Dependabot now watches pip and npm as well
+  as GitHub Actions.
+- Removed code nothing used: the skills registry dict, unused budget metrics,
+  and a state field that was written but never read.
+
 ## 1.6.1
 
-Fixed:
+### Fixed
 
 - `llm.structured()` sent no explicit `method` to `with_structured_output()`,
   so LangChain used its response_format-based default. DeepSeek's API rejects
@@ -37,6 +88,7 @@ Fixed:
 Deployment. The app can now run as a single container and sit on a public URL
 without being open to everyone who finds it.
 
+### Added
 - **One image serves both halves.** A root `Dockerfile` builds the React app and
   hands it to FastAPI, so there is one process, one port and no CORS to
   configure. `docker-compose.yml` is unchanged and still runs the three-service
@@ -56,7 +108,7 @@ without being open to everyone who finds it.
 - Eight tests for the login path, including malformed headers and passwords
   containing colons. 176 total.
 
-Fixed:
+### Fixed
 
 - Credentials set in `backend/.env` were ignored. They were read straight from
   `os.environ`, and pydantic-settings loads a `.env` into the Settings object
@@ -267,8 +319,6 @@ The agent stopped being one loop and became a graph of loops.
 ### Changed
 - `OLLAMA_TEMPERATURE` / `OLLAMA_REQUEST_TIMEOUT` became `LLM_TEMPERATURE` /
   `LLM_REQUEST_TIMEOUT` (old names still accepted, nothing breaks).
-- Comments and docstrings rewritten throughout to read like working notes
-  rather than generated boilerplate.
 
 ## 1.0.0
 

@@ -1,228 +1,91 @@
 # Prism
 
-**An AI data analyst agent.** Ask a question about your data in plain English. The agent splits it into independent parts, works on them **in parallel**, checks its own results before answering, and shows the whole graph running live.
+Ask a question about your data in plain English and Prism works out the answer. It splits the question into independent parts, runs them in parallel, checks its own results, and shows every step live while it works.
 
 ![The agent splitting one question into two tasks and running them in parallel](docs/images/demo.gif)
 
-*One question, "revenue by region as a chart and revenue by category", split into two tasks that run at the same time. Sped up 3x.*
+*"Revenue by region as a chart and revenue by category" becomes two tasks running at the same time. Sped up 3x.*
 
+[![CI](https://github.com/asadaslam556/prism-data-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/asadaslam556/prism-data-agent/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white)
-![LangGraph](https://img.shields.io/badge/LangGraph-parallel%20agent%20graph-1C3C3C)
+![LangGraph](https://img.shields.io/badge/LangGraph-agent%20graph-1C3C3C)
 ![React](https://img.shields.io/badge/React-frontend-61DAFB?logo=react&logoColor=black)
-![LLM](https://img.shields.io/badge/LLM-Ollama%20%7C%20Claude%20%7C%20OpenAI-000000?logo=ollama&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-176%20passing-12A150)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-Runs fully local by default. The model (via [Ollama](https://ollama.com)), the database and the analysis sandbox all sit on your machine, so there are no API keys and no data leaves the box. If you'd rather use a hosted model, one environment variable switches the whole thing to Claude or GPT. The provider layer is pluggable.
-
-**New here? Start with [PROJECT_GUIDE.md](PROJECT_GUIDE.md).** It walks through what every part does, how a question flows through the system, and how to run it from scratch on Windows, macOS or Linux.
+By default everything runs on your own machine: the model (through [Ollama](https://ollama.com)), the database and the code sandbox. No API keys, and your data stays put. If you'd rather use a hosted model, one environment variable switches to Anthropic, OpenAI or any OpenAI-compatible endpoint such as DeepSeek.
 
 ![Agent graph](docs/images/agent-graph.png)
 
 ## What it does
 
-1. **Bring data.** Upload a CSV, connect a SQL database (Postgres, MySQL, SQLite), or load the bundled sample of 1,400 sales orders.
+1. **Load data.** Upload a CSV, connect a SQL database (Postgres, MySQL, SQLite), or use the bundled sample of 1,400 sales orders.
 
-![Three ways to load data: the bundled sample, a CSV upload, or any SQLAlchemy database URL](docs/images/getting-started.png)
+   ![Three ways to load data: the bundled sample, a CSV upload, or any SQLAlchemy database URL](docs/images/getting-started.png)
 
-2. **Ask in plain English.** *"Which product has the highest average discount?"* or *"Show the monthly revenue trend as a chart"*.
-3. **Watch it work.** Each answer carries a collapsible panel showing every step the agent took, streamed live while it runs and folded away when it finishes.
-4. **Get a grounded answer.** The answer itself, plus the SQL it wrote, the result table, any pandas analysis, and the chart.
+2. **Ask.** *"Which product has the highest average discount?"* or *"Show the monthly revenue trend as a chart."*
+3. **Watch it work.** Each answer has a collapsible panel listing the steps the agent took. It streams while the run is going and folds away when it's done.
+4. **Check the working.** You get the answer, plus the SQL it wrote, the result table, any pandas analysis and the chart.
 
-![A finished answer: the reasoning panel collapsed to a summary, the written explanation, and KPI cards built from the query result](docs/images/kpi-cards.png)
+![A finished answer: the reasoning panel collapsed, the written explanation, and KPI cards built from the query result](docs/images/kpi-cards.png)
 
-Bar and line charts are redrawn as interactive SVG, so you can hover any bar or point to read its exact value. Shapes that can't be reproduced faithfully, like pie and bubble charts, come through as the image the agent drew:
+Bar and line charts are redrawn as SVG in the browser, so you can hover to read exact values. Anything that can't be redrawn faithfully, like a pie or bubble chart, is shown as the image the agent produced.
 
 ![Total revenue by region, one of the charts the agent produced from the bundled sample](docs/images/revenue-by-region.png)
 
-## Architecture
+## Quickstart
 
-### The whole system
+You need **Python 3.11+**, **Node 18+** and **[Ollama](https://ollama.com/download)**.
 
-One React app, one FastAPI process, one agent. The provider and the data source are both swappable, and neither the agent nor the UI knows which one is active.
+**1. Pull a model** (once):
 
-```mermaid
-flowchart TB
-    subgraph browser["Browser"]
-        UI["React + Vite console"]
-    end
-
-    subgraph server["FastAPI process"]
-        API["REST endpoints<br/>/api/sample · /api/upload · /api/connect"]
-        SSE["SSE stream<br/>/api/query/stream"]
-        AG["LangGraph agent"]
-        HK["Hooks<br/>SQL + Python guardrails, step budget"]
-        SB["Sandbox<br/>restricted namespace, watchdog"]
-    end
-
-    subgraph providers["LLM provider (pluggable)"]
-        OL["Ollama<br/>local"]
-        AN["Anthropic"]
-        OA["OpenAI-compatible<br/>incl. DeepSeek"]
-    end
-
-    subgraph data["Data layer"]
-        CSV["CSV upload"]
-        SAMP["Bundled sample"]
-        DB["SQLAlchemy database"]
-    end
-
-    UI -->|question| SSE
-    UI -->|load data| API
-    SSE --> AG
-    API --> data
-    AG --> HK
-    HK --> SB
-    AG -->|complete / structured| providers
-    AG -->|read-only SELECT| data
-    AG -.->|step events, live| SSE
-    SSE -.->|token stream| UI
+```bash
+ollama pull qwen2.5
 ```
 
-Every node execution pushes an event onto the stream as it finishes, so the UI reports parallel branches live and interleaved rather than in one lump at the end.
+Any tool-capable model works. Bigger models write better SQL; smaller ones lean harder on the retry and fallback logic.
 
-### The agent, two levels
+**2. Start the backend** (terminal 1):
 
-Two levels, both built as explicit [LangGraph](https://langchain-ai.github.io/langgraph/) state machines.
-
-The **orchestrator** works out how many independent sub-questions a request really contains, runs a worker for each one at the same time, merges what they found, then hands the lot to a **verifier** that can send everything back for another pass. Each **worker** is a self-contained agent loop with its own isolated state.
-
-```mermaid
-flowchart LR
-    Q([User question]) --> D[Decompose<br/><i>split into independent parts</i>]
-    D -->|fan out, in parallel| B1[Branch 1<br/><i>own agent loop</i>]
-    D -->|fan out, in parallel| B2[Branch 2<br/><i>own agent loop</i>]
-    D -->|fan out, in parallel| B3[Branch 3<br/><i>own agent loop</i>]
-    B1 --> M[Merge]
-    B2 --> M
-    B3 --> M
-    M --> V{Verify<br/><i>does this answer it?</i>}
-    V -->|gap found, bounded retry| D
-    V -->|ok| I[Interpret]
-    I --> A([Answer + visualizations])
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
 
-Inside each branch is the loop the project started with:
+**3. Start the frontend** (terminal 2):
 
-```mermaid
-flowchart LR
-    P[Plan<br/><i>decide next step</i>]
-    P -->|sql| S[Query database<br/><i>read-only SQL</i>]
-    P -->|python| Y[Run code<br/><i>sandboxed pandas</i>]
-    P -->|chart| C[Generate chart<br/><i>matplotlib to PNG</i>]
-    S --> P
-    Y --> P
-    C --> P
-    P -->|done| E([Branch result])
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-*"Revenue by region and by category"* becomes two branches running concurrently. *"Total revenue by region"* stays a single branch and behaves exactly like the original loop. The extra machinery only shows up when the question genuinely has independent parts.
+Open http://localhost:5173, click **Load sample dataset**, and try *"Show the monthly revenue trend as a chart"*. Then try *"Revenue by region as a chart and revenue by category"* to see it split into two tasks.
 
-### How the code is organised
+On Windows, [docs/windows.md](docs/windows.md) walks through the same steps in PowerShell.
 
-Three ideas, and each one is a directory:
+### With Docker
 
-```mermaid
-flowchart LR
-    subgraph agent["agent/ — orchestration"]
-        G["graph.py<br/>both state machines"]
-        ST["state.py<br/>AgentState · BranchState"]
-        PR["prompts.py"]
-        LLM["llm.py<br/>complete / structured"]
-        PROV["providers.py<br/>@register per backend"]
-    end
-
-    subgraph skills["skills/ — capabilities"]
-        SQ["sql_skill"]
-        PY["python_skill"]
-        CH["chart_skill"]
-        IN["interpret_skill"]
-    end
-
-    subgraph hooks["hooks/ — guardrails"]
-        SAF["safety.py<br/>SQL + Python AST checks"]
-        CO["cost.py<br/>shared step budget"]
-        LO["logging_hook.py"]
-    end
-
-    subgraph svc["services/ + data/"]
-        SESS["session.py<br/>dataset sessions, LRU + TTL"]
-        SAND["sandbox.py<br/>restricted exec + watchdog"]
-        CONN["connectors.py<br/>SQLAlchemy + introspection"]
-    end
-
-    G --> skills
-    G --> LLM
-    LLM --> PROV
-    skills --> hooks
-    skills --> svc
+```bash
+docker compose up --build
+docker compose exec ollama ollama pull qwen2.5   # once
 ```
 
-- **Skills** are the agent's capabilities as pluggable modules. Each exposes `NAME`, `DESCRIPTION` and `run(...)`, and returns a uniform `SkillResult`. Adding a capability means adding a file and one line in `skills/__init__.py`.
-- **Hooks** are the cross-cutting guardrails wrapped around every step: SQL and Python safety validation, a budget tracker that caps the loop, structured logging.
-- **The graph** holds both state machines and the streaming plumbing.
+Frontend on http://localhost:5173, API on port 8000, Ollama on 11434.
 
-### A question, end to end
+## Using a hosted model
 
-What actually happens between pressing enter and seeing an answer:
+Set `LLM_PROVIDER` and a key, and restart the backend. All three provider packages are already in `requirements.txt`.
 
-```mermaid
-sequenceDiagram
-    participant U as Browser
-    participant A as FastAPI
-    participant O as Orchestrator
-    participant B as Branch worker
-    participant M as LLM
-    participant D as Data
-
-    U->>A: POST /api/query/stream
-    A->>O: start run
-    O->>M: decompose the question
-    M-->>O: sub-questions
-    O-->>U: step: decomposed into N parts
-
-    par Branch 1
-        O->>B: sub-question 1
-        loop until done or budget spent
-            B->>M: plan next action
-            M-->>B: sql / python / chart / done
-            B->>D: read-only SELECT
-            D-->>B: rows
-            B-->>U: step event, live
-        end
-    and Branch 2
-        O->>B: sub-question 2
-        Note over B: same loop, isolated state
-        B-->>U: step event, live
-    end
-
-    O->>O: merge branch results
-    O->>M: verify: does this answer it?
-    alt gap found
-        M-->>O: send back, bounded retry
-        O->>O: decompose again
-    else looks complete
-        M-->>O: ok
-    end
-    O->>M: interpret into prose
-    M-->>O: answer
-    O-->>U: final: answer + charts + tables + SQL
-```
-
-There's a deeper walkthrough of the state design, streaming and trade-offs in [`docs/architecture.md`](docs/architecture.md).
-
-## Choosing the model
-
-Switching provider is one environment variable. Ollama is the default so the project runs with no account at all, and the same agent runs on the Claude API or OpenAI without touching a line of code. All three provider packages ship in `requirements.txt`, so there is nothing extra to install.
-
-**Claude**, which is what the screenshots and the demo above were recorded on:
+**Anthropic:**
 
 ```bash
 export LLM_PROVIDER=anthropic
 export ANTHROPIC_API_KEY=sk-ant-...
 export LLM_MODEL=claude-sonnet-4-6
-uvicorn app.main:app --reload --port 8000
 ```
 
 **OpenAI:**
@@ -233,7 +96,7 @@ export OPENAI_API_KEY=sk-...
 export LLM_MODEL=gpt-4o-mini
 ```
 
-**DeepSeek**, which speaks the OpenAI schema, so it runs through the same `openai` provider with a different base URL:
+**DeepSeek** speaks the OpenAI API, so it goes through the `openai` provider with a different base URL:
 
 ```bash
 export LLM_PROVIDER=openai
@@ -243,132 +106,20 @@ export LLM_MODEL=deepseek-v4-flash
 export LLM_EXTRA_BODY='{"thinking": {"type": "disabled"}}'
 ```
 
-That last line isn't optional, and it's worth knowing why. DeepSeek's V4 models run in **thinking mode by default**, and thinking mode refuses a forced tool choice — it returns `400 Thinking mode does not support this tool_choice`. The agent's planner, decomposer and verifier all ask for structured output, which is exactly that kind of forced call, so without `LLM_EXTRA_BODY` every question fails. Turning thinking off also makes the whole thing considerably faster, since none of the token budget goes to reasoning the agent never reads.
+Don't skip the last line. DeepSeek's V4 models run in thinking mode by default, and thinking mode rejects a forced tool choice (`400 Thinking mode does not support this tool_choice`). The planner, decomposer and verifier all rely on exactly that, so without it every question fails. Turning thinking off also makes runs noticeably faster.
 
-Two more DeepSeek-specific notes:
+A few more things worth knowing:
 
-- **Use the short model name.** `deepseek-v4-flash` works; the NVIDIA-style `deepseek-ai/deepseek-v4-flash-0731` is NIM's naming and 404s on DeepSeek's own endpoint.
-- **Keys start with `sk-`**, and come from https://platform.deepseek.com → API keys. It's prepaid, so the account needs a balance before the first question.
+- `ANTHROPIC_BASE_URL` and `OPENAI_BASE_URL` point a provider at any compatible server: LM Studio, vLLM, Groq, a company gateway.
+- Gateways often rename models (`claude-sonnet-4-6@default`, say). Run `python list_models.py` from `backend/` and it will list what your endpoint actually serves and tell you whether `LLM_MODEL` is on it.
+- Some models reject `temperature` outright. Set `LLM_TEMPERATURE=` (blank) to leave it out of the request.
+- The pill in the app header always shows which provider and model are answering.
 
-Whichever provider answers is shown in the pill in the app header, so you always know what produced an answer.
-
-`ANTHROPIC_BASE_URL` and `OPENAI_BASE_URL` point the provider at any compatible endpoint instead of the public API, which covers LM Studio, vLLM, Groq and self-hosted proxies. Two things worth knowing if you go that route:
-
-- **Model names can differ from the public ones.** An endpoint might serve `claude-sonnet-4-6@default` where the public API just calls it `claude-sonnet-4-6`. Run `python list_models.py` from the `backend` folder and it will ask your endpoint what it actually serves, then tell you whether your current `LLM_MODEL` is on the list.
-- **Some models reject `temperature` outright**, returning a 400 that says the parameter is deprecated. No value satisfies them, so set `LLM_TEMPERATURE=` (blank) to leave it out of the request entirely.
-
-If the backend can't reach the model, whether that's Ollama not running or a bad key, you get a readable message saying what to check rather than a stack trace.
-
-Adding another provider is one registered function in `backend/app/agent/providers.py`.
-
-## Why the design assumes the model will fail
-
-The project was built against a small local model first, which forced a useful discipline: nothing here trusts the model. That turned out to be worth keeping once it ran on a frontier model too, because a good model still has bad days, and the failure modes are quieter when it does.
-
-- Every generated query is validated before it touches the database: single statement, `SELECT` or `WITH` only, forbidden keywords rejected, row limit enforced.
-- Failed SQL is retried with the error message fed back to the model.
-- Generated Python is AST-checked and then run in a restricted sandbox with a minimal builtins allow-list.
-- If the model can't produce a structured planning decision, a heuristic fallback routes the step instead of crashing.
-- A step budget stops any planner loop and forces a best-effort answer.
-- Sub-questions that duplicate each other are dropped before they run, so the same query doesn't get billed twice.
-
-## Project structure
-
-```
-prism-data-agent/
-├── backend/
-│   ├── app/
-│   │   ├── agent/                # LangGraph orchestration
-│   │   │   ├── graph.py          # worker loop + parallel orchestrator, run/stream
-│   │   │   ├── state.py          # AgentState + per-branch BranchState, reducers
-│   │   │   ├── prompts.py        # decomposer, planner, skill and verifier prompts
-│   │   │   ├── providers.py      # pluggable LLM backends (ollama/anthropic/openai)
-│   │   │   └── llm.py            # provider-agnostic complete()/structured()
-│   │   ├── skills/               # pluggable capabilities
-│   │   │   ├── sql_skill.py      # question to SQL, validate, execute, retry
-│   │   │   ├── python_skill.py   # sandboxed pandas analysis
-│   │   │   ├── chart_skill.py    # matplotlib to base64 PNG
-│   │   │   └── interpret_skill.py
-│   │   ├── hooks/                # cross-cutting guardrails
-│   │   │   ├── safety.py         # SQL + Python (AST) validation
-│   │   │   ├── cost.py           # step budget, shared across branches
-│   │   │   └── logging_hook.py
-│   │   ├── data/                 # SQLAlchemy connectors + introspection
-│   │   ├── services/             # dataset sessions, execution sandbox
-│   │   ├── schemas.py            # API models
-│   │   ├── config.py             # settings (env-overridable)
-│   │   └── main.py               # FastAPI app + SSE streaming endpoint
-│   ├── data/samples/sales.csv
-│   ├── tests/                    # 176 tests, LLM fully mocked (run anywhere)
-│   ├── list_models.py            # ask the configured endpoint what it serves
-│   ├── requirements.txt
-│   └── requirements-dev.txt
-├── frontend/                     # React + Vite console
-│   └── src/components/
-│       ├── AgentThinking.jsx     # collapsible live reasoning panel
-│       ├── ChatPanel.jsx         # feed, suggestions, composer
-│       ├── DataChart.jsx         # interactive SVG charts with hover values
-│       ├── DataUpload.jsx        # sample, CSV upload, database connect
-│       ├── Markdown.jsx          # renders the model's markdown answers
-│       └── ResultView.jsx        # answer, charts, tables, generated code
-├── docs/
-│   ├── architecture.md
-│   └── images/                   # demo gif, diagram, screenshots
-├── Dockerfile                    # single image: React build + API, for deployment
-├── docker-compose.yml            # ollama + backend + frontend, for local work
-├── RENDER.md                     # deploying the single image
-└── .github/workflows/ci.yml      # lint + tests + frontend build
-```
-
-## Quickstart
-
-You need **Python 3.11+**, **Node 18+** and **[Ollama](https://ollama.com/download)**.
-
-**1. Get the model** (once):
-
-```bash
-ollama pull qwen2.5
-```
-
-Any tool-capable model works. Bigger models write noticeably better SQL; smaller ones lean harder on the retry and fallback machinery, which is fun to watch in the trace.
-
-**2. Backend** (terminal 1):
-
-```bash
-cd backend
-python -m venv .venv
-
-# macOS / Linux:
-source .venv/bin/activate
-# Windows (PowerShell):
-# .venv\Scripts\Activate.ps1
-
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
-
-**3. Frontend** (terminal 2):
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Open **http://localhost:5173**, click **Load sample dataset**, and try *"Show the monthly revenue trend as a chart"*. Then try *"Revenue by region as a chart and revenue by category"* to see it split into two branches and run them at once.
-
-### Docker
-
-```bash
-docker compose up --build
-docker compose exec ollama ollama pull qwen2.5   # once
-```
-
-Frontend on http://localhost:5173, API on port 8000, Ollama on 11434.
+If the backend can't reach the model (Ollama not running, bad key) you get a readable message saying what to check, not a stack trace.
 
 ## Configuration
 
-Everything is an environment variable. Copy `backend/.env.example` to `backend/.env` and edit.
+Everything is an environment variable. Copy `backend/.env.example` to `backend/.env` and edit it. The file is read once at startup, so restart the server after changing it.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
@@ -384,17 +135,120 @@ Everything is an environment variable. Copy `backend/.env.example` to `backend/.
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Where Ollama listens |
 | `OLLAMA_MODEL` | `qwen2.5` | Ollama's default model |
 | `MAX_AGENT_STEPS` | `16` | Hard cap on planner steps, shared across all branches |
-| `MAX_PARALLEL_BRANCHES` | `3` | Sub-questions run at once. Set to `1` for the classic single loop |
+| `MAX_PARALLEL_BRANCHES` | `3` | Sub-questions run at once. `1` gives the plain single loop |
 | `MAX_VERIFY_PASSES` | `1` | How often the verifier may send work back |
-| `ENABLE_VERIFIER` | `true` | Turns the verification node off entirely |
-| `MAX_SQL_ROWS` | `1000` | Row limit appended to generated queries |
+| `ENABLE_VERIFIER` | `true` | Turns the verification step off entirely |
+| `MAX_SQL_ROWS` | `1000` | Row cap on every generated query |
 | `SQL_RETRY_ATTEMPTS` | `1` | Extra tries after a failed query |
 | `SANDBOX_TIMEOUT_SECONDS` | `30` | Wall-clock cap on one generated snippet |
 | `MAX_UPLOAD_MB` | `25` | Upload size cap |
-| `MAX_SESSIONS` / `SESSION_TTL_MINUTES` | `24` / `120` | Session eviction |
+| `MAX_SESSIONS` / `SESSION_TTL_MINUTES` | `24` / `120` | How many datasets stay loaded, and for how long |
 | `LOG_LEVEL` | `INFO` | App log verbosity |
-| `APP_USERNAME` / `APP_PASSWORD` | | Set both to put the whole app behind a browser login. Blank means no prompt |
-| `ENABLE_DB_CONNECT` | `true` | Turns `/api/connect` off. The deployment image sets it `false` |
+| `APP_USERNAME` / `APP_PASSWORD` | | Set both to put the whole app behind a browser login |
+| `ENABLE_DB_CONNECT` | `true` | Turns `/api/connect` off. The deployment image sets it to `false` |
+
+## Architecture
+
+One React app, one FastAPI process, one agent. The model provider and the data source are both swappable, and neither the agent nor the UI cares which one is active.
+
+```mermaid
+flowchart TB
+    subgraph browser["Browser"]
+        UI["React + Vite console"]
+    end
+
+    subgraph server["FastAPI process"]
+        API["REST endpoints<br/>/api/sample · /api/upload · /api/connect"]
+        SSE["SSE stream<br/>/api/query/stream"]
+        AG["LangGraph agent"]
+        HK["Hooks<br/>SQL + Python guardrails, step budget"]
+        SB["Sandbox<br/>restricted namespace, watchdog"]
+    end
+
+    subgraph providers["LLM provider"]
+        OL["Ollama<br/>local"]
+        AN["Anthropic"]
+        OA["OpenAI-compatible<br/>incl. DeepSeek"]
+    end
+
+    subgraph data["Data"]
+        CSV["CSV upload"]
+        SAMP["Bundled sample"]
+        DB["SQLAlchemy database"]
+    end
+
+    UI -->|question| SSE
+    UI -->|load data| API
+    SSE --> AG
+    API --> data
+    AG --> HK
+    HK --> SB
+    AG -->|complete / structured| providers
+    AG -->|read-only SELECT| data
+    AG -.->|step events| SSE
+    SSE -.->|streamed steps| UI
+```
+
+The agent has two levels, both explicit [LangGraph](https://langchain-ai.github.io/langgraph/) state machines. The **orchestrator** decides how many independent sub-questions a request contains, runs a **worker** for each at the same time, merges the results, and passes them to a **verifier** that can send the work back for another pass.
+
+```mermaid
+flowchart LR
+    Q([Question]) --> D[Decompose]
+    D -->|in parallel| B1[Branch 1]
+    D -->|in parallel| B2[Branch 2]
+    D -->|in parallel| B3[Branch 3]
+    B1 --> M[Merge]
+    B2 --> M
+    B3 --> M
+    M --> V{Verify}
+    V -->|gap found, bounded retry| D
+    V -->|ok| I[Interpret]
+    I --> A([Answer])
+```
+
+Each branch runs its own plan-act loop with isolated state:
+
+```mermaid
+flowchart LR
+    P[Plan]
+    P -->|sql| S[Query the data]
+    P -->|python| Y[Run pandas]
+    P -->|chart| C[Draw a chart]
+    S --> P
+    Y --> P
+    C --> P
+    P -->|done| E([Branch result])
+```
+
+Most questions decompose to a single branch and behave like a plain agent loop. The parallel machinery only kicks in when a question really has independent parts.
+
+The code follows the same split:
+
+| Directory | What lives there |
+| --- | --- |
+| `backend/app/agent/` | Both graphs, their state, the prompts, and the provider layer |
+| `backend/app/skills/` | One module per capability (SQL, pandas, chart, final answer), each returning a `SkillResult` |
+| `backend/app/hooks/` | Guardrails around every step: SQL and Python validation, the step budget, logging |
+| `backend/app/services/` | Dataset sessions and the execution sandbox |
+| `backend/app/data/` | SQLAlchemy engines and schema introspection |
+
+[docs/architecture.md](docs/architecture.md) goes into the state design, streaming and the trade-offs. [docs/guide.md](docs/guide.md) walks through every file and follows a question from the browser to the answer.
+
+## Security model
+
+Running SQL and Python that a model wrote is the main risk in this project, so everything the model writes goes through several independent layers:
+
+1. **Static checks.** SQL must be a single `SELECT` or `WITH` statement with no write or admin keywords, and its row count is capped. Python is parsed and walked before it runs: no imports, no private or dunder attributes, no frame introspection, no `eval`/`exec`/`open`, and none of the pandas or numpy calls that read or write files.
+2. **A restricted namespace.** Snippets see a copy of the data, about twenty allow-listed builtins, and read-only views of pandas, numpy and pyplot that refuse to hand out other modules, since those libraries import `os` and `subprocess` internally.
+3. **A runtime backstop.** While a snippet runs, an audit hook refuses file writes, process creation and network access, however the call was reached.
+4. **A watchdog.** Snippets are stopped after `SANDBOX_TIMEOUT_SECONDS`, which catches the `while True:` loop no static check can.
+5. **A bounded loop.** A step budget shared across branches, and a cap on verifier retries.
+
+This is hardening for a local, single-user tool, not a jail. CPython can't be fully locked down from inside its own process. [SECURITY.md](SECURITY.md) lists the known gaps and what a multi-tenant deployment would need on top.
+
+## Deployment
+
+The root `Dockerfile` builds a single image: the React app is served by FastAPI, so there is one process and one port. It listens on `$PORT` when the host sets one. [docs/deploy-render.md](docs/deploy-render.md) is a step-by-step guide for putting it on Render's free tier behind a login.
 
 ## Testing
 
@@ -405,83 +259,55 @@ python -m pytest
 ruff check app tests list_models.py
 ```
 
-176 tests, and the LLM is mocked in every one of them, so the suite runs anywhere including CI without Ollama installed. What's under test is everything around the model:
+The model is mocked in every test, so the suite runs anywhere, CI included, without Ollama. It covers everything around the model: both guardrails and the known sandbox escape routes, the data layer and API, the worker loop and its fallbacks, the orchestration layer (decomposition, real thread-level parallelism, verifier retries), provider selection and outage handling, and the concurrency bugs that only appeared once branches ran at the same time.
 
-- the SQL guardrail and the Python AST guardrail
-- the sandbox, including the filesystem escape routes and the execution watchdog
-- the data layer, the API endpoints and the server limits
-- the worker loop: re-analyse cycle, heuristic fallback, budget stop
-- the orchestration layer: decomposition, real thread-level parallelism, fan-in, verifier retries and their bound, branch isolation
-- provider selection, model resolution and outage handling
-- the concurrency bugs that only appear once branches run at once: parallel chart rendering, interleaved database reads, the shared step counter
-- JSON serialization on the streaming path, which browsers are stricter about than Python is
+## Project structure
 
-Model quality changes the answers. It shouldn't change whether the system is safe or correct, and that's what the suite is there to hold.
-
-## Security model
-
-Running model-generated SQL and Python is the central risk here, and it's handled in layers. Anything the model writes has to get through all of them:
-
-```mermaid
-flowchart TB
-    M["Model writes SQL or Python"]
-
-    M --> L1
-    subgraph L1["1 · Static checks, before anything runs"]
-        S1["SQL: single SELECT/WITH only<br/>keyword blocklist, LIMIT appended"]
-        S2["Python: AST walk<br/>no imports, dunders, eval/exec/open/getattr<br/>no pandas/numpy calls that touch the filesystem"]
-    end
-
-    L1 -->|rejected| R(["Refused, planner retries"])
-    L1 -->|passes| L2
-
-    subgraph L2["2 · Constrained execution"]
-        E1["Namespace holds only df, pd, np, plt<br/>~20 allow-listed builtins"]
-        E2["Runs against a copy of the data<br/>stdout captured"]
-    end
-
-    L2 --> L3
-    subgraph L3["3 · Watchdog"]
-        W["Stopped past SANDBOX_TIMEOUT_SECONDS<br/>catches while True, which the AST guard can't"]
-    end
-
-    L3 --> L4
-    subgraph L4["4 · Bounded loop"]
-        BU["Step budget shared across every branch<br/>verifier retries capped"]
-    end
-
-    L4 --> OK(["Result returned"])
+```
+prism-data-agent/
+├── backend/
+│   ├── app/
+│   │   ├── agent/          # graphs, state, prompts, LLM provider layer
+│   │   ├── skills/         # sql, python, chart, interpret
+│   │   ├── hooks/          # guardrails, step budget, logging
+│   │   ├── services/       # dataset sessions, execution sandbox
+│   │   ├── data/           # SQLAlchemy connectors
+│   │   ├── config.py       # settings, all overridable by env var
+│   │   ├── schemas.py      # API models
+│   │   └── main.py         # FastAPI app and SSE endpoint
+│   ├── data/samples/       # the bundled sales dataset
+│   ├── tests/
+│   ├── list_models.py      # asks the configured endpoint what it serves
+│   ├── Dockerfile          # backend image for docker-compose
+│   └── requirements*.txt
+├── frontend/               # React + Vite console
+├── docs/                   # architecture, walkthrough, Windows and Render guides
+├── Dockerfile              # single deployment image
+└── docker-compose.yml      # Ollama + backend + frontend for local use
 ```
 
-**SQL** is parsed with `sqlparse`. Only a single `SELECT` or `WITH` statement passes, there's a token-level keyword blocklist (`DROP`, `INSERT`, `PRAGMA`, `ATTACH` and friends), and a `LIMIT` is appended automatically.
+## Extending it
 
-**Python** is AST-inspected before execution. Imports, dunder access and `eval`/`exec`/`open`/`getattr` are rejected, along with the pandas and numpy calls that reach the filesystem (`to_csv`, `read_pickle`, `np.save`, `savefig` and the rest). That last group is easy to miss: `df.to_csv("/etc/cron.d/x")` is an ordinary attribute call on a name the snippet is supposed to have.
-
-**Execution** then happens in a namespace holding a roughly twenty-function builtins allow-list, a copy of the DataFrame, captured stdout, and a narrow `__import__` that only ever returns already-loaded numpy and pandas internals.
-
-**A watchdog** stops any snippet that overruns `SANDBOX_TIMEOUT_SECONDS`. Nothing in the AST guard rejects `while True:`, and in CPython a tight loop like that starves every other thread of the GIL rather than just hanging its own request.
-
-**The agent loop** is bounded by the step budget.
-
-Honest caveat: this is pragmatic hardening for a local, single-user tool, not a jail. CPython can't be made fully safe from inside the process. For untrusted or multi-tenant use you'd want the execution step in a separate process with OS-level resource limits or a container sandbox, databases connected with read-only credentials, and auth plus rate limiting on the API. [SECURITY.md](SECURITY.md) names the remaining gaps rather than pretending there aren't any.
-
-## Extending the agent
-
-Adding a capability, say forecasting:
+To add a capability, say forecasting:
 
 1. Create `backend/app/skills/forecast_skill.py` exposing `NAME`, `DESCRIPTION` and `run(...) -> SkillResult`.
-2. Register it in `backend/app/skills/__init__.py`.
-3. Add a node and a loop-back edge in `backend/app/agent/graph.py`, plus the action in the planner prompt.
-4. The thinking panel picks it up automatically from the streamed steps.
+2. Add a node and a loop-back edge for it in `backend/app/agent/graph.py`, and add the action to the planner prompt.
+3. The reasoning panel picks it up from the streamed steps with no frontend change.
+
+A new LLM provider is one function in `backend/app/agent/providers.py` with `@register("name")` on it.
 
 ## Roadmap
 
-- Conversation-scoped memory of intermediate DataFrames, so follow-ups don't re-query
-- Dependent sub-questions. Branches have to be independent today; a DAG would let one feed another
-- Multiple tables and joins with schema selection
+- Keep intermediate DataFrames across a conversation so follow-ups don't re-query
+- Dependent sub-questions, where one branch feeds another
+- Multiple tables and joins
 - Result caching keyed on question and schema
-- Export a run as a shareable notebook
+- Export a run as a notebook
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © Asad Aslam

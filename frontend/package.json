@@ -1,7 +1,10 @@
 {
-  "name": "ai-data-analyst-agent-frontend",
+  "name": "prism-frontend",
   "private": true,
-  "version": "1.6.1",
+  "version": "1.7.0",
+  "description": "React console for Prism, the data analyst agent.",
+  "author": "Asad Aslam",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=18"
