@@ -45,7 +45,7 @@ The screenshots and the demo in `images/` come from real runs against the bundle
 
 | File | Shows |
 | --- | --- |
-| `demo.gif` | A two-part question splitting into parallel tasks |
+| `demo.gif` | A full session: a simple question, a line chart, parallel tasks and KPI cards |
 | `agent-graph.png` | The orchestrator and worker graphs |
 | `getting-started.png` | The three ways to load data |
 | `kpi-cards.png` | A finished answer with KPI cards |

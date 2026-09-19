@@ -27,9 +27,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/demo.gif" alt="The agent splitting one question into two tasks and running them in parallel" width="900">
+  <img src="docs/images/demo.gif" alt="A session on the bundled sample: a simple question, a line chart, a two-part question running as parallel tasks, and KPI cards" width="900">
   <br>
-  <em>"Revenue by region as a chart and revenue by category" becomes two tasks running at the same time. Sped up 3x.</em>
+  <em>One session on the bundled sample: a simple question, a monthly trend as a line chart, a two-part question that runs as parallel tasks, and KPI cards.</em>
 </p>
 
 ---
