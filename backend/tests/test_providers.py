@@ -1,6 +1,8 @@
 """Provider selection, outage classification, and the graceful failure path."""
 from __future__ import annotations
 
+from urllib.parse import urlparse
+
 import pytest
 
 from app import config
@@ -202,7 +204,7 @@ def test_openai_without_a_gateway_still_uses_the_real_api(monkeypatch):
     monkeypatch.delenv("OPENAI_BASE_URL", raising=False)
 
     model = providers.build_chat_model()
-    assert str(model.client._client.base_url).startswith("https://api.openai.com")
+    assert urlparse(str(model.client._client.base_url)).hostname == "api.openai.com"
 
 
 def test_openai_gateway_url_is_used_when_set(monkeypatch):
@@ -211,7 +213,7 @@ def test_openai_gateway_url_is_used_when_set(monkeypatch):
     monkeypatch.setattr(config.settings, "openai_base_url", "https://gateway.example.com/v1")
 
     model = providers.build_chat_model()
-    assert str(model.client._client.base_url).startswith("https://gateway.example.com")
+    assert urlparse(str(model.client._client.base_url)).hostname == "gateway.example.com"
 
 
 # -------------------------------------------------------- blank OLLAMA_MODEL

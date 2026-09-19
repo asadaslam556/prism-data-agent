@@ -1,5 +1,9 @@
 # Frontend
 
+![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite_8-646CFF?logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+
 React + Vite console for Prism. See the root [README](../README.md) for setup
 and [`docs/architecture.md`](../docs/architecture.md) for the internals.
 

@@ -22,6 +22,10 @@ they're closed.
   name. All rejected now, along with any private attribute.
 - **A runtime backstop.** An audit hook refuses file writes, processes, sockets
   and ctypes while a snippet runs, however the call was reached.
+- **Code scanning findings fixed.** The stream's last-resort error event no
+  longer echoes exception text to the browser, table reads are built with
+  SQLAlchemy constructs instead of formatted SQL strings, and two tests compare
+  parsed hostnames instead of URL prefixes.
 - **The SQL row cap could be dodged.** A `LIMIT` in a subquery or a comment
   counted as "has a limit", leaving the outer query unbounded, and a model-chosen
   `LIMIT 100000` was kept. Only a trailing `LIMIT` counts now, clamped to
@@ -51,6 +55,8 @@ they're closed.
   This also clears every open npm security advisory (vite, esbuild, postcss,
   browserslist, nanoid).
 - Image metadata stripped from the app icons and screenshots.
+- A code of conduct, and a docs index at `docs/README.md`. The README and every
+  guide now carry architecture, layer and flow diagrams.
 - The guides moved into `docs/`: `docs/guide.md`, `docs/windows.md` and
   `docs/deploy-render.md`. All docs were revised for accuracy.
 - CI builds the deployment image, and Dependabot now watches pip and npm as well

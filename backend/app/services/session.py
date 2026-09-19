@@ -36,7 +36,7 @@ class DatasetSession:
 
     def dataframe(self) -> pd.DataFrame:
         """Full table as a DataFrame (what the python/chart skills work on)."""
-        return connectors.run_select(self.engine, f'SELECT * FROM "{self.table_name}"')
+        return connectors.read_table(self.engine, self.table_name)
 
 
 _SESSIONS: OrderedDict[str, DatasetSession] = OrderedDict()

@@ -1,6 +1,22 @@
 # Running on Windows
 
+![Windows](https://img.shields.io/badge/Windows-0078D4)
+![PowerShell](https://img.shields.io/badge/PowerShell-5391FE)
+![Python](https://img.shields.io/badge/Python_3.11+-3776AB?logo=python&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-000000?logo=ollama&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+
 The README's quickstart, in PowerShell, plus the Windows-specific things that tend to go wrong.
+
+```mermaid
+flowchart LR
+    I["Install Python,<br/>Node and Ollama"] --> M["ollama pull qwen2.5"]
+    M --> B["Terminal 1<br/>backend on :8000"]
+    M --> F["Terminal 2<br/>frontend on :5173"]
+    B --> O(["Open localhost:5173"])
+    F --> O
+```
 
 ## Prerequisites
 

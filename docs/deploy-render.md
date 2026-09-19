@@ -1,5 +1,18 @@
 # Deploying to Render
 
+![Render](https://img.shields.io/badge/Render-46E3B7?logo=render&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?logo=deepseek&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+
+```mermaid
+flowchart LR
+    L["Test locally<br/>.env + docker run"] --> P["Push to GitHub"]
+    P --> R["Render builds<br/>the Dockerfile"]
+    R --> E["Env vars set<br/>in the dashboard"]
+    E --> U(["https://your-app.onrender.com<br/>behind the login"])
+```
+
 Render's free tier runs a real container, which is what Prism needs. This guide assumes you've never used it, and uses DeepSeek as the model provider because it's cheap and prepaid. Any provider from the README works the same way; only the environment variables change.
 
 Budget about 30 minutes, most of it waiting for the first build.

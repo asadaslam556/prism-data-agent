@@ -13,7 +13,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 
 import pandas as pd
-from sqlalchemy import Engine, create_engine, inspect, text
+from sqlalchemy import Engine, create_engine, func, inspect, literal_column, select, table, text
 from sqlalchemy.pool import StaticPool
 
 
@@ -81,9 +81,10 @@ def introspect(engine: Engine, table_name: str | None) -> Schema:
 
     columns = [(c["name"], str(c["type"])) for c in inspector.get_columns(table_name)]
 
+    source = table(table_name)
     with _read_guard(engine), engine.connect() as conn:
-        row_count = conn.execute(text(f'SELECT COUNT(*) FROM "{table_name}"')).scalar_one()
-        sample = pd.read_sql(f'SELECT * FROM "{table_name}" LIMIT 5', conn)
+        row_count = conn.execute(select(func.count()).select_from(source)).scalar_one()
+        sample = pd.read_sql(select(literal_column("*")).select_from(source).limit(5), conn)
 
     return Schema(
         table_name=table_name,
@@ -126,6 +127,12 @@ def _read_guard(engine: Engine):
             yield
     else:
         yield
+
+
+def read_table(engine: Engine, table_name: str) -> pd.DataFrame:
+    """A whole table as a DataFrame, with the name quoted by the dialect."""
+    with _read_guard(engine), engine.connect() as conn:
+        return pd.read_sql(select(literal_column("*")).select_from(table(table_name)), conn)
 
 
 def run_select(engine: Engine, sql: str) -> pd.DataFrame:

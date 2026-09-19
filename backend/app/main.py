@@ -245,7 +245,8 @@ def query_stream(request: QueryRequest) -> StreamingResponse:
             # last resort -- graph.stream already downgrades provider outages
             # to a normal "final" event, so landing here means an actual bug
             logger.exception("stream failed: %s", exc)
-            yield f"event: error\ndata: {json.dumps({'message': str(exc)})}\n\n"
+            message = "The agent hit an unexpected error. The server log has the details."
+            yield f"event: error\ndata: {json.dumps({'message': message})}\n\n"
 
     return StreamingResponse(event_source(), media_type="text/event-stream")
 

@@ -1,5 +1,9 @@
 # Contributing
 
+![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white)
+![Ruff](https://img.shields.io/badge/Ruff-D7FF64?logo=ruff&logoColor=black)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
+
 Thanks for taking a look. Here's how to work on it.
 
 By taking part you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -24,6 +28,17 @@ npm install
 
 You only need Ollama (or a hosted provider key) to use the app. The test suite mocks the model.
 
+## How a change lands
+
+```mermaid
+flowchart LR
+    B["Branch off main"] --> C["Change + tests"]
+    C --> L["ruff · pytest ·<br/>npm run build"]
+    L --> PR["Open a PR"]
+    PR --> CI["CI: backend 3.11/3.12,<br/>frontend, image, CodeQL"]
+    CI --> S(["Squash merge"])
+```
+
 ## Before opening a PR
 
 ```bash
@@ -34,7 +49,7 @@ cd ../frontend
 npm run build
 ```
 
-CI runs the same checks on Python 3.11 and 3.12, plus a build of the deployment image, so if they pass locally you're in good shape.
+CI runs the same checks on Python 3.11 and 3.12, plus a build of the deployment image and a CodeQL scan, so if they pass locally you're in good shape. `main` only accepts changes that pass all of them, and PRs are squash-merged.
 
 ## Where things go
 

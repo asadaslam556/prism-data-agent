@@ -1,8 +1,23 @@
 # Security
 
+![CodeQL](https://img.shields.io/badge/CodeQL-enabled-2F3237?logo=github&logoColor=white)
+![Secret scanning](https://img.shields.io/badge/secret_scanning-on-2F3237?logo=github&logoColor=white)
+![Dependabot](https://img.shields.io/badge/Dependabot-on-025E8C?logo=dependabot&logoColor=white)
+
 ## The risky part
 
 Prism runs SQL and Python written by a language model. That's the core feature and the core risk, and it's handled in layers so that getting past one still leaves the others.
+
+```mermaid
+flowchart LR
+    M["Model output"] --> S["Static checks<br/>sqlparse · AST walk"]
+    S -->|rejected| R(["Back to the planner"])
+    S --> N["Restricted namespace<br/>module views · builtins allow-list"]
+    N --> H["Audit hook<br/>no writes · no processes · no sockets"]
+    H --> W["Watchdog<br/>SANDBOX_TIMEOUT_SECONDS"]
+    W --> B["Step budget<br/>bounded loop"]
+    B --> OK(["Result"])
+```
 
 1. **Static checks.** SQL must be a single `SELECT` or `WITH` statement with no write or admin keywords. Comments are stripped, and the query ends with a `LIMIT` no larger than `MAX_SQL_ROWS`, added or clamped as needed. Python is parsed and walked before it runs: no imports, no private or dunder attributes, no frame introspection (`gi_frame`, `f_globals` and so on), no `eval`/`exec`/`open`/`getattr`, and none of the pandas, numpy or matplotlib calls that read or write files, including `query()`, which evaluates its string argument itself. Method names passed as strings (`df.apply("to_pickle", ...)`) are rejected too.
 2. **A restricted namespace.** Snippets run against a copy of the data with about twenty allow-listed builtins. They get read-only views of `pd`, `np` and `plt` rather than the modules themselves, because those libraries import `os`, `sys` and `subprocess` internally and any submodule used to be a way to reach them. The views return functions, classes and constants as normal but refuse to hand out a module, apart from a few numeric ones like `np.random` and `pd.api.types`. A narrow `__import__` returns already-loaded numpy and pandas internals, because numpy imports lazily partway through ordinary calls.
@@ -10,6 +25,10 @@ Prism runs SQL and Python written by a language model. That's the core feature a
 4. **A watchdog.** No static check rejects `while True:`, and in CPython a tight loop starves every other thread of the GIL. Snippets are stopped once they pass `SANDBOX_TIMEOUT_SECONDS`.
 5. **A bounded loop.** A step budget shared across all parallel branches, and a fixed number of verifier retries, so a stuck agent ends with a best-effort answer.
 6. **Server limits.** Upload size cap, session cap with LRU eviction, session TTL, and a request id on every response.
+
+## Continuous checks
+
+Every push runs [CodeQL](https://codeql.github.com/) over the Python, JavaScript and workflow code, secret scanning with push protection is on, and Dependabot raises grouped update PRs for pip, npm and GitHub Actions every month. The regression tests for every sandbox escape found so far run in CI on Python 3.11 and 3.12.
 
 ## Known gaps
 
