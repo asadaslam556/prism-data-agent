@@ -2,6 +2,8 @@
 
 Thanks for taking a look. Here's how to work on it.
 
+By taking part you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Setup
 
 Backend:
