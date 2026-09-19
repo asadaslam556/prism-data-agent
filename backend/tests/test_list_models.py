@@ -24,12 +24,12 @@ GROUPED_CATALOGUE = {
             "models": ["gpt-5", "gpt-5-mini"],
         },
         {
-            "tool": "CURL / Anthropic",
-            "base_path": "/v1/messages",
+            "tool": "CURL / Mistral",
+            "base_path": "/v1/mistral",
             "models": [
-                "claude-opus-4-5@20251101",
-                "claude-haiku-4-5@20251001",
-                "claude-sonnet-4-6@default",
+                "mistral-large@2411",
+                "mistral-small@2503",
+                "codestral@default",
             ],
         },
     ],
@@ -38,7 +38,7 @@ GROUPED_CATALOGUE = {
 
 def test_grouped_catalogue_is_parsed():
     names = list_models.model_names(GROUPED_CATALOGUE)
-    assert "claude-haiku-4-5@20251001" in names
+    assert "mistral-small@2503" in names
     assert "gpt-5" in names
     assert len(names) == 7
 
@@ -61,7 +61,7 @@ def test_duplicates_are_dropped_and_order_kept():
 def test_groups_keeps_the_api_families_apart():
     grouped = list_models.groups(GROUPED_CATALOGUE)
     labels = [label for label, _ in grouped]
-    assert labels == ["CURL / Gemini", "CURL / OpenAI", "CURL / Anthropic"]
+    assert labels == ["CURL / Gemini", "CURL / OpenAI", "CURL / Mistral"]
 
 
 def test_groups_is_empty_for_ungrouped_payloads():
@@ -70,8 +70,7 @@ def test_groups_is_empty_for_ungrouped_payloads():
 
 def test_provider_matching_picks_the_right_family():
     """A name only works with the provider that speaks its API, so the script
-    must not offer Gemini names to someone running LLM_PROVIDER=anthropic."""
-    assert list_models.matches_provider("CURL / Anthropic", "anthropic")
+    must not offer Gemini names to someone running LLM_PROVIDER=openai."""
     assert list_models.matches_provider("CURL / OpenAI", "openai")
-    assert not list_models.matches_provider("CURL / Gemini", "anthropic")
-    assert not list_models.matches_provider("CURL / Anthropic", "openai")
+    assert not list_models.matches_provider("CURL / Gemini", "openai")
+    assert not list_models.matches_provider("CURL / Mistral", "openai")

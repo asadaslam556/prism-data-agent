@@ -58,11 +58,10 @@ def structured(system: str, user: str, schema):
         # API rejects response_format={"type": "json_schema"} outright ("This
         # response_format type is unavailable now") -- that is LangChain's
         # default for with_structured_output() when it is left unset. Function
-        # calling is what DeepSeek's own docs point to instead, and it works
-        # the same way across the other two providers: ChatAnthropic already
-        # answers structured requests via tool use, and ChatOllama supports it
-        # for any tool-capable model (the qwen2.5 default included), so this
-        # is a strictly safer choice everywhere, not a DeepSeek-only carve-out.
+        # calling is what DeepSeek's own docs point to instead, and ChatOllama
+        # supports it for any tool-capable model (the qwen2.5 default
+        # included), so it's the safer choice everywhere, not a DeepSeek-only
+        # carve-out.
         model = get_llm().with_structured_output(schema, method="function_calling")
         return model.invoke([SystemMessage(content=system), HumanMessage(content=user)])
     except ProviderError:

@@ -6,9 +6,9 @@ function registered below -- adding a new one means writing one function
 and sticking @register("name") on it. Nothing else in the codebase knows
 or cares which provider is active.
 
-The heavier SDKs (langchain-anthropic, langchain-openai) are imported lazily
-so the default install stays lean. If you select a provider whose package
-isn't installed, you get told exactly what to pip install.
+SDKs are imported inside their builder, so only the active one is loaded. If
+you select a provider whose package isn't installed, you get told exactly
+what to pip install.
 """
 from __future__ import annotations
 
@@ -34,7 +34,6 @@ _REGISTRY: dict[str, Callable[[str], object]] = {}
 # override via env rather than treating these as gospel.
 DEFAULT_MODELS = {
     "ollama": None,  # falls back to OLLAMA_MODEL (qwen2.5)
-    "anthropic": "claude-sonnet-4-6",
     "openai": "gpt-4o-mini",
 }
 
@@ -56,9 +55,8 @@ def active_provider() -> str:
 
 # Per-provider env var for the model name. The API key and base URL already
 # fall back to these, so people reasonably assume the model does too and set
-# ANTHROPIC_MODEL expecting it to work. It silently did nothing before.
+# OPENAI_MODEL expecting it to work. It silently did nothing before.
 _MODEL_ENV_VARS = {
-    "anthropic": "ANTHROPIC_MODEL",
     "openai": "OPENAI_MODEL",
     "ollama": "OLLAMA_MODEL",
 }
@@ -109,43 +107,6 @@ def _ollama(model: str):
     return ChatOllama(**kwargs)
 
 
-@register("anthropic")
-def _anthropic(model: str):
-    try:
-        from langchain_anthropic import ChatAnthropic
-    except ImportError as exc:
-        raise ProviderError(
-            "LLM_PROVIDER=anthropic needs the langchain-anthropic package: "
-            "pip install langchain-anthropic"
-        ) from exc
-
-    key = settings.anthropic_api_key or os.environ.get("ANTHROPIC_API_KEY")
-    if not key:
-        raise ProviderError(
-            "LLM_PROVIDER=anthropic but no key found. Set ANTHROPIC_API_KEY."
-        )
-    kwargs: dict[str, Any] = {
-        "model": model,
-        "api_key": key,
-        "timeout": settings.llm_request_timeout,
-        "max_tokens": settings.llm_max_tokens,
-    }
-    # Some models behind a gateway reject temperature outright. Blank
-    # LLM_TEMPERATURE leaves it out of the request rather than sending a
-    # value the model will refuse.
-    if settings.llm_temperature is not None:
-        kwargs["temperature"] = settings.llm_temperature
-    # Only pass base_url when there's actually a value. ChatAnthropic resolves
-    # its own default (the real Anthropic API) when the kwarg is absent, but
-    # passing base_url=None explicitly overrides that resolution and leaves the
-    # client with nowhere to send requests -- found that the hard way while
-    # wiring this up.
-    base_url = settings.anthropic_base_url or os.environ.get("ANTHROPIC_BASE_URL")
-    if base_url:
-        kwargs["base_url"] = base_url
-    return ChatAnthropic(**kwargs)
-
-
 @register("openai")
 def _openai(model: str):
     try:
@@ -181,8 +142,8 @@ def _openai(model: str):
     extra = settings.extra_body
     if extra:
         kwargs["extra_body"] = extra
-    # Same rule as the anthropic builder: only pass base_url when it has a
-    # value, so the client keeps its own default when it doesn't.
+    # Only pass base_url when it has a value. Passing base_url=None explicitly
+    # overrides the client's own default and leaves it nowhere to send requests.
     base_url = settings.openai_base_url or os.environ.get("OPENAI_BASE_URL")
     if base_url:
         kwargs["base_url"] = base_url

@@ -43,6 +43,14 @@ they're closed.
   the server was started from.
 
 ### Changed
+- Two providers now: Ollama for local models, and `openai` for OpenAI or any
+  compatible endpoint (DeepSeek, Groq, vLLM, LM Studio). The third hosted
+  provider and its SDK are gone, which trims the install.
+- Dependencies upgraded: React 19, Vite 8, pandas 3, numpy 2.4, FastAPI 0.141
+  and the rest of the Python stack. The frontend now needs Node 20.19 or newer.
+  This also clears every open npm security advisory (vite, esbuild, postcss,
+  browserslist, nanoid).
+- Image metadata stripped from the app icons and screenshots.
 - The guides moved into `docs/`: `docs/guide.md`, `docs/windows.md` and
   `docs/deploy-render.md`. All docs were revised for accuracy.
 - CI builds the deployment image, and Dependabot now watches pip and npm as well
@@ -62,10 +70,8 @@ they're closed.
   which routes through `tools`/`tool_choice` and is what DeepSeek's own docs
   point to. One call site in `llm.py` feeds every structured call in the agent
   (decomposer, planner, verifier), so the one-line fix covers all three.
-  Anthropic and Ollama were unaffected -- they already answer structured
-  requests through tool calling, not response_format -- so this makes
-  OpenAI-compatible endpoints consistent with the other two rather than
-  changing their behaviour.
+  Ollama was unaffected, since it already answers structured requests through
+  tool calling.
 
 - That fix traded one 400 for another. DeepSeek's V4 models run in thinking mode
   by default, and thinking mode refuses a *forced* tool choice -- which is
@@ -152,7 +158,7 @@ the UI telling the truth about what happened.
 - `list_models.py`. Asks the configured endpoint which models it actually
   serves and tells you whether your current `LLM_MODEL` is among them. Handles
   flat lists and catalogues grouped by API family.
-- `ANTHROPIC_MODEL` and `OPENAI_MODEL` are read as fallbacks below `LLM_MODEL`.
+- `OPENAI_MODEL` is read as a fallback below `LLM_MODEL`.
   The key and base URL already had per-provider fallbacks, so setting the model
   the same way looked like it should work. It was silently ignored.
 - A model the endpoint doesn't serve gets its own error message pointing at
@@ -160,7 +166,7 @@ the UI telling the truth about what happened.
 
 ### Fixed
 - The test suite is now hermetic. It read both `backend/.env` and any
-  `ANTHROPIC_*` / `OPENAI_*` variables in the developer's shell, so it failed on
+  `OPENAI_*` variables in the developer's shell, so it failed on
   a configured machine and passed on a clean clone. The shared fixture now pins
   settings and clears those variables.
 
@@ -198,7 +204,7 @@ The UI stopped being a side panel and became part of the conversation.
 ## 1.2.2
 
 ### Fixed
-- **`ANTHROPIC_BASE_URL` was documented but never read**, so anyone pointing the
+- **A provider base URL was documented but never read**, so anyone pointing the
   app at a compatible endpoint got a confusing authentication failure against
   the public API instead. The first fix introduced a regression of its own,
   passing `base_url=None` explicitly overrides the SDK's own default, which is
@@ -294,8 +300,7 @@ The agent stopped being one loop and became a graph of loops.
 ## 1.1.0
 
 ### Added
-- Pluggable LLM providers. `LLM_PROVIDER` picks ollama (default), anthropic,
-  or openai; `LLM_MODEL` overrides the per-provider default; `OPENAI_BASE_URL`
+- Pluggable LLM providers. `LLM_PROVIDER` picks ollama (default) or openai; `LLM_MODEL` overrides the per-provider default; `OPENAI_BASE_URL`
   covers any OpenAI-compatible server (LM Studio, vLLM, Groq). New providers
   are one registered function in `app/agent/providers.py`.
 - Friendly degradation when the model backend is down: instead of a 500 with

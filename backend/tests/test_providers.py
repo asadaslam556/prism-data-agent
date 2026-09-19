@@ -16,7 +16,7 @@ def fresh_llm_cache():
 
 
 def test_registry_knows_the_built_in_providers():
-    assert {"ollama", "anthropic", "openai"} <= set(providers.available())
+    assert {"ollama", "openai"} <= set(providers.available())
 
 
 def test_unknown_provider_fails_with_the_valid_options(monkeypatch):
@@ -35,8 +35,8 @@ def test_model_resolution_order(monkeypatch):
     monkeypatch.setattr(config.settings, "llm_model", None)
     monkeypatch.setattr(config.settings, "llm_provider", "ollama")
     assert providers.active_model() == config.settings.ollama_model
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-    assert providers.active_model() == providers.DEFAULT_MODELS["anthropic"]
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
+    assert providers.active_model() == providers.DEFAULT_MODELS["openai"]
 
 
 def test_ollama_is_the_default_and_builds():
@@ -44,24 +44,15 @@ def test_ollama_is_the_default_and_builds():
     assert type(providers.build_chat_model()).__name__ == "ChatOllama"
 
 
-def test_anthropic_requires_a_key(monkeypatch):
-    pytest.importorskip("langchain_anthropic")
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-    monkeypatch.setattr(config.settings, "anthropic_api_key", None)
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
-    with pytest.raises(ProviderError, match="ANTHROPIC_API_KEY"):
+def test_openai_requires_a_key(monkeypatch):
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
+    monkeypatch.setattr(config.settings, "openai_api_key", None)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    with pytest.raises(ProviderError, match="OPENAI_API_KEY"):
         providers.build_chat_model()
 
 
-def test_anthropic_builds_with_a_key(monkeypatch):
-    pytest.importorskip("langchain_anthropic")
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-    monkeypatch.setattr(config.settings, "anthropic_api_key", "sk-test-not-real")
-    assert type(providers.build_chat_model()).__name__ == "ChatAnthropic"
-
-
 def test_openai_builds_with_a_key(monkeypatch):
-    pytest.importorskip("langchain_openai")
     monkeypatch.setattr(config.settings, "llm_provider", "openai")
     monkeypatch.setattr(config.settings, "openai_api_key", "sk-test-not-real")
     assert type(providers.build_chat_model()).__name__ == "ChatOpenAI"
@@ -84,14 +75,10 @@ class _DownClient:
     def invoke(self, *_args, **_kwargs):
         raise ConnectionError("connection refused on purpose")
 
-    # method=None: llm.structured() now passes method="function_calling"
-    # explicitly (DeepSeek rejects the response_format-based default). Real
-    # chat model classes accept and ignore it when unused; these fakes need
-    # to accept it too, or the call itself raises a TypeError before the
-    # test ever reaches the behaviour it means to exercise -- and that
-    # TypeError's "unexpected keyword argument" wording matches this file's
-    # own rejected-request heuristic, so it fails silently wrong rather than
-    # loudly wrong.
+    # llm.structured() passes method="function_calling". Without the parameter
+    # here the call raises a TypeError whose "unexpected keyword argument"
+    # wording matches the rejected-request heuristic, so the test would fail
+    # quietly wrong instead of loudly wrong.
     def with_structured_output(self, _schema, method=None):
         return self
 
@@ -137,272 +124,103 @@ def test_agent_degrades_politely_when_the_provider_is_down(monkeypatch, sales_se
 
 # ------------------------------------------------------------ output ceiling
 
-
 # One question is several model calls in a row. Left unbounded, a reasoning
-
 # model spends thousands of tokens thinking before it writes a line of SQL,
-
 # and the run dies on the per-call timeout. Every provider gets a cap.
 
-
-
-
 def test_openai_sends_a_max_tokens_ceiling(monkeypatch):
-
-    pytest.importorskip("langchain_openai")
-
     monkeypatch.setattr(config.settings, "llm_provider", "openai")
-
     monkeypatch.setattr(config.settings, "openai_api_key", "sk-test-not-real")
-
-
-
-    model = providers.build_chat_model()
-
-    assert model.max_tokens == config.settings.llm_max_tokens
-
-
-
-
-def test_anthropic_sends_a_max_tokens_ceiling(monkeypatch):
-
-    pytest.importorskip("langchain_anthropic")
-
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-
-    monkeypatch.setattr(config.settings, "anthropic_api_key", "sk-test-not-real")
-
-
-
-    model = providers.build_chat_model()
-
-    assert model.max_tokens == config.settings.llm_max_tokens
-
-
+    assert providers.build_chat_model().max_tokens == config.settings.llm_max_tokens
 
 
 def test_ollama_sends_a_max_tokens_ceiling(monkeypatch):
-
     monkeypatch.setattr(config.settings, "llm_provider", "ollama")
-
     assert providers.build_chat_model().num_predict == config.settings.llm_max_tokens
-
-
 
 
 # --------------------------------------------------------- omittable temperature
 
-
-# Some hosted models return a 400 saying temperature is deprecated. There is no
-
-# value that satisfies them, so the setting has to be genuinely omittable.
-
-
-
+# Some hosted models return a 400 saying temperature is deprecated. No value
+# satisfies them, so the setting has to be genuinely omittable.
 
 def test_blank_temperature_means_omit_it():
-
     from app.config import Settings
 
-
-
     for blank in ("", "none", "off", " "):
-
         assert Settings(LLM_TEMPERATURE=blank).llm_temperature is None
-
     assert Settings(LLM_TEMPERATURE="0.7").llm_temperature == 0.7
 
 
-
-
-@pytest.mark.parametrize("provider", ["anthropic", "openai"])
-
-def test_providers_leave_temperature_unset_when_blank(monkeypatch, provider):
-
-    pytest.importorskip(f"langchain_{provider}")
-
-    monkeypatch.setattr(config.settings, "llm_provider", provider)
-
-    monkeypatch.setattr(config.settings, f"{provider}_api_key", "sk-test-not-real")
-
+def test_openai_leaves_temperature_unset_when_blank(monkeypatch):
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
+    monkeypatch.setattr(config.settings, "openai_api_key", "sk-test-not-real")
     monkeypatch.setattr(config.settings, "llm_temperature", None)
-
-
-
     assert providers.build_chat_model().temperature is None
-
-
 
 
 def test_ollama_leaves_temperature_unset_when_blank(monkeypatch):
-
     monkeypatch.setattr(config.settings, "llm_provider", "ollama")
-
     monkeypatch.setattr(config.settings, "llm_temperature", None)
-
     assert providers.build_chat_model().temperature is None
 
 
-
-
-# ----------------------------------------------------- a refused request is not an outage
-
+# ------------------------------------------- a refused request is not an outage
 
 def test_rejected_requests_are_recognised():
-
     rejected = RuntimeError(
-
         "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', "
-
         "'message': '`temperature` is deprecated for this model.'}}"
-
     )
-
     assert providers.looks_rejected(rejected)
-
     assert providers.should_surface(rejected)
-
     assert "LLM_TEMPERATURE" in providers.outage_message(rejected)
 
 
-
-
 def test_a_refused_request_stops_instead_of_falling_back(monkeypatch):
-
     """Silently falling back would burn a step and then fail the same way."""
 
-
-
     class Refusing:
-
         def with_structured_output(self, _schema, method=None):
-
             return self
 
-
-
         def invoke(self, *_args, **_kwargs):
-
             raise RuntimeError("Error code: 400 - invalid_request_error: unsupported parameter")
 
-
-
     monkeypatch.setattr("app.agent.llm.get_llm", lambda: Refusing())
-
     with pytest.raises(ProviderError, match="rejected the request"):
-
         llm.structured("system", "user", object())
 
 
-
-
-# ------------------------------------------------------------- anthropic base_url
-
-
-def test_anthropic_uses_the_real_api_by_default(monkeypatch):
-
-    """No gateway configured -> must hit the real Anthropic API, not None.
-
-
-
-    This is the regression test for a bug that almost shipped: passing
-
-    base_url=None explicitly overrides ChatAnthropic's own default resolution,
-
-    which leaves the client with nowhere to send requests.
-
-    """
-
-    pytest.importorskip("langchain_anthropic")
-
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-
-    monkeypatch.setattr(config.settings, "anthropic_api_key", "sk-test-not-real")
-
-    monkeypatch.setattr(config.settings, "anthropic_base_url", None)
-    # The builder falls back to the raw env var too (same as the API key), so
-    # blanking only the settings object isn't enough on a machine that has a
-    # real ANTHROPIC_BASE_URL set outside of .env -- a corporate gateway var
-    # left in the shell environment, say. Matches the delenv already used in
-    # test_openai_without_a_gateway_still_uses_the_real_api; this test just
-    # didn't have it yet.
-    monkeypatch.delenv("ANTHROPIC_BASE_URL", raising=False)
-
-    model = providers.build_chat_model()
-
-    assert model.anthropic_api_url == "https://api.anthropic.com"
-
-
-
-
-def test_anthropic_base_url_points_at_a_gateway_when_set(monkeypatch):
-
-    pytest.importorskip("langchain_anthropic")
-
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-
-    monkeypatch.setattr(config.settings, "anthropic_api_key", "sk-test-not-real")
-
-    monkeypatch.setattr(config.settings, "anthropic_base_url", "https://gateway.example.com")
-
-
-
-    model = providers.build_chat_model()
-
-    assert model.anthropic_api_url == "https://gateway.example.com"
-
-
-
+# ------------------------------------------------------------ openai base_url
 
 def test_openai_without_a_gateway_still_uses_the_real_api(monkeypatch):
-
-    pytest.importorskip("langchain_openai")
-
+    """Passing base_url=None explicitly would override the client's own default."""
     monkeypatch.setattr(config.settings, "llm_provider", "openai")
-
     monkeypatch.setattr(config.settings, "openai_api_key", "sk-test-not-real")
-
     monkeypatch.setattr(config.settings, "openai_base_url", None)
-
     monkeypatch.delenv("OPENAI_BASE_URL", raising=False)
 
-
-
     model = providers.build_chat_model()
-
     assert str(model.client._client.base_url).startswith("https://api.openai.com")
 
 
-
-
 def test_openai_gateway_url_is_used_when_set(monkeypatch):
-
-    pytest.importorskip("langchain_openai")
-
     monkeypatch.setattr(config.settings, "llm_provider", "openai")
-
     monkeypatch.setattr(config.settings, "openai_api_key", "sk-test-not-real")
-
     monkeypatch.setattr(config.settings, "openai_base_url", "https://gateway.example.com/v1")
 
-
-
     model = providers.build_chat_model()
-
     assert str(model.client._client.base_url).startswith("https://gateway.example.com")
-
-
 
 
 # -------------------------------------------------------- blank OLLAMA_MODEL
 
-
 def test_blank_ollama_model_falls_back_to_the_default(monkeypatch):
-    """Goes through setenv on purpose -- that's the path a real .env file
-    actually takes. A constructor kwarg only works when the field carries an
-    explicit alias (llm_temperature does; ollama_model doesn't), so passing
-    OLLAMA_MODEL="..." directly silently matches nothing and proves nothing,
-    which is exactly the mistake this test made the first time it was written.
+    """Goes through setenv on purpose, because that's the path a real .env
+    file takes. A constructor kwarg only works for fields with an explicit
+    alias, so passing OLLAMA_MODEL="..." directly would match nothing and
+    prove nothing.
     """
     from app.config import Settings
 
@@ -418,43 +236,35 @@ def test_blank_ollama_model_falls_back_to_the_default(monkeypatch):
 
 # --------------------------------------------- provider-specific model env vars
 
-# The key and base URL already fall back to ANTHROPIC_* / OPENAI_* env vars, so
-# people set ANTHROPIC_MODEL too and expect it to count. It used to be ignored
-# in silence, which is a miserable thing to debug.
+# The key and base URL fall back to OPENAI_* env vars, so people set
+# OPENAI_MODEL too and expect it to count. It used to be ignored in silence.
 
 def test_llm_model_beats_the_provider_env_var(monkeypatch):
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
     monkeypatch.setattr(config.settings, "llm_model", "from-llm-model")
-    monkeypatch.setenv("ANTHROPIC_MODEL", "from-anthropic-model")
+    monkeypatch.setenv("OPENAI_MODEL", "from-openai-model")
     assert providers.active_model() == "from-llm-model"
-
-
-def test_anthropic_model_env_var_is_used_when_llm_model_is_unset(monkeypatch):
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-    monkeypatch.setattr(config.settings, "llm_model", None)
-    monkeypatch.setenv("ANTHROPIC_MODEL", "claude-sonnet-4-6@default")
-    assert providers.active_model() == "claude-sonnet-4-6@default"
 
 
 def test_openai_model_env_var_is_used_when_llm_model_is_unset(monkeypatch):
     monkeypatch.setattr(config.settings, "llm_provider", "openai")
     monkeypatch.setattr(config.settings, "llm_model", None)
-    monkeypatch.setenv("OPENAI_MODEL", "some-gateway-model")
-    assert providers.active_model() == "some-gateway-model"
+    monkeypatch.setenv("OPENAI_MODEL", "some-gateway-model@default")
+    assert providers.active_model() == "some-gateway-model@default"
 
 
 def test_built_in_default_applies_when_nothing_is_set(monkeypatch):
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
     monkeypatch.setattr(config.settings, "llm_model", None)
-    monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
-    assert providers.active_model() == providers.DEFAULT_MODELS["anthropic"]
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+    assert providers.active_model() == providers.DEFAULT_MODELS["openai"]
 
 
 def test_a_blank_provider_env_var_is_ignored(monkeypatch):
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
     monkeypatch.setattr(config.settings, "llm_model", None)
-    monkeypatch.setenv("ANTHROPIC_MODEL", "   ")
-    assert providers.active_model() == providers.DEFAULT_MODELS["anthropic"]
+    monkeypatch.setenv("OPENAI_MODEL", "   ")
+    assert providers.active_model() == providers.DEFAULT_MODELS["openai"]
 
 
 # ------------------------------------------------- a model the gateway lacks
@@ -462,14 +272,14 @@ def test_a_blank_provider_env_var_is_ignored(monkeypatch):
 def test_model_not_found_gets_its_own_message(monkeypatch):
     """A 404 for the model name is a different problem from a bad key, and the
     message should point at the tool that lists what the gateway does serve."""
-    monkeypatch.setattr(config.settings, "llm_provider", "anthropic")
-    monkeypatch.setattr(config.settings, "llm_model", "claude-haiku-4-5")
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
+    monkeypatch.setattr(config.settings, "llm_model", "gpt-4o-mini")
 
     exc = RuntimeError(
         "Error code: 404 - {'error': {'code': 404, 'status': 'MODEL_NOT_FOUND', "
         "'message': 'The requested model does not exist on this gateway'}}"
     )
     message = providers.outage_message(exc)
-    assert "claude-haiku-4-5" in message
+    assert "gpt-4o-mini" in message
     assert "list_models.py" in message
     assert providers.should_surface(exc), "a missing model must stop the run, not fall back"

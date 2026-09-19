@@ -11,7 +11,7 @@ A walk through the codebase: what each file does, what happens between pressing 
 | `graph.py` | Both state graphs. The **worker** graph is the plan-act loop (`plan` → `run_sql` / `run_python` / `make_chart` → back to `plan`) for one sub-question. The **orchestrator** graph wraps it: `decompose` → workers in parallel → `merge` → `verify` → `interpret`, with a bounded retry edge from `verify` back to `decompose`. Also holds `run()` and `stream()`. |
 | `state.py` | `AgentState` belongs to the orchestrator; `BranchState` is one worker's private state (its sub-question, its DataFrame) and never leaves it. The fields several branches write at once, `branches` and `trace`, have additive reducers so parallel updates append instead of overwriting. |
 | `prompts.py` | System prompts for the decomposer, planner, verifier and each skill. Written for small local models first: strict output rules and forced code fences. |
-| `providers.py` | The provider registry. `LLM_PROVIDER` picks ollama, anthropic or openai at runtime; each is one registered builder function. Also sorts failures into readable `ProviderError`s. |
+| `providers.py` | The provider registry. `LLM_PROVIDER` picks ollama or openai at runtime; each is one registered builder function. Also sorts failures into readable `ProviderError`s. |
 | `llm.py` | What everything else calls: `complete()` for text, `structured()` for a validated pydantic object. One cached client per provider and model. No provider types leak out of this file. |
 
 ### Skills (`backend/app/skills/`)

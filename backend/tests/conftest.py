@@ -23,7 +23,7 @@ def shipped_defaults(monkeypatch):
 
     Two things leak in otherwise, and both cause failures that look like real
     bugs but aren't: whatever backend/.env happens to contain, and any
-    ANTHROPIC_* / OPENAI_* variables set in the developer's shell (a PowerShell
+    OPENAI_* variables set in the developer's shell (a PowerShell
     $PROFILE, say). The code deliberately reads those env vars at runtime, so
     tests asserting on defaults have to clear them or they're really asserting
     on whoever's machine they run on. Tests that care about a specific provider
@@ -36,7 +36,6 @@ def shipped_defaults(monkeypatch):
     monkeypatch.setattr(config.settings, "ollama_model", "qwen2.5")
 
     for name in (
-        "ANTHROPIC_MODEL", "ANTHROPIC_BASE_URL", "ANTHROPIC_API_KEY",
         "OPENAI_MODEL", "OPENAI_BASE_URL", "OPENAI_API_KEY",
         "OLLAMA_MODEL", "OLLAMA_BASE_URL",
     ):

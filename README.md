@@ -13,7 +13,7 @@ Ask a question about your data in plain English and Prism works out the answer. 
 ![React](https://img.shields.io/badge/React-frontend-61DAFB?logo=react&logoColor=black)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-By default everything runs on your own machine: the model (through [Ollama](https://ollama.com)), the database and the code sandbox. No API keys, and your data stays put. If you'd rather use a hosted model, one environment variable switches to Anthropic, OpenAI or any OpenAI-compatible endpoint such as DeepSeek.
+By default everything runs on your own machine: the model (through [Ollama](https://ollama.com)), the database and the code sandbox. No API keys, and your data stays put. If you'd rather use a hosted model, one environment variable switches to OpenAI or any OpenAI-compatible endpoint, such as DeepSeek or Groq.
 
 ![Agent graph](docs/images/agent-graph.png)
 
@@ -35,7 +35,7 @@ Bar and line charts are redrawn as SVG in the browser, so you can hover to read 
 
 ## Quickstart
 
-You need **Python 3.11+**, **Node 18+** and **[Ollama](https://ollama.com/download)**.
+You need **Python 3.11+**, **Node 20.19+** and **[Ollama](https://ollama.com/download)**.
 
 **1. Pull a model** (once):
 
@@ -78,15 +78,7 @@ Frontend on http://localhost:5173, API on port 8000, Ollama on 11434.
 
 ## Using a hosted model
 
-Set `LLM_PROVIDER` and a key, and restart the backend. All three provider packages are already in `requirements.txt`.
-
-**Anthropic:**
-
-```bash
-export LLM_PROVIDER=anthropic
-export ANTHROPIC_API_KEY=sk-ant-...
-export LLM_MODEL=claude-sonnet-4-6
-```
+Set `LLM_PROVIDER=openai` and a key, and restart the backend. The provider package is already in `requirements.txt`.
 
 **OpenAI:**
 
@@ -96,7 +88,7 @@ export OPENAI_API_KEY=sk-...
 export LLM_MODEL=gpt-4o-mini
 ```
 
-**DeepSeek** speaks the OpenAI API, so it goes through the `openai` provider with a different base URL:
+**DeepSeek**, or any other OpenAI-compatible service, uses the same provider with a different base URL:
 
 ```bash
 export LLM_PROVIDER=openai
@@ -110,8 +102,8 @@ Don't skip the last line. DeepSeek's V4 models run in thinking mode by default, 
 
 A few more things worth knowing:
 
-- `ANTHROPIC_BASE_URL` and `OPENAI_BASE_URL` point a provider at any compatible server: LM Studio, vLLM, Groq, a company gateway.
-- Gateways often rename models (`claude-sonnet-4-6@default`, say). Run `python list_models.py` from `backend/` and it will list what your endpoint actually serves and tell you whether `LLM_MODEL` is on it.
+- `OPENAI_BASE_URL` points the provider at any compatible server: LM Studio, vLLM, Groq, a company gateway.
+- Gateways often rename models (`gpt-4o-mini@default`, say). Run `python list_models.py` from `backend/` and it will list what your endpoint actually serves and tell you whether `LLM_MODEL` is on it.
 - Some models reject `temperature` outright. Set `LLM_TEMPERATURE=` (blank) to leave it out of the request.
 - The pill in the app header always shows which provider and model are answering.
 
@@ -123,15 +115,15 @@ Everything is an environment variable. Copy `backend/.env.example` to `backend/.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `LLM_PROVIDER` | `ollama` | `ollama`, `anthropic` or `openai` |
+| `LLM_PROVIDER` | `ollama` | `ollama` or `openai` (OpenAI or any compatible endpoint) |
 | `LLM_MODEL` | provider default | Overrides the model for whichever provider is active |
 | `LLM_TEMPERATURE` | `0.0` | Leave blank to omit it from the request |
 | `LLM_TOP_P` | | Nucleus sampling. Blank leaves it to the provider |
 | `LLM_MAX_TOKENS` | `2048` | Ceiling on what the model may write per call |
 | `LLM_REQUEST_TIMEOUT` | `180` | Seconds per call. One question is several calls |
 | `LLM_EXTRA_BODY` | | Raw JSON merged into the request, for provider-specific switches like thinking mode |
-| `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` | | Only for hosted providers |
-| `ANTHROPIC_BASE_URL` / `OPENAI_BASE_URL` | | Point at a gateway or compatible server |
+| `OPENAI_API_KEY` | | Only for the hosted provider |
+| `OPENAI_BASE_URL` | | Point at DeepSeek, Groq, a gateway or any compatible server |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Where Ollama listens |
 | `OLLAMA_MODEL` | `qwen2.5` | Ollama's default model |
 | `MAX_AGENT_STEPS` | `16` | Hard cap on planner steps, shared across all branches |
@@ -167,8 +159,7 @@ flowchart TB
 
     subgraph providers["LLM provider"]
         OL["Ollama<br/>local"]
-        AN["Anthropic"]
-        OA["OpenAI-compatible<br/>incl. DeepSeek"]
+        OA["OpenAI-compatible<br/>OpenAI, DeepSeek, Groq"]
     end
 
     subgraph data["Data"]

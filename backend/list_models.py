@@ -1,7 +1,7 @@
 """Ask the configured endpoint which models it actually serves.
 
-Gateways rename things. A model called "claude-haiku-4-5" on one endpoint might
-be "claude-haiku-4-5@default" on another, or simply not be there at all, and a
+Gateways rename things. A model called "gpt-4o-mini" on one endpoint might
+be "gpt-4o-mini@default" on another, or simply not be there at all, and a
 404 telling you the model doesn't exist is not much help on its own when you
 can't see the list.
 
@@ -30,16 +30,6 @@ def endpoint_and_key() -> tuple[str, str, str]:
     """Where to ask, and what to authenticate with, for the active provider."""
     provider = providers.active_provider()
 
-    if provider == "anthropic":
-        base = settings.anthropic_base_url or os.environ.get("ANTHROPIC_BASE_URL")
-        key = settings.anthropic_api_key or os.environ.get("ANTHROPIC_API_KEY", "")
-        if not base:
-            raise SystemExit(
-                "LLM_PROVIDER=anthropic with no gateway configured, so the model list "
-                "is Anthropic's public one: https://docs.anthropic.com/en/docs/about-claude/models"
-            )
-        return base.rstrip("/") + "/v1/models", key, provider
-
     if provider == "openai":
         base = settings.openai_base_url or os.environ.get("OPENAI_BASE_URL")
         key = settings.openai_api_key or os.environ.get("OPENAI_API_KEY", "")
@@ -55,11 +45,7 @@ def endpoint_and_key() -> tuple[str, str, str]:
 
 def fetch(url: str, key: str) -> dict:
     request = urllib.request.Request(url)
-    # Gateways vary: some want the Anthropic header, some the OpenAI one.
-    # Sending both is harmless and saves a round of guessing.
     request.add_header("Authorization", f"Bearer {key}")
-    request.add_header("x-api-key", key)
-    request.add_header("anthropic-version", "2023-06-01")
     request.add_header("Accept", "application/json")
 
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -101,10 +87,9 @@ def model_names(payload: dict) -> list[str]:
 def groups(payload: dict) -> list[tuple[str, list[str]]]:
     """Gateways that group models by API family: keep that grouping.
 
-    It matters here -- an Anthropic-family name only works with
-    LLM_PROVIDER=anthropic, an OpenAI one only with LLM_PROVIDER=openai. Showing
-    them in one flat list would invite picking a name the active provider can't
-    actually call.
+    It matters here -- only the OpenAI-family names work with
+    LLM_PROVIDER=openai. Showing every family in one flat list would invite
+    picking a name the active provider can't actually call.
     """
     catalog = payload.get("catalog") or payload.get("catalogue")
     if not isinstance(catalog, list):

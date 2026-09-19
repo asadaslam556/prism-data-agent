@@ -21,12 +21,12 @@ class Settings(BaseSettings):
 
     # --- LLM provider selection ----------------------------------------------
     # Which backend to talk to. "ollama" needs nothing but a running Ollama;
-    # "anthropic" and "openai" need an API key and their langchain package
-    # installed (see requirements.txt). Adding more: app/agent/providers.py.
+    # "openai" needs an API key and covers any OpenAI-compatible endpoint
+    # (OpenAI, DeepSeek, Groq, vLLM, ...). Adding more: app/agent/providers.py.
     llm_provider: str = "ollama"
 
     # Overrides the provider's default model when set. Leave empty to get
-    # qwen2.5 on ollama, claude-sonnet-4-6 on anthropic, gpt-4o-mini on openai.
+    # qwen2.5 on ollama, gpt-4o-mini on openai.
     llm_model: str | None = None
 
     # Set this to blank (LLM_TEMPERATURE=) to leave temperature out of the
@@ -71,15 +71,8 @@ class Settings(BaseSettings):
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "qwen2.5"
 
-    # --- Anthropic / OpenAI ---------------------------------------------------
-    # Keys can also come from the usual ANTHROPIC_API_KEY / OPENAI_API_KEY.
-    anthropic_api_key: str | None = None
-    # Point this at a gateway that speaks Anthropic's own API shape (e.g. a
-    # company proxy sitting in front of real Anthropic). If your gateway
-    # actually speaks the OpenAI-style API instead -- which is the more common
-    # setup for internal LLM gateways -- use the openai provider and
-    # OPENAI_BASE_URL below instead of this one.
-    anthropic_base_url: str | None = None
+    # --- OpenAI-compatible ----------------------------------------------------
+    # The key can also come from the usual OPENAI_API_KEY.
     openai_api_key: str | None = None
     # Point this at any OpenAI-compatible server (LM Studio, vLLM, Groq, ...).
     openai_base_url: str | None = None

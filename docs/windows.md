@@ -5,7 +5,7 @@ The README's quickstart, in PowerShell, plus the Windows-specific things that te
 ## Prerequisites
 
 - **Python 3.11 or newer** from https://www.python.org/downloads/windows/. Tick **"Add python.exe to PATH"** during install, then check with `python --version`.
-- **Node.js 18 or newer** from https://nodejs.org (the LTS installer). Check with `node -v`.
+- **Node.js 20.19 or newer** from https://nodejs.org (the LTS installer). Check with `node -v`.
 - **Ollama** from https://ollama.com/download. It runs the model locally.
 - **Docker Desktop**, only if you want the Docker option below.
 
@@ -92,11 +92,11 @@ That serves the whole app on http://localhost:7860.
 PowerShell doesn't use `export`:
 
 ```powershell
-$env:LLM_PROVIDER="anthropic"
-$env:ANTHROPIC_API_KEY="sk-ant-..."
+$env:LLM_PROVIDER="openai"
+$env:OPENAI_API_KEY="sk-..."
 ```
 
-These only last for the current terminal. For anything permanent, put it in `backend\.env`. The README covers each provider, including the extra setting DeepSeek needs.
+These only last for the current terminal. For anything permanent, put it in `backend\.env`. The README covers the hosted setup, including the extra setting DeepSeek needs.
 
 ## When a change doesn't seem to take effect
 

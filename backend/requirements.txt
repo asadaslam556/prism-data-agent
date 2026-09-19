@@ -1,37 +1,32 @@
-# Everything the app imports at runtime, plus all three LLM providers.
+# Everything the app imports at runtime, plus both LLM providers.
 # Python 3.11+.
-#
-# Providers used to be commented out here, which meant switching LLM_PROVIDER
-# gave you an ImportError instead of a working app. They're all included now --
-# the extra install weight is a few MB and it removes a footgun.
 
 # --- API ---
-fastapi>=0.115
-uvicorn[standard]>=0.30
-python-multipart>=0.0.9        # multipart parsing for CSV upload
-starlette>=0.37                # pulled in by fastapi; pinned so SSE behaviour is predictable
+fastapi>=0.141.1
+uvicorn[standard]>=0.53.0
+python-multipart>=0.0.32       # multipart parsing for CSV upload
+starlette>=1.6.0               # pulled in by fastapi; pinned so SSE behaviour is predictable
 
 # --- Data ---
-pandas>=2.2
-numpy>=1.26
-matplotlib>=3.8                # charts, rendered headless via the Agg backend
-sqlalchemy>=2.0
-sqlparse>=0.5                  # used by the SQL guardrail to check statements
+pandas>=3.0.5
+numpy>=2.4.6
+matplotlib>=3.11.2             # charts, rendered headless via the Agg backend
+sqlalchemy>=2.0.54
+sqlparse>=0.6.0                # used by the SQL guardrail to check statements
 
 # --- Agent / LLM ---
 langgraph==1.2.11              # the agent graph itself
-langchain-core==1.6.1          # message types shared by every provider
-langchain-ollama>=0.2          # LLM_PROVIDER=ollama  (local, default)
-langchain-anthropic>=0.3       # LLM_PROVIDER=anthropic  (Claude, incl. gateways)
-langchain-openai==1.6.0        # LLM_PROVIDER=openai  (OpenAI + any compatible endpoint)
+langchain-core==1.6.3          # message types shared by every provider
+langchain-ollama>=1.1.0        # LLM_PROVIDER=ollama  (local, default)
+langchain-openai==1.6.2        # LLM_PROVIDER=openai  (OpenAI + any compatible endpoint)
 
 # --- Config ---
-pydantic>=2.7
-pydantic-settings>=2.3
-python-dotenv>=1.0             # lets pydantic-settings read backend/.env
+pydantic>=2.13.5
+pydantic-settings>=2.15.0
+python-dotenv>=1.2.3           # lets pydantic-settings read backend/.env
 
 # --- HTTP ---
-httpx>=0.27                    # transport under the provider SDKs
+httpx>=0.28.1                  # transport under the provider SDKs
 
 # --- Optional database drivers -------------------------------------------
 # CSV upload and SQLite files work with no extra install. For anything else,
