@@ -2,6 +2,37 @@
 
 All notable changes to Prism. Versions follow [semantic versioning](https://semver.org).
 
+## 1.8.0
+
+Fixes from a production-readiness audit: fewer wrongly rejected queries, no
+paying for answers nobody is waiting for, and a few server hardening steps.
+
+### Security
+- **Security headers on every response**, including the login prompt and the
+  JSON 500: `nosniff`, `X-Frame-Options: DENY` with a matching
+  `frame-ancestors 'none'`, and `Referrer-Policy: same-origin`, so another
+  site can't frame the app while you're logged in.
+
+### Fixed
+- The SQL guard rejected ordinary read-only queries: a keyword inside a value
+  (`WHERE status = 'update pending'`) and the `REPLACE()` string function.
+  String values are now left out of the keyword check, except ones containing a
+  backslash, which databases don't agree on how to end and so are still checked.
+  `REPLACE INTO` stays blocked through `INTO`.
+- Postgres and MySQL connections were told to write SQLite. The SQL prompt now
+  names the database the session is actually connected to.
+- Closing the tab mid-answer no longer keeps the run going. The graph used to
+  spend the rest of the step budget and write an answer nobody would see; it
+  now wraps up at the next step and skips the write-up.
+- The deployment container shuts down cleanly on a redeploy. uvicorn now runs
+  as PID 1 and receives the stop signal, where before the shell did.
+
+### Changed
+- `/api/health` reports `db_connect`, and the UI hides the "Connect a
+  database" card where connecting is turned off rather than letting it fail
+  with a 403.
+- A logo at the top of the README, and a social preview image for shared links.
+
 ## 1.7.0
 
 A security and housekeeping release. The sandbox had real escape routes, and

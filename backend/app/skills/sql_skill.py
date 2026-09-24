@@ -23,12 +23,13 @@ DESCRIPTION = "Run a read-only SQL SELECT against the dataset."
 
 def run(session: DatasetSession, question: str) -> SkillResult:
     schema = session.schema.to_prompt()
+    system = prompts.sql_system(session.engine.dialect.name)
     max_rows = config.settings.max_sql_rows
     attempts = config.settings.sql_retry_attempts + 1
 
     error: str | None = None
     for attempt in range(attempts):
-        raw = llm.complete(prompts.SQL_SYSTEM, prompts.sql_user(question, schema, error))
+        raw = llm.complete(system, prompts.sql_user(question, schema, error))
         sql = extract_code(raw, "sql")
         try:
             safe_sql = validate_sql(sql, max_rows)

@@ -18,7 +18,7 @@ export default function App() {
   const [running, setRunning] = useState(false);
   const [liveSteps, setLiveSteps] = useState([]);
   const [liveElapsed, setLiveElapsed] = useState(0);
-  const [meta, setMeta] = useState(null); // {provider, model} from /api/health
+  const [meta, setMeta] = useState(null); // {provider, model, db_connect} from /api/health
   const historyRef = useRef([]); // [{question, answer}] sent back for follow-ups
   const startedAt = useRef(0);
 
@@ -114,7 +114,8 @@ export default function App() {
 
       {!dataset ? (
         <main className="landing">
-          <DataUpload onReady={setDataset} />
+          {/* until /api/health answers, assume connecting is allowed, as before */}
+          <DataUpload onReady={setDataset} canConnect={meta?.db_connect !== false} />
         </main>
       ) : (
         <main className="workspace">

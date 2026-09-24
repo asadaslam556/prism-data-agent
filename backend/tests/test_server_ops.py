@@ -159,3 +159,47 @@ def test_a_password_containing_a_colon_still_works(monkeypatch):
     monkeypatch.setattr(main, "_AUTH_PASS", "pa:ss:word")
     header = "Basic " + base64.b64encode(b"demo:pa:ss:word").decode()
     assert main._credentials_ok(header) is True
+
+
+_SECURITY_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": "frame-ancestors 'none'",
+    "Referrer-Policy": "same-origin",
+}
+
+
+def _assert_security_headers(response):
+    for name, value in _SECURITY_HEADERS.items():
+        assert response.headers.get(name) == value, name
+
+
+def test_security_headers_on_normal_and_not_found_responses():
+    _assert_security_headers(client.get("/api/health"))
+    _assert_security_headers(client.get("/api/dataset/nope"))
+
+
+def test_security_headers_on_login_challenges_and_crashes(monkeypatch):
+    from app import main
+
+    crashing = TestClient(app, raise_server_exceptions=False)
+    monkeypatch.setattr("app.main.graph.run", lambda *a, **k: 1 / 0)
+    session_id = crashing.get("/api/sample").json()["session_id"]
+    crashed = crashing.post("/api/query", json={"session_id": session_id, "question": "x"})
+    assert crashed.status_code == 500
+    _assert_security_headers(crashed)
+
+    monkeypatch.setattr(main, "_AUTH_ON", True)
+    monkeypatch.setattr(main, "_AUTH_USER", "demo")
+    monkeypatch.setattr(main, "_AUTH_PASS", "secret123")
+    challenged = client.get("/api/sample")
+    assert challenged.status_code == 401
+    _assert_security_headers(challenged)
+
+
+@pytest.mark.parametrize("enabled", [True, False])
+def test_health_says_whether_database_connections_are_allowed(monkeypatch, enabled):
+    # The UI hides the "Connect a database" card when this is false, instead
+    # of letting someone fill it in and get a 403.
+    monkeypatch.setattr(config.settings, "enable_db_connect", enabled)
+    assert client.get("/api/health").json()["db_connect"] is enabled

@@ -20,9 +20,11 @@ import sqlparse
 
 # --------------------------------------------------------------------------- SQL
 
+# "replace" isn't here: it's also the everyday REPLACE() string function, and
+# the REPLACE INTO statement is still caught by "into".
 _FORBIDDEN_SQL = {
     "insert", "update", "delete", "drop", "alter", "create", "truncate",
-    "replace", "attach", "detach", "pragma", "grant", "revoke", "vacuum",
+    "attach", "detach", "pragma", "grant", "revoke", "vacuum",
     "reindex", "exec", "execute", "call", "merge", "copy", "into",
 }
 
@@ -33,6 +35,21 @@ _TRAILING_LIMIT = re.compile(
 
 class SafetyError(Exception):
     """Raised when generated code fails a guardrail."""
+
+
+def _without_string_values(statement) -> str:
+    """The query in lower case with its '...' values dropped, for the keyword check.
+
+    WHERE status = 'update pending' is data, not an UPDATE. Only literals with
+    no backslash are dropped: sqlparse reads \\' as an escape, Postgres and
+    SQLite don't, so a literal containing one could end earlier in the database
+    than in sqlparse and hide real SQL. Those stay in and get checked.
+    """
+    return "".join(
+        "''" if token.ttype in sqlparse.tokens.String.Single and "\\" not in token.value
+        else token.value
+        for token in statement.flatten()
+    ).lower()
 
 
 def validate_sql(sql: str, max_rows: int) -> str:
@@ -53,7 +70,7 @@ def validate_sql(sql: str, max_rows: int) -> str:
 
     # token-level on purpose: a substring check would reject the 'discount'
     # column because it contains 'count'. Been there.
-    tokens = set(re.findall(r"[a-zA-Z_]+", lowered))
+    tokens = set(re.findall(r"[a-zA-Z_]+", _without_string_values(statements[0])))
     banned = tokens & _FORBIDDEN_SQL
     if banned:
         raise SafetyError(f"Query contains forbidden keyword(s): {', '.join(sorted(banned))}.")

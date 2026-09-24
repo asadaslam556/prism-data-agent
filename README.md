@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="frontend/public/icon-512.png" alt="Prism logo" width="96" height="96">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-dark.png">
+    <img src="docs/images/logo.png" alt="Prism logo: a prism splitting a question into data, code, table and chart" width="200" height="200">
+  </picture>
 </p>
 
 <h1 align="center">Prism</h1>
@@ -212,23 +215,23 @@ One React app, one FastAPI process, one agent. The model provider and the data s
 
 ```mermaid
 flowchart LR
-    subgraph browser["🖥️ Browser"]
+    subgraph browser["Browser"]
         UI["React console"]
     end
 
-    subgraph server["⚙️ FastAPI process"]
+    subgraph server["FastAPI process"]
         API["REST endpoints<br/>sample · upload · connect"]
         SSE["SSE stream<br/>/api/query/stream"]
         AG["LangGraph agent"]
         SB["Sandbox<br/>pandas · numpy · matplotlib"]
     end
 
-    subgraph models["🧠 Model provider"]
+    subgraph models["Model provider"]
         OL["Ollama (local)"]
         OA["OpenAI-compatible<br/>OpenAI · DeepSeek · Groq"]
     end
 
-    subgraph data["🗄️ Data"]
+    subgraph data["Data"]
         CSV["CSV upload"]
         SAMP["Bundled sample"]
         DB["Postgres · MySQL · SQLite"]

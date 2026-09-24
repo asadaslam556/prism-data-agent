@@ -529,6 +529,8 @@ def route_after_verify(state: AgentState) -> Literal["decompose", "interpret"]:
 def interpret_node(state: AgentState) -> dict:
     budget: BudgetTracker = state["budget"]
     step = budget.steps + 1
+    if budget.cancelled:
+        return {"answer": "", "steps": step, "trace": []}  # nobody left to read it
     result = interpret_skill.run(state["question"], _branches_summary(state))
     log_step("interpret", "final answer written")
     return {
@@ -564,8 +566,12 @@ _GRAPH = build_graph()
 
 # ------------------------------------------------------------------- entry points
 
-def _initial_state(question: str, session_id: str, history: str, sink=None) -> AgentState:
+def _initial_state(question: str, session_id: str, history: str, sink=None,
+                   stop: threading.Event | None = None) -> AgentState:
     schema = session_store.get(session_id).schema.to_prompt()
+    budget = BudgetTracker(max_steps=config.settings.max_agent_steps)
+    if stop is not None:
+        budget.stop = stop
     return {
         "question": question,
         "session_id": session_id,
@@ -574,7 +580,7 @@ def _initial_state(question: str, session_id: str, history: str, sink=None) -> A
         "steps": 0,
         "passes": 0,
         "branches": [],
-        "budget": BudgetTracker(max_steps=config.settings.max_agent_steps),
+        "budget": budget,
         "sink": sink,
         "trace": [],
     }
@@ -621,17 +627,21 @@ def run(question: str, session_id: str, history: str = "") -> AgentState:
 _DONE = object()
 
 
-def stream(question: str, session_id: str, history: str = "") -> Iterator[tuple[str, dict]]:
+def stream(question: str, session_id: str, history: str = "",
+           stop: threading.Event | None = None) -> Iterator[tuple[str, dict]]:
     """Yield ("step", ...) as each step finishes, then one ("final", ...).
 
     The graph runs on a background thread and nodes push their steps into a
     queue as they complete. That's what lets parallel branches report live and
     interleaved -- waiting for the parent state to settle would batch every
     branch's steps into one lump at the end.
+
+    Setting `stop` makes the run wrap up early: the API sets it when the client
+    disconnects. Closing this generator before the end does the same.
     """
     sink: queue.Queue = queue.Queue()
     try:
-        initial = _initial_state(question, session_id, history, sink=sink)
+        initial = _initial_state(question, session_id, history, sink=sink, stop=stop)
     except KeyError:
         yield "final", to_response(_failed_state(question, _SESSION_GONE))
         return
@@ -652,11 +662,20 @@ def stream(question: str, session_id: str, history: str = "") -> Iterator[tuple[
     worker = threading.Thread(target=drive, name="agent-graph", daemon=True)
     worker.start()
 
-    while True:
-        entry = sink.get()
-        if entry is _DONE:
-            break
-        yield "step", entry
+    finished = False
+    try:
+        while True:
+            entry = sink.get()
+            if entry is _DONE:
+                finished = True
+                break
+            yield "step", entry
+    finally:
+        # Closed before the end means the client went away. The graph thread
+        # can't be killed, but it can be told to stop spending model calls.
+        if not finished:
+            initial["budget"].cancel()
+            log_step("stream", "client disconnected; stopping the run early")
 
     worker.join()
 

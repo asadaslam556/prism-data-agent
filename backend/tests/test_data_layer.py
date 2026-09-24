@@ -47,3 +47,27 @@ def test_session_store_registry(sample_df):
     assert len(fetched.dataframe()) == 4
     with pytest.raises(KeyError):
         session_store.get("does-not-exist")
+
+
+@pytest.mark.parametrize(
+    "dialect,expected",
+    [("sqlite", "SQLite"), ("postgresql", "PostgreSQL"), ("mysql", "MySQL")],
+)
+def test_sql_prompt_names_the_connected_database(monkeypatch, sample_session, dialect, expected):
+    # Postgres and MySQL sessions used to be told to write SQLite, which gets
+    # dates, string concatenation and LIMIT forms wrong on the real database.
+    from types import SimpleNamespace
+
+    from app.skills import sql_skill
+
+    seen = []
+    monkeypatch.setattr(sql_skill.llm, "complete", lambda system, user: seen.append(system) or "")
+    session = SimpleNamespace(
+        schema=sample_session.schema,
+        engine=SimpleNamespace(dialect=SimpleNamespace(name=dialect)),
+    )
+    sql_skill.run(session, "total revenue")
+
+    assert seen and all(f"read-only {expected} SELECT" in system for system in seen)
+    if dialect != "sqlite":
+        assert "SQLite" not in seen[0]

@@ -50,3 +50,6 @@ The screenshots and the demo in `images/` come from real runs against the bundle
 | `getting-started.png` | The three ways to load data |
 | `kpi-cards.png` | A finished answer with KPI cards |
 | `revenue-by-region.png` | A chart the agent drew |
+| `logo.png` | The logo at the top of the main README, as a rounded tile for light mode |
+| `logo-dark.png` | The same logo on a transparent background, shown in dark mode |
+| `social-preview.png` | The 1280×640 card GitHub shows when the repository link is shared |

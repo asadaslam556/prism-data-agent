@@ -85,6 +85,37 @@ def test_column_names_containing_keywords_are_not_false_positives():
     assert "discount" in sql.lower()
 
 
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "SELECT region FROM data WHERE status = 'update pending'",
+        "SELECT COUNT(*) FROM data WHERE note = 'it''s a drop in sales'",
+        "SELECT REPLACE(region, 'North', 'N') AS region FROM data",
+    ],
+)
+def test_keywords_inside_string_values_and_replace_function_are_allowed(sql):
+    assert validate_sql(sql, max_rows=100).lower().startswith("select")
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        # dropping "replace" from the list must not let a CTE-led write through
+        "WITH a AS (SELECT 1) REPLACE INTO data SELECT * FROM a",
+        # sqlparse reads \' as an escape; Postgres and SQLite end the string
+        # there, so this literal must not hide the INTO that follows it
+        r"SELECT 'a\' , x INTO t, 'b' FROM data",
+        # a quote inside a quoted identifier is not the start of a string
+        "SELECT \"it's\", 1 INTO t FROM data WHERE c = 'x'",
+        # dollar quoting isn't treated as a string, so its body is still checked
+        "SELECT $$ x $$ INTO t FROM data",
+    ],
+)
+def test_string_skipping_does_not_hide_write_keywords(bad):
+    with pytest.raises(SafetyError):
+        validate_sql(bad, max_rows=100)
+
+
 def test_empty_statement_is_blocked():
     with pytest.raises(SafetyError):
         validate_sql("   ;  ", max_rows=100)

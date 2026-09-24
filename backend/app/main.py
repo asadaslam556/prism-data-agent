@@ -15,10 +15,12 @@ be matched to the stack trace in the server log.
 """
 from __future__ import annotations
 
+import asyncio
 import base64
 import io
 import json
 import secrets
+import threading
 import time
 import uuid
 
@@ -26,6 +28,7 @@ import pandas as pd
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from starlette.concurrency import iterate_in_threadpool
 
 from app import __version__, config
 from app.agent import graph, providers
@@ -125,6 +128,26 @@ async def require_login(request: Request, call_next):
     return await call_next(request)
 
 
+# Registered last so it wraps everything above: the login prompt and the
+# crash handler's JSON 500 get these too. frame-ancestors (and X-Frame-Options
+# for older browsers) stop another site framing the app while you're logged
+# in. There's deliberately no fuller CSP: the page pulls fonts from Google and
+# charts are inline data URIs, and a policy that half-fits breaks the UI.
+_SECURITY_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": "frame-ancestors 'none'",
+    "Referrer-Policy": "same-origin",
+}
+
+
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers.update(_SECURITY_HEADERS)
+    return response
+
+
 def _dataset_info(session: session_store.DatasetSession) -> DatasetInfo:
     schema = session.schema
     return DatasetInfo(
@@ -160,6 +183,8 @@ def health() -> dict:
         "version": __version__,
         "provider": providers.active_provider(),
         "model": providers.active_model(),
+        # lets the UI hide the database form where /api/connect would 403
+        "db_connect": config.settings.enable_db_connect,
     }
 
 
@@ -233,13 +258,26 @@ def query(request: QueryRequest) -> QueryResponse:
 
 
 @app.post("/api/query/stream")
-def query_stream(request: QueryRequest) -> StreamingResponse:
-    _require_session(request.session_id)
-    history = _format_history(request.history)
+async def query_stream(body: QueryRequest, request: Request) -> StreamingResponse:
+    _require_session(body.session_id)
+    history = _format_history(body.history)
+    # Set when the client goes away, so the agent stops paying for model calls
+    # nobody will see. Watched for here rather than left to the stream closing:
+    # a dropped connection only shows up when the next step fails to send, and
+    # the generator itself isn't closed until it's garbage collected.
+    stop = threading.Event()
 
-    def event_source():
+    async def watch_for_disconnect():
+        while not stop.is_set():
+            if await request.is_disconnected():
+                stop.set()
+            await asyncio.sleep(0.5)
+
+    async def event_source():
+        watcher = asyncio.create_task(watch_for_disconnect())
         try:
-            for event, data in graph.stream(request.question, request.session_id, history):
+            steps = graph.stream(body.question, body.session_id, history, stop=stop)
+            async for event, data in iterate_in_threadpool(steps):
                 yield f"event: {event}\ndata: {json.dumps(data)}\n\n"
         except Exception as exc:
             # last resort -- graph.stream already downgrades provider outages
@@ -247,6 +285,9 @@ def query_stream(request: QueryRequest) -> StreamingResponse:
             logger.exception("stream failed: %s", exc)
             message = "The agent hit an unexpected error. The server log has the details."
             yield f"event: error\ndata: {json.dumps({'message': message})}\n\n"
+        finally:
+            stop.set()  # a no-op after a normal finish
+            watcher.cancel()
 
     return StreamingResponse(event_source(), media_type="text/event-stream")
 

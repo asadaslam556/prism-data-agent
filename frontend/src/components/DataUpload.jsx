@@ -7,7 +7,7 @@ function looksOffline(message) {
   return /failed to fetch|networkerror|load failed/i.test(message || "");
 }
 
-export default function DataUpload({ onReady }) {
+export default function DataUpload({ onReady, canConnect = true }) {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [dbUrl, setDbUrl] = useState("");
@@ -87,31 +87,33 @@ export default function DataUpload({ onReady }) {
           </button>
         </article>
 
-        <article className="option-card">
-          <h2>Connect a database</h2>
-          <p>Any SQLAlchemy URL: Postgres, MySQL, SQLite. Read-only queries only.</p>
-          <input
-            className="text-input"
-            placeholder="postgresql+psycopg2://user:pass@host/db"
-            value={dbUrl}
-            onChange={(e) => setDbUrl(e.target.value)}
-            aria-label="Database URL"
-          />
-          <input
-            className="text-input"
-            placeholder="Table (optional, defaults to the first one)"
-            value={dbTable}
-            onChange={(e) => setDbTable(e.target.value)}
-            aria-label="Table name"
-          />
-          <button
-            className="secondary-button"
-            onClick={() => run("connect", () => connectDatabase(dbUrl, dbTable))}
-            disabled={!!busy || !dbUrl.trim()}
-          >
-            {busy === "connect" ? "Connecting…" : "Connect"}
-          </button>
-        </article>
+        {canConnect && (
+          <article className="option-card">
+            <h2>Connect a database</h2>
+            <p>Any SQLAlchemy URL: Postgres, MySQL, SQLite. Read-only queries only.</p>
+            <input
+              className="text-input"
+              placeholder="postgresql+psycopg2://user:pass@host/db"
+              value={dbUrl}
+              onChange={(e) => setDbUrl(e.target.value)}
+              aria-label="Database URL"
+            />
+            <input
+              className="text-input"
+              placeholder="Table (optional, defaults to the first one)"
+              value={dbTable}
+              onChange={(e) => setDbTable(e.target.value)}
+              aria-label="Table name"
+            />
+            <button
+              className="secondary-button"
+              onClick={() => run("connect", () => connectDatabase(dbUrl, dbTable))}
+              disabled={!!busy || !dbUrl.trim()}
+            >
+              {busy === "connect" ? "Connecting…" : "Connect"}
+            </button>
+          </article>
+        )}
       </div>
     </section>
   );

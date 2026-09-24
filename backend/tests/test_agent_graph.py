@@ -95,3 +95,78 @@ def test_budget_stops_a_looping_planner(monkeypatch, mock_llm, sales_session):
     assert state["budget"].steps >= settings.max_agent_steps
     assert state["answer"], "the agent must still answer when the budget runs out"
     assert state["trace"][-1]["node"] == "interpret"
+
+
+def test_closing_the_stream_stops_the_run(monkeypatch, mock_llm, sales_session):
+    """A closed browser tab must not keep paying for model calls.
+
+    The planner here never decides it's done, so without a stop the run would
+    go on until MAX_AGENT_STEPS and then write an answer nobody will read.
+    """
+    import threading
+    import time
+
+    from app import config
+
+    monkeypatch.setattr(config.settings, "max_agent_steps", 16)
+    monkeypatch.setattr(graph.llm, "structured", lambda system, user, schema: (
+        graph.Decomposition(subtasks=[graph.SubTask(question="revenue by region")])
+        if schema is graph.Decomposition
+        else graph.NextStep(action="sql", reasoning="again")
+    ))
+    calls = {"sql": 0, "interpret": 0}
+    original = graph.llm.complete
+
+    def slow_complete(system, user):
+        time.sleep(0.05)
+        calls["sql" if "SELECT" in system else "interpret"] += 1
+        return original(system, user)
+
+    monkeypatch.setattr(graph.llm, "complete", slow_complete)
+
+    events = graph.stream("revenue by region", sales_session.session_id)
+    next(events)  # the browser saw the first step...
+    events.close()  # ...and then went away
+
+    deadline = time.monotonic() + 10
+    while any(t.name == "agent-graph" for t in threading.enumerate()):
+        assert time.monotonic() < deadline, "the run kept going after the stream closed"
+        time.sleep(0.02)
+
+    assert calls["sql"] <= 2
+    assert calls["interpret"] == 0
+
+
+def test_setting_the_stop_event_ends_the_run_early(monkeypatch, mock_llm, sales_session):
+    """The API sets this when it sees the client disconnect, without waiting
+    for the stream generator to be garbage-collected."""
+    import threading
+    import time
+
+    from app import config
+
+    monkeypatch.setattr(config.settings, "max_agent_steps", 16)
+    monkeypatch.setattr(graph.llm, "structured", lambda system, user, schema: (
+        graph.Decomposition(subtasks=[graph.SubTask(question="revenue by region")])
+        if schema is graph.Decomposition
+        else graph.NextStep(action="sql", reasoning="again")
+    ))
+    calls = {"sql": 0, "interpret": 0}
+    original = graph.llm.complete
+
+    def slow_complete(system, user):
+        time.sleep(0.05)
+        calls["sql" if "SELECT" in system else "interpret"] += 1
+        return original(system, user)
+
+    monkeypatch.setattr(graph.llm, "complete", slow_complete)
+
+    stop = threading.Event()
+    events = graph.stream("revenue by region", sales_session.session_id, stop=stop)
+    next(events)
+    stop.set()
+    rest = list(events)
+
+    assert rest[-1][0] == "final"
+    assert calls["sql"] <= 2
+    assert calls["interpret"] == 0

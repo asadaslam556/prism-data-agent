@@ -58,7 +58,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 http://localhost:8000/api/health should return something like:
 
 ```json
-{"status":"ok","version":"1.7.0","provider":"ollama","model":"qwen2.5"}
+{"status":"ok","version":"1.8.0","provider":"ollama","model":"qwen2.5","db_connect":true}
 ```
 
 The `model` field is the model the backend will actually use.

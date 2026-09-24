@@ -19,7 +19,19 @@ from dataclasses import dataclass, field
 class BudgetTracker:
     max_steps: int
     steps: int = 0
+    # Set when nobody is waiting for the answer any more (the browser closed
+    # the stream). Counts as exhausted, so every branch wraps up at its next
+    # plan step instead of spending the rest of the budget on model calls. An
+    # Event so the API can hold it and set it from another thread.
+    stop: threading.Event = field(default_factory=threading.Event, repr=False)
     _lock: threading.Lock = field(default_factory=threading.Lock, repr=False)
+
+    def cancel(self) -> None:
+        self.stop.set()
+
+    @property
+    def cancelled(self) -> bool:
+        return self.stop.is_set()
 
     def record_step(self) -> int:
         """Bump the counter and return this step's number (unique per caller)."""
@@ -30,4 +42,4 @@ class BudgetTracker:
     @property
     def exhausted(self) -> bool:
         with self._lock:
-            return self.steps >= self.max_steps
+            return self.stop.is_set() or self.steps >= self.max_steps

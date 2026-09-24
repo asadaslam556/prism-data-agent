@@ -25,7 +25,7 @@ Rules:
 needlessly.
 Return your decision as structured output."""
 
-SQL_SYSTEM = """You are an expert analytics engineer. Write ONE read-only SQLite \
+SQL_SYSTEM = """You are an expert analytics engineer. Write ONE read-only {dialect} \
 SELECT query that answers the user's question against the schema below.
 
 Requirements:
@@ -159,6 +159,16 @@ def planner_user(question: str, schema: str, gathered: str, history: str) -> str
         f"USER QUESTION: {question}\n\n"
         "What is the single next action?"
     )
+
+
+# SQLAlchemy dialect name -> how the model knows the database. Uploaded CSVs
+# are always SQLite; the rest only show up through /api/connect.
+_DIALECTS = {"sqlite": "SQLite", "postgresql": "PostgreSQL", "mysql": "MySQL",
+             "mariadb": "MariaDB", "mssql": "SQL Server", "oracle": "Oracle"}
+
+
+def sql_system(dialect: str) -> str:
+    return SQL_SYSTEM.format(dialect=_DIALECTS.get(dialect, dialect))
 
 
 def sql_user(question: str, schema: str, error: str | None = None) -> str:

@@ -51,4 +51,6 @@ ENV ENABLE_DB_CONNECT=false
 
 EXPOSE 7860
 # Shell form on purpose: exec form would pass the literal string "$PORT".
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-7860}
+# `exec` hands PID 1 to uvicorn once the shell has expanded it, so the stop
+# signal on a redeploy reaches uvicorn and it shuts down cleanly.
+CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-7860}
