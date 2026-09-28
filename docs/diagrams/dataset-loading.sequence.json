@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Loading a dataset",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1060,
+      620
+    ],
+    "output": "dataset-loading.sequence.html",
+    "views": [
+      {
+        "id": "csv",
+        "label": "Sample or CSV",
+        "focus": [
+          "browser",
+          "api",
+          "sessions",
+          "connectors",
+          "db"
+        ],
+        "note": "Rows go into a fresh in-memory SQLite database."
+      },
+      {
+        "id": "url",
+        "label": "Database URL",
+        "focus": [
+          "browser",
+          "api",
+          "sessions",
+          "connectors"
+        ],
+        "note": "Local runs only; the deployment image turns it off."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "DataUpload.jsx"
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI",
+      "sublabel": "main.py routes"
+    },
+    {
+      "id": "sessions",
+      "type": "backend",
+      "label": "Sessions",
+      "sublabel": "services/session.py"
+    },
+    {
+      "id": "connectors",
+      "type": "backend",
+      "label": "Connectors",
+      "sublabel": "data/connectors.py"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "Engine",
+      "sublabel": "SQLite in memory, or yours"
+    }
+  ],
+  "segments": [
+    {
+      "from": 145,
+      "to": 442,
+      "label": "Sample or CSV upload"
+    },
+    {
+      "from": 455,
+      "to": 532,
+      "label": "Database URL"
+    }
+  ],
+  "messages": [
+    {
+      "id": "request",
+      "from": "browser",
+      "to": "api",
+      "y": 160,
+      "label": "GET /api/sample · POST /api/upload",
+      "variant": "emphasis"
+    },
+    {
+      "id": "create",
+      "from": "api",
+      "to": "sessions",
+      "y": 190,
+      "label": "create_from_csv / _dataframe",
+      "variant": "default"
+    },
+    {
+      "id": "engine",
+      "from": "sessions",
+      "to": "connectors",
+      "y": 220,
+      "label": "engine_from_dataframe",
+      "variant": "default"
+    },
+    {
+      "id": "to-sql",
+      "from": "connectors",
+      "to": "db",
+      "y": 250,
+      "label": "to_sql, table \"data\"",
+      "variant": "default"
+    },
+    {
+      "id": "introspect",
+      "from": "sessions",
+      "to": "connectors",
+      "y": 280,
+      "label": "introspect",
+      "variant": "default"
+    },
+    {
+      "id": "read-schema",
+      "from": "connectors",
+      "to": "db",
+      "y": 310,
+      "label": "columns · COUNT(*) · 5 rows",
+      "variant": "default"
+    },
+    {
+      "id": "schema",
+      "from": "connectors",
+      "to": "sessions",
+      "y": 340,
+      "label": "Schema",
+      "variant": "return"
+    },
+    {
+      "id": "registered",
+      "from": "sessions",
+      "to": "api",
+      "y": 370,
+      "label": "session (old ones evicted)",
+      "variant": "return"
+    },
+    {
+      "id": "info",
+      "from": "api",
+      "to": "browser",
+      "y": 400,
+      "label": "DatasetInfo: id, columns, rows",
+      "variant": "emphasis"
+    },
+    {
+      "id": "connect",
+      "from": "browser",
+      "to": "api",
+      "y": 470,
+      "label": "POST /api/connect",
+      "variant": "default"
+    },
+    {
+      "id": "from-url",
+      "from": "api",
+      "to": "sessions",
+      "y": 500,
+      "label": "create_from_url · introspect",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Rejected before loading",
+      "items": [
+        "Upload: 400 not .csv/.tsv, 413 over MAX_UPLOAD_MB, 400 unparseable or empty",
+        "Connect: 403 when ENABLE_DB_CONNECT=false, 400 on any connection or table error"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Keeping memory in check",
+      "items": [
+        "Registering drops expired sessions, then the oldest past MAX_SESSIONS (default 24)"
+      ]
+    }
+  ]
+}

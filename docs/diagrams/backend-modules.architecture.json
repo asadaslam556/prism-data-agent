@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Backend modules and their imports",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "backend-modules.architecture.html",
+    "repository": {
+      "url": "https://github.com/asadaslam556/prism-data-agent",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "408ad3bb44998befabea0a4f3c80bd41bba1b76e"
+    },
+    "views": [
+      {
+        "id": "orchestration",
+        "label": "Orchestration",
+        "focus": [
+          "main",
+          "graph",
+          "skills",
+          "model",
+          "providers"
+        ],
+        "note": "The API hands a question to the graph, which drives the skills and the model."
+      },
+      {
+        "id": "execution",
+        "label": "Execution",
+        "focus": [
+          "skills",
+          "safety",
+          "sandbox",
+          "connectors"
+        ],
+        "note": "Skills validate generated code, then run it in the sandbox or against the data."
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "focus": [
+          "main",
+          "graph",
+          "session",
+          "cost",
+          "connectors"
+        ],
+        "note": "Dataset sessions and the shared step budget."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "main",
+      "type": "backend",
+      "label": "main.py",
+      "sublabel": "routes + middleware",
+      "pos": [
+        40,
+        240
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/main.py",
+          "line": 45,
+          "label": "FastAPI app"
+        },
+        {
+          "path": "backend/app/schemas.py",
+          "line": 1,
+          "label": "schemas.py"
+        }
+      ]
+    },
+    {
+      "id": "graph",
+      "type": "backend",
+      "label": "agent/graph.py",
+      "sublabel": "orchestrator + branch",
+      "pos": [
+        290,
+        240
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "tag": "+ state.py",
+      "sources": [
+        {
+          "path": "backend/app/agent/graph.py",
+          "line": 546,
+          "label": "build_graph"
+        },
+        {
+          "path": "backend/app/agent/state.py",
+          "line": 1,
+          "label": "state.py"
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "type": "backend",
+      "label": "skills/",
+      "sublabel": "sql · python · chart",
+      "pos": [
+        540,
+        240
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "tag": "+ interpret · base",
+      "sources": [
+        {
+          "path": "backend/app/skills/sql_skill.py",
+          "line": 24,
+          "label": "sql_skill"
+        },
+        {
+          "path": "backend/app/skills/base.py",
+          "line": 1,
+          "label": "base.py"
+        }
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "security",
+      "label": "services/sandbox.py",
+      "sublabel": "runs generated code",
+      "pos": [
+        790,
+        240
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/sandbox.py",
+          "line": 213,
+          "label": "run_analysis"
+        }
+      ]
+    },
+    {
+      "id": "connectors",
+      "type": "database",
+      "label": "data/connectors.py",
+      "sublabel": "engines · reads",
+      "pos": [
+        790,
+        410
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/data/connectors.py",
+          "line": 138,
+          "label": "run_select"
+        }
+      ]
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "Model access",
+      "sublabel": "llm.py · prompts.py",
+      "pos": [
+        540,
+        70
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/agent/llm.py",
+          "line": 30,
+          "label": "complete"
+        },
+        {
+          "path": "backend/app/agent/prompts.py",
+          "line": 1,
+          "label": "prompts.py"
+        }
+      ]
+    },
+    {
+      "id": "providers",
+      "type": "backend",
+      "label": "agent/providers.py",
+      "sublabel": "registry · errors",
+      "pos": [
+        790,
+        70
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/agent/providers.py",
+          "line": 83,
+          "label": "build_chat_model"
+        }
+      ]
+    },
+    {
+      "id": "cost",
+      "type": "security",
+      "label": "hooks/cost.py",
+      "sublabel": "BudgetTracker",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/hooks/cost.py",
+          "line": 19,
+          "label": "BudgetTracker"
+        }
+      ]
+    },
+    {
+      "id": "session",
+      "type": "backend",
+      "label": "services/session.py",
+      "sublabel": "dataset registry",
+      "pos": [
+        290,
+        410
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/session.py",
+          "line": 111,
+          "label": "get"
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "type": "security",
+      "label": "hooks/safety.py",
+      "sublabel": "validate_sql · _python",
+      "pos": [
+        540,
+        410
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/hooks/safety.py",
+          "line": 55,
+          "label": "validate_sql"
+        },
+        {
+          "path": "backend/app/hooks/safety.py",
+          "line": 179,
+          "label": "validate_python"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "main-graph",
+      "from": "main",
+      "to": "graph",
+      "label": "run · stream",
+      "variant": "emphasis"
+    },
+    {
+      "id": "main-session",
+      "from": "main",
+      "to": "session",
+      "label": "create · get",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "graph-skills",
+      "from": "graph",
+      "to": "skills",
+      "variant": "emphasis"
+    },
+    {
+      "id": "graph-cost",
+      "from": "graph",
+      "to": "cost",
+      "fromSide": "top",
+      "toSide": "right"
+    },
+    {
+      "id": "graph-model",
+      "from": "graph",
+      "to": "model",
+      "label": "structured",
+      "fromSide": "top",
+      "toSide": "left"
+    },
+    {
+      "id": "graph-session",
+      "from": "graph",
+      "to": "session"
+    },
+    {
+      "id": "skills-model",
+      "from": "skills",
+      "to": "model",
+      "label": "complete"
+    },
+    {
+      "id": "skills-sandbox",
+      "from": "skills",
+      "to": "sandbox"
+    },
+    {
+      "id": "skills-safety",
+      "from": "skills",
+      "to": "safety"
+    },
+    {
+      "id": "skills-connectors",
+      "from": "skills",
+      "to": "connectors",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "session-connectors",
+      "from": "session",
+      "to": "connectors",
+      "fromSide": "bottom",
+      "toSide": "bottom"
+    },
+    {
+      "id": "model-providers",
+      "from": "model",
+      "to": "providers"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Direction",
+      "items": [
+        "Arrows point from a module to what it imports",
+        "Nothing lower down imports back up"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Not drawn",
+      "items": [
+        "config.py: read by main, graph, providers, session, sandbox, sql_skill",
+        "Also imported: graph.py uses connectors.py and providers.py; main.py uses providers.py"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Guardrails",
+      "items": [
+        "safety.py checks code before it runs",
+        "cost.py caps total planner steps across branches"
+      ]
+    }
+  ]
+}
