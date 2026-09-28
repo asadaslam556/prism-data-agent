@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Prism system overview",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "system-overview.architecture.html",
+    "repository": {
+      "url": "https://github.com/asadaslam556/prism-data-agent",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "408ad3bb44998befabea0a4f3c80bd41bba1b76e"
+    },
+    "views": [
+      {
+        "id": "question-path",
+        "label": "A question",
+        "focus": [
+          "browser",
+          "api",
+          "graph",
+          "skills",
+          "connectors",
+          "memdb"
+        ],
+        "note": "From the browser, through the agent, to a read-only query."
+      },
+      {
+        "id": "model-calls",
+        "label": "Model calls",
+        "focus": [
+          "graph",
+          "skills",
+          "llm",
+          "provider"
+        ],
+        "note": "Every prompt goes through one model layer, whichever provider is active."
+      },
+      {
+        "id": "guardrails",
+        "label": "Guardrails",
+        "focus": [
+          "skills",
+          "guardrails",
+          "sandbox"
+        ],
+        "note": "Generated SQL and Python are checked before anything runs."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "React console",
+      "sublabel": "frontend/src",
+      "pos": [
+        40,
+        310
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "frontend/src/App.jsx",
+          "line": 15,
+          "label": "App"
+        },
+        {
+          "path": "frontend/src/api.js",
+          "line": 47,
+          "label": "streamQuery"
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI app",
+      "sublabel": "REST + SSE",
+      "pos": [
+        260,
+        310
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "login · headers · request id",
+      "sources": [
+        {
+          "path": "backend/app/main.py",
+          "line": 45,
+          "label": "app"
+        },
+        {
+          "path": "backend/app/main.py",
+          "line": 261,
+          "label": "query_stream"
+        }
+      ]
+    },
+    {
+      "id": "graph",
+      "type": "backend",
+      "label": "Agent graph",
+      "sublabel": "LangGraph",
+      "pos": [
+        480,
+        310
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "orchestrator + branches",
+      "sources": [
+        {
+          "path": "backend/app/agent/graph.py",
+          "line": 546,
+          "label": "build_graph"
+        },
+        {
+          "path": "backend/app/agent/graph.py",
+          "line": 326,
+          "label": "build_branch_graph"
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "type": "backend",
+      "label": "Skills",
+      "sublabel": "sql · python · chart",
+      "pos": [
+        700,
+        310
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "+ interpret",
+      "sources": [
+        {
+          "path": "backend/app/skills/sql_skill.py",
+          "line": 24,
+          "label": "sql"
+        },
+        {
+          "path": "backend/app/skills/python_skill.py",
+          "line": 26,
+          "label": "python"
+        },
+        {
+          "path": "backend/app/skills/chart_skill.py",
+          "line": 20,
+          "label": "chart"
+        }
+      ]
+    },
+    {
+      "id": "connectors",
+      "type": "database",
+      "label": "Connectors",
+      "sublabel": "SQLAlchemy engines",
+      "pos": [
+        920,
+        310
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/data/connectors.py",
+          "line": 138,
+          "label": "run_select"
+        },
+        {
+          "path": "backend/app/data/connectors.py",
+          "line": 72,
+          "label": "introspect"
+        }
+      ]
+    },
+    {
+      "id": "memdb",
+      "type": "database",
+      "label": "In-memory SQLite",
+      "sublabel": "sample + CSV uploads",
+      "pos": [
+        1140,
+        310
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/data/connectors.py",
+          "line": 55,
+          "label": "engine_from_dataframe"
+        }
+      ]
+    },
+    {
+      "id": "extdb",
+      "type": "external",
+      "label": "Your database",
+      "sublabel": "Postgres · MySQL · SQLite",
+      "pos": [
+        920,
+        600
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "local only",
+      "sources": [
+        {
+          "path": "backend/app/data/connectors.py",
+          "line": 68,
+          "label": "engine_from_url"
+        },
+        {
+          "path": "backend/app/main.py",
+          "line": 231,
+          "label": "connect"
+        }
+      ]
+    },
+    {
+      "id": "sessions",
+      "type": "backend",
+      "label": "Session registry",
+      "sublabel": "one per dataset",
+      "pos": [
+        260,
+        455
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "LRU cap · TTL",
+      "sources": [
+        {
+          "path": "backend/app/services/session.py",
+          "line": 111,
+          "label": "get"
+        },
+        {
+          "path": "backend/app/services/session.py",
+          "line": 66,
+          "label": "_evict_if_needed"
+        }
+      ]
+    },
+    {
+      "id": "guardrails",
+      "type": "security",
+      "label": "Guardrails",
+      "sublabel": "SQL + AST checks",
+      "pos": [
+        590,
+        455
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/hooks/safety.py",
+          "line": 55,
+          "label": "validate_sql"
+        },
+        {
+          "path": "backend/app/hooks/safety.py",
+          "line": 179,
+          "label": "validate_python"
+        }
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "security",
+      "label": "Sandbox",
+      "sublabel": "pandas · matplotlib",
+      "pos": [
+        810,
+        455
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "audit hook · watchdog",
+      "sources": [
+        {
+          "path": "backend/app/services/sandbox.py",
+          "line": 213,
+          "label": "run_analysis"
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "type": "backend",
+      "label": "Model layer",
+      "sublabel": "complete · structured",
+      "pos": [
+        590,
+        165
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/agent/llm.py",
+          "line": 30,
+          "label": "complete"
+        },
+        {
+          "path": "backend/app/agent/providers.py",
+          "line": 83,
+          "label": "build_chat_model"
+        }
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "cloud",
+      "label": "Model provider",
+      "sublabel": "Ollama or OpenAI-compatible",
+      "pos": [
+        580,
+        20
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "tag": "LLM_PROVIDER",
+      "sources": [
+        {
+          "path": "backend/app/agent/providers.py",
+          "line": 95,
+          "label": "ollama"
+        },
+        {
+          "path": "backend/app/agent/providers.py",
+          "line": 110,
+          "label": "openai"
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "One FastAPI process",
+      "wraps": [
+        "api",
+        "graph",
+        "skills",
+        "connectors",
+        "memdb",
+        "sessions",
+        "guardrails",
+        "sandbox",
+        "llm"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "browser-api",
+      "from": "browser",
+      "to": "api",
+      "label": "REST + SSE",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-graph",
+      "from": "api",
+      "to": "graph",
+      "label": "stream()"
+    },
+    {
+      "id": "graph-skills",
+      "from": "graph",
+      "to": "skills"
+    },
+    {
+      "id": "skills-connectors",
+      "from": "skills",
+      "to": "connectors",
+      "label": "SELECT"
+    },
+    {
+      "id": "connectors-memdb",
+      "from": "connectors",
+      "to": "memdb"
+    },
+    {
+      "id": "connectors-extdb",
+      "from": "connectors",
+      "to": "extdb",
+      "label": "URL",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        995,
+        492
+      ]
+    },
+    {
+      "id": "api-sessions",
+      "from": "api",
+      "to": "sessions",
+      "label": "load data",
+      "labelAt": [
+        335,
+        414
+      ]
+    },
+    {
+      "id": "skills-guardrails",
+      "from": "skills",
+      "to": "guardrails",
+      "label": "validate",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "skills-sandbox",
+      "from": "skills",
+      "to": "sandbox",
+      "label": "execute",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "graph-llm",
+      "from": "graph",
+      "to": "llm",
+      "label": "plan",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "skills-llm",
+      "from": "skills",
+      "to": "llm",
+      "label": "write code",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "llm-provider",
+      "from": "llm",
+      "to": "provider",
+      "label": "HTTP",
+      "fromSide": "top",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Request path",
+      "items": [
+        "The browser posts a question and reads steps back over SSE",
+        "The graph runs on its own thread; nodes stream steps as they finish"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Guardrails",
+      "items": [
+        "SQL: one read-only statement, row cap",
+        "Python: AST checks, module views, audit hook, watchdog"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Swappable parts",
+      "items": [
+        "LLM_PROVIDER picks Ollama or any OpenAI-compatible API",
+        "Any SQLAlchemy URL, or an uploaded CSV"
+      ]
+    }
+  ]
+}
