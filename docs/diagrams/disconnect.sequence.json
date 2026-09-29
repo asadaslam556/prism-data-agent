@@ -73,7 +73,7 @@
       "to": "api",
       "y": 230,
       "label": "connection closed",
-      "variant": "dashed"
+      "variant": "default"
     },
     {
       "id": "stop",
