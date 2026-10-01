@@ -2,4 +2,4 @@
 -r requirements.txt
 
 pytest>=9.1.1                  # the model is mocked in every test
-ruff>=0.16.7                   # linter; config lives in pyproject.toml
+ruff>=0.16.9                   # linter; config lives in pyproject.toml
