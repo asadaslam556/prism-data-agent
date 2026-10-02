@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Three ways to run Prism",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "deployment.architecture.html",
+    "repository": {
+      "url": "https://github.com/asadaslam556/prism-data-agent",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "408ad3bb44998befabea0a4f3c80bd41bba1b76e"
+    },
+    "views": [
+      {
+        "id": "dev",
+        "label": "Local development",
+        "focus": [
+          "browser",
+          "vite",
+          "uvicorn",
+          "ollama"
+        ],
+        "note": "Two terminals: Vite proxies /api to uvicorn."
+      },
+      {
+        "id": "compose",
+        "label": "docker compose",
+        "focus": [
+          "browser",
+          "nginx",
+          "backend",
+          "ollamac"
+        ],
+        "note": "Three containers, always on Ollama."
+      },
+      {
+        "id": "render",
+        "label": "Single image",
+        "focus": [
+          "browser",
+          "image",
+          "hosted"
+        ],
+        "note": "One container serves the app and the API, behind the login."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "browser",
+      "type": "external",
+      "label": "Browser",
+      "sublabel": "React app",
+      "pos": [
+        40,
+        240
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "vite",
+      "type": "frontend",
+      "label": "Vite dev server",
+      "sublabel": ":5173, proxies /api",
+      "pos": [
+        380,
+        60
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "sources": [
+        {
+          "path": "frontend/vite.config.js",
+          "line": 11,
+          "label": "proxy"
+        }
+      ]
+    },
+    {
+      "id": "uvicorn",
+      "type": "backend",
+      "label": "uvicorn",
+      "sublabel": ":8000 --reload",
+      "pos": [
+        640,
+        60
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/app/main.py",
+          "line": 45,
+          "label": "app"
+        }
+      ]
+    },
+    {
+      "id": "ollama",
+      "type": "cloud",
+      "label": "Ollama",
+      "sublabel": ":11434 on your machine",
+      "pos": [
+        900,
+        60
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "nginx",
+      "type": "frontend",
+      "label": "frontend container",
+      "sublabel": "nginx, host :5173",
+      "pos": [
+        380,
+        240
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "sources": [
+        {
+          "path": "frontend/nginx.conf",
+          "line": 8,
+          "label": "proxy_pass"
+        },
+        {
+          "path": "frontend/Dockerfile",
+          "line": 10,
+          "label": "Dockerfile"
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "type": "backend",
+      "label": "backend container",
+      "sublabel": ":8000",
+      "pos": [
+        640,
+        240
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "sources": [
+        {
+          "path": "backend/Dockerfile",
+          "line": 17,
+          "label": "CMD"
+        },
+        {
+          "path": "docker-compose.yml",
+          "line": 20,
+          "label": "backend"
+        }
+      ]
+    },
+    {
+      "id": "ollamac",
+      "type": "cloud",
+      "label": "ollama container",
+      "sublabel": ":11434 + volume",
+      "pos": [
+        900,
+        240
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "sources": [
+        {
+          "path": "docker-compose.yml",
+          "line": 8,
+          "label": "ollama"
+        }
+      ]
+    },
+    {
+      "id": "image",
+      "type": "backend",
+      "label": "Single image",
+      "sublabel": "FastAPI serves app + /api",
+      "tag": "$PORT · login · no /api/connect",
+      "pos": [
+        380,
+        420
+      ],
+      "size": [
+        440,
+        64
+      ],
+      "sources": [
+        {
+          "path": "Dockerfile",
+          "line": 56,
+          "label": "CMD"
+        },
+        {
+          "path": "Dockerfile",
+          "line": 50,
+          "label": "ENABLE_DB_CONNECT"
+        },
+        {
+          "path": "Dockerfile",
+          "line": 46,
+          "label": "static"
+        }
+      ]
+    },
+    {
+      "id": "hosted",
+      "type": "cloud",
+      "label": "Hosted model",
+      "sublabel": "e.g. DeepSeek",
+      "pos": [
+        900,
+        420
+      ],
+      "size": [
+        180,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "On your machine: npm run dev + uvicorn",
+      "wraps": [
+        "vite",
+        "uvicorn",
+        "ollama"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "docker compose up",
+      "wraps": [
+        "nginx",
+        "backend",
+        "ollamac"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Root Dockerfile, e.g. on Render",
+      "wraps": [
+        "image"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "b-vite",
+      "from": "browser",
+      "to": "vite",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          115,
+          92
+        ]
+      ]
+    },
+    {
+      "id": "vite-uv",
+      "from": "vite",
+      "to": "uvicorn",
+      "label": "/api"
+    },
+    {
+      "id": "uv-ollama",
+      "from": "uvicorn",
+      "to": "ollama"
+    },
+    {
+      "id": "b-nginx",
+      "from": "browser",
+      "to": "nginx",
+      "variant": "emphasis"
+    },
+    {
+      "id": "nginx-be",
+      "from": "nginx",
+      "to": "backend",
+      "label": "/api"
+    },
+    {
+      "id": "be-ollama",
+      "from": "backend",
+      "to": "ollamac"
+    },
+    {
+      "id": "b-image",
+      "from": "browser",
+      "to": "image",
+      "label": "HTTPS",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          115,
+          452
+        ]
+      ]
+    },
+    {
+      "id": "image-hosted",
+      "from": "image",
+      "to": "hosted",
+      "label": "HTTPS"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Which to use",
+      "items": [
+        "Developing: two terminals",
+        "Trying it with Ollama in Docker: compose",
+        "A public URL: the single image"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Good to know",
+      "items": [
+        "compose passes only three env vars, so it always runs Ollama",
+        "The single image reads --env-file and listens on $PORT (7860 by default)"
+      ]
+    }
+  ]
+}
