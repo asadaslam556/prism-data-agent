@@ -2,6 +2,8 @@
 
 A review of every doc and diagram in the repository against the code at `408ad3b` (v1.8.0). Statuses: **accurate**, **outdated** (was right, the code moved on), **wrong**, **duplicate**, **missing**.
 
+> **Resolved.** Every finding below about the docs and diagrams was fixed in the documentation overhaul: the pages were rewritten, the Mermaid diagrams were replaced by `docs/diagrams/`, and the replaced files are in `docs/archive/`. The code findings at the end are not doc problems; they are left as notes and no code was changed.
+
 ## Documents
 
 | File | Status | Reason |

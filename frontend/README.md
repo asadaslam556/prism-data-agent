@@ -5,7 +5,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
 
 React + Vite console for Prism. See the root [README](../README.md) for setup
-and [`docs/architecture.md`](../docs/architecture.md) for the internals.
+and [docs/frontend.md](../docs/frontend.md) for how it works.
 
 ```bash
 npm install
@@ -31,7 +31,7 @@ different host. Copy `.env.example` to `.env` if you need it.
 | `components/AgentThinking.jsx` | Collapsible live reasoning panel |
 | `components/ChatPanel.jsx` | Feed, suggestions, composer |
 | `components/DataChart.jsx` | Interactive SVG charts with hover values |
-| `components/DataUpload.jsx` | Sample, CSV upload, database connect |
+| `components/DataUpload.jsx` | Sample, CSV upload, and database connect when the backend allows it |
 | `components/Markdown.jsx` | Renders the model's markdown answers |
 | `components/ResultView.jsx` | Answer, charts, tables, generated code |
 

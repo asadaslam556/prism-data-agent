@@ -6,9 +6,10 @@
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?logo=sqlalchemy&logoColor=white)
 ![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white)
 
-The FastAPI service that hosts the agent. Setup and configuration are in the
-[root README](../README.md); [docs/guide.md](../docs/guide.md) goes through
-every module.
+The FastAPI service that hosts the agent. Setup is in the [root README](../README.md).
+The [docs](../docs/README.md) cover the [agent](../docs/agent.md), the
+[guardrails](../docs/guardrails.md), every [setting](../docs/configuration.md) and the
+[API](../docs/api.md).
 
 ```bash
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\Activate.ps1
@@ -25,7 +26,7 @@ Interactive API docs are at http://localhost:8000/docs while it's running.
 
 | Method | Path | What it does |
 | --- | --- | --- |
-| `GET` | `/api/health` | Liveness, version, and the active provider and model |
+| `GET` | `/api/health` | Liveness, version, the active provider and model, and whether `/api/connect` is allowed |
 | `GET` | `/api/sample` | Loads the bundled sales dataset into a new session |
 | `POST` | `/api/upload` | CSV or TSV upload, becomes a new session |
 | `POST` | `/api/connect` | Connects a SQLAlchemy database URL (off in the deployment image) |

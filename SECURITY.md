@@ -8,16 +8,11 @@
 
 Prism runs SQL and Python written by a language model. That's the core feature and the core risk, and it's handled in layers so that getting past one still leaves the others.
 
-```mermaid
-flowchart LR
-    M["Model output"] --> S["Static checks<br/>sqlparse · AST walk"]
-    S -->|rejected| R(["Back to the planner"])
-    S --> N["Restricted namespace<br/>module views · builtins allow-list"]
-    N --> H["Audit hook<br/>no writes · no processes · no sockets"]
-    H --> W["Watchdog<br/>SANDBOX_TIMEOUT_SECONDS"]
-    W --> B["Step budget<br/>bounded loop"]
-    B --> OK(["Result"])
-```
+[![Python sandbox layers](docs/diagrams/python-sandbox.architecture.svg)](docs/diagrams/python-sandbox.architecture.html)
+
+[![SQL guard](docs/diagrams/sql-guard.architecture.svg)](docs/diagrams/sql-guard.architecture.html)
+
+Every check, with the exact lists, is in [docs/guardrails.md](docs/guardrails.md).
 
 1. **Static checks.** SQL must be a single `SELECT` or `WITH` statement with no write or admin keywords. Comments are stripped, and the query ends with a `LIMIT` no larger than `MAX_SQL_ROWS`, added or clamped as needed. Python is parsed and walked before it runs: no imports, no private or dunder attributes, no frame introspection (`gi_frame`, `f_globals` and so on), no `eval`/`exec`/`open`/`getattr`, and none of the pandas, numpy or matplotlib calls that read or write files, including `query()`, which evaluates its string argument itself. Method names passed as strings (`df.apply("to_pickle", ...)`) are rejected too.
 2. **A restricted namespace.** Snippets run against a copy of the data with about twenty allow-listed builtins. They get read-only views of `pd`, `np` and `plt` rather than the modules themselves, because those libraries import `os`, `sys` and `subprocess` internally and any submodule used to be a way to reach them. The views return functions, classes and constants as normal but refuse to hand out a module, apart from a few numeric ones like `np.random` and `pd.api.types`. A narrow `__import__` returns already-loaded numpy and pandas internals, because numpy imports lazily partway through ordinary calls.

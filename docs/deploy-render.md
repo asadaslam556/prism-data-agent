@@ -5,15 +5,9 @@
 ![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?logo=deepseek&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
 
-```mermaid
-flowchart LR
-    L["Test locally<br/>.env + docker run"] --> P["Push to GitHub"]
-    P --> R["Render builds<br/>the Dockerfile"]
-    R --> E["Env vars set<br/>in the dashboard"]
-    E --> U(["https://your-app.onrender.com<br/>behind the login"])
-```
+[![Deploying to Render](diagrams/render-deploy.workflow.svg)](diagrams/render-deploy.workflow.html)
 
-Render's free tier runs a real container, which is what Prism needs. This guide assumes you've never used it, and uses DeepSeek as the model provider because it's cheap and prepaid. Any provider from the README works the same way; only the environment variables change.
+Render's free tier runs a real container, which is what Prism needs. This guide assumes you've never used it, and uses DeepSeek as the model provider because it's cheap and prepaid. Any provider from [models.md](models.md) works the same way; only the environment variables change.
 
 Budget about 30 minutes, most of it waiting for the first build.
 
@@ -29,7 +23,7 @@ Budget about 30 minutes, most of it waiting for the first build.
 
 **Why the login matters.** Render has no private mode. Without the login, anyone who finds the URL can ask questions, and your API balance pays for every one of them.
 
-The root `Dockerfile` and `backend/Dockerfile` do different jobs. The root one is this single deployment image. The backend one is only used by `docker-compose.yml` for the local three-service stack with Ollama.
+The root `Dockerfile` and `backend/Dockerfile` do different jobs ([deployment.md](deployment.md)). The root one is this single deployment image. The backend one is only used by `docker-compose.yml` for the local three-service stack with Ollama.
 
 ## 2. Set up and test locally
 
@@ -38,7 +32,7 @@ Copy `backend/.env.example` to `backend/.env` and set:
 ```dotenv
 LLM_PROVIDER=openai
 LLM_MODEL=deepseek-v4-flash
-OPENAI_API_KEY=sk-your-real-key
+OPENAI_API_KEY=<YOUR_API_KEY>
 OPENAI_BASE_URL=https://api.deepseek.com/v1
 LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}
 ```
@@ -69,7 +63,7 @@ Render builds your Dockerfile, so build it yourself first. Debugging a failed bu
 
 ```powershell
 docker build -t prism .
-docker run --rm -p 7860:7860 --env-file backend/.env -e APP_USERNAME=admin -e APP_PASSWORD=choose-a-long-one prism
+docker run --rm -p 7860:7860 --env-file backend/.env -e APP_USERNAME=admin -e APP_PASSWORD=<YOUR_PASSWORD> prism
 ```
 
 Open http://localhost:7860. You should get a browser login prompt; enter the username and password you just passed in. If the app works behind it, you're ready.
