@@ -516,7 +516,7 @@ def verify_node(state: AgentState) -> dict:
         "passes": passes + 1,
         "steps": step,
         "trace": _emit(state.get("sink"),
-                       _trace(step, "verify", title, notes, "ok" if verdict == "ok" else "error")),
+                       _trace(step, "verify", title, notes, "ok" if verdict == "ok" else "retry")),
     }
 
 

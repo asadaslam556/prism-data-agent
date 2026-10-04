@@ -72,9 +72,11 @@ def active_model() -> str:
         return settings.llm_model
 
     provider = active_provider()
-    from_env = os.environ.get(_MODEL_ENV_VARS.get(provider, ""))
-    if from_env and from_env.strip():
-        return from_env.strip()
+    var = _MODEL_ENV_VARS.get(provider, "")
+    # The process environment first, then settings, which also covers .env.
+    configured = os.environ.get(var) or getattr(settings, var.lower(), None)
+    if configured and configured.strip():
+        return configured.strip()
 
     fallback = DEFAULT_MODELS.get(provider)
     return fallback or settings.ollama_model

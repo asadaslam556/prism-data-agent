@@ -34,6 +34,7 @@ def shipped_defaults(monkeypatch):
     monkeypatch.setattr(config.settings, "llm_provider", "ollama")
     monkeypatch.setattr(config.settings, "llm_model", None)
     monkeypatch.setattr(config.settings, "ollama_model", "qwen2.5")
+    monkeypatch.setattr(config.settings, "openai_model", None)
 
     for name in (
         "OPENAI_MODEL", "OPENAI_BASE_URL", "OPENAI_API_KEY",

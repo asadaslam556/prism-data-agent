@@ -2,18 +2,29 @@
 
 All notable changes to Prism. Versions follow [semantic versioning](https://semver.org).
 
-## Unreleased
+## 1.8.1
 
-### Documentation
-- Rewrote the README and `docs/`: one page each for the agent, data, guardrails,
-  models, frontend, API, configuration, deployment, troubleshooting and design
-  notes, with an index in `docs/README.md`.
-- Replaced every Mermaid diagram with 21 diagrams in `docs/diagrams/`, each as
-  an interactive HTML page with SVG and PNG exports.
-- Fixed the port advice: moving the backend off port 8000 breaks the frontend's
-  dev proxy.
-- Moved the old `docs/architecture.md`, `docs/guide.md` and the agent graph
-  image to `docs/archive/`.
+A small fix release, frontend checks in CI, and leaner documentation.
+
+### Fixed
+- `OPENAI_MODEL` set in `backend/.env` was ignored, because the model lookup
+  only read the process environment. It's now a regular setting, so `.env`
+  counts too.
+- The verifier sending work back for another pass showed as an error in the
+  reasoning panel. It's now marked as a retry, which is what it is.
+
+### Added
+- ESLint and a Vitest suite for the frontend (the stream reader and the chart
+  decisions), run in CI next to the production build.
+- `CORS_ORIGINS` and `OPENAI_MODEL` in `backend/.env.example`.
+
+### Changed
+- The docs are now a handful of pages: architecture, configuration and API,
+  troubleshooting, design notes, and the Windows and Render guides. The
+  guardrail details moved into `SECURITY.md`. Every Mermaid diagram was
+  replaced with a drawn diagram in `docs/images/`.
+- The troubleshooting advice to move the backend off port 8000 was wrong: the
+  frontend's dev proxy always points at 8000.
 
 ## 1.8.0
 

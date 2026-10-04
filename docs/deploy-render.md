@@ -5,9 +5,9 @@
 ![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?logo=deepseek&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
 
-[![Deploying to Render](diagrams/render-deploy.workflow.svg)](diagrams/render-deploy.workflow.html)
+![Deploying to Render](images/render-deploy.svg)
 
-Render's free tier runs a real container, which is what Prism needs. This guide assumes you've never used it, and uses DeepSeek as the model provider because it's cheap and prepaid. Any provider from [models.md](models.md) works the same way; only the environment variables change.
+Render's free tier runs a real container, which is what Prism needs. This guide assumes you've never used it, and uses DeepSeek as the model provider because it's cheap and prepaid. Any provider from [architecture.md](architecture.md#models) works the same way; only the environment variables change.
 
 Budget about 30 minutes, most of it waiting for the first build.
 
@@ -23,7 +23,7 @@ Budget about 30 minutes, most of it waiting for the first build.
 
 **Why the login matters.** Render has no private mode. Without the login, anyone who finds the URL can ask questions, and your API balance pays for every one of them.
 
-The root `Dockerfile` and `backend/Dockerfile` do different jobs ([deployment.md](deployment.md)). The root one is this single deployment image. The backend one is only used by `docker-compose.yml` for the local three-service stack with Ollama.
+The root `Dockerfile` and `backend/Dockerfile` do different jobs ([architecture.md](architecture.md#running-it)). The root one is this single deployment image. The backend one is only used by `docker-compose.yml` for the local three-service stack with Ollama.
 
 ## 2. Set up and test locally
 
@@ -52,7 +52,7 @@ uvicorn app.main:app --reload --port 8000
 http://localhost:8000/api/health should return something like:
 
 ```json
-{"status":"ok","version":"1.8.0","provider":"openai","model":"deepseek-v4-flash","db_connect":true}
+{"status":"ok","version":"1.8.1","provider":"openai","model":"deepseek-v4-flash","db_connect":true}
 ```
 
 Start the frontend in a second terminal and ask a real question. If that works, the deploy will too.

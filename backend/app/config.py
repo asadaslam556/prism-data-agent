@@ -76,6 +76,8 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     # Point this at any OpenAI-compatible server (LM Studio, vLLM, Groq, ...).
     openai_base_url: str | None = None
+    # Used when LLM_MODEL is unset. Read here so backend/.env counts too.
+    openai_model: str | None = None
 
     # --- Agent guardrails -----------------------------------------------------
     max_agent_steps: int = 16     # hard stop, shared across ALL parallel branches

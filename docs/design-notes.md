@@ -1,5 +1,11 @@
 # Design notes
 
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
+![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C)
+![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?logo=langgraph&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+
 Bugs found while building Prism. They shaped the design more than anything else, so they're written down. Each fix is still in the code at the place named.
 
 | # | Bug | Fix | Where |
@@ -15,6 +21,10 @@ Bugs found while building Prism. They shaped the design more than anything else,
 | 9 | A dataset evicted mid-query became a 500 | A plain "no longer loaded" answer | `agent/graph.py` |
 | 10 | The sandbox could reach `os` through the libraries | Module views, a stricter AST check and an audit hook | `services/sandbox.py`, `hooks/safety.py` |
 | 11 | The row cap could be dodged | Only a trailing `LIMIT` counts, and it's clamped | `validate_sql` in `hooks/safety.py` |
+
+Bugs 3, 6 and 7 only appeared once branches ran on real threads. Their fixes, plus a lock on the session registry, are the four locks parallel branches rely on:
+
+![The four locks parallel branches need](images/concurrency-locks.svg)
 
 ## 1. The in-memory database was invisible to the server's threads
 
@@ -54,7 +64,7 @@ It surfaced as a bare `KeyError`. The run now ends with an answer saying the dat
 
 ## 10. The sandbox could reach `os` through the libraries
 
-pandas, numpy and pyplot import `os`, `sys` and `subprocess` at module level, so `pd.io.common.os.remove(...)` or `plt.sys.modules["subprocess"]` passed every check. So did a generator's `gi_frame.f_back.f_globals`, `df.query()` (pandas evaluates the string itself), and `df.apply("to_pickle", path=...)`, which writes a file without a single attribute node. The fix has three parts: read-only module views that won't return submodules, an AST check that rejects private attributes, frame introspection and method names passed as strings, and an audit hook that refuses file writes, processes and sockets at run time. Details in [guardrails.md](guardrails.md#python).
+pandas, numpy and pyplot import `os`, `sys` and `subprocess` at module level, so `pd.io.common.os.remove(...)` or `plt.sys.modules["subprocess"]` passed every check. So did a generator's `gi_frame.f_back.f_globals`, `df.query()` (pandas evaluates the string itself), and `df.apply("to_pickle", path=...)`, which writes a file without a single attribute node. The fix has three parts: read-only module views that won't return submodules, an AST check that rejects private attributes, frame introspection and method names passed as strings, and an audit hook that refuses file writes, processes and sockets at run time. Details in [SECURITY.md](../SECURITY.md#python).
 
 ## 11. The row cap could be dodged
 

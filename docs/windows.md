@@ -9,7 +9,7 @@
 
 The README's quickstart, in PowerShell, plus the Windows-specific things that tend to go wrong.
 
-[![Local setup](diagrams/local-setup.workflow.svg)](diagrams/local-setup.workflow.html)
+![Local setup](images/local-setup.svg)
 
 ## Prerequisites
 
@@ -51,7 +51,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 http://localhost:8000/api/health should return something like:
 
 ```json
-{"status":"ok","version":"1.8.0","provider":"ollama","model":"qwen2.5","db_connect":true}
+{"status":"ok","version":"1.8.1","provider":"ollama","model":"qwen2.5","db_connect":true}
 ```
 
 The `model` field is the model the backend will actually use.
@@ -105,7 +105,7 @@ $env:LLM_PROVIDER="openai"
 $env:OPENAI_API_KEY="<YOUR_API_KEY>"
 ```
 
-These only last for the current terminal. For anything permanent, put it in `backend\.env`. Every setting is listed in [configuration.md](configuration.md); the hosted setup, including the extra setting DeepSeek needs, is in [models.md](models.md#deepseek).
+These only last for the current terminal. For anything permanent, put it in `backend\.env`. Every setting is listed in [configuration.md](configuration.md); the hosted setup, including the extra setting DeepSeek needs, is in [configuration.md](configuration.md#deepseek).
 
 ## When a change doesn't seem to take effect
 
