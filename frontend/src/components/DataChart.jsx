@@ -66,7 +66,7 @@ function readChartCode(code) {
   return null;
 }
 
-function analyse(sql, chartCode) {
+export function analyse(sql, chartCode) {
   if (!sql || !sql.rows || !sql.rows.length || !sql.columns || !sql.columns.length) return null;
   const rows = sql.rows;
 

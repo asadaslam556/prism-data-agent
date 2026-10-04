@@ -44,7 +44,7 @@ class TraceStep(BaseModel):
     branch: int | None = None
     title: str
     detail: str = ""
-    status: Literal["running", "ok", "retry", "error"] = "ok"
+    status: Literal["ok", "retry", "error"] = "ok"
     payload: dict[str, Any] = Field(default_factory=dict)
 
 

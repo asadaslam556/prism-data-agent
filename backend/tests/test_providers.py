@@ -262,6 +262,20 @@ def test_built_in_default_applies_when_nothing_is_set(monkeypatch):
     assert providers.active_model() == providers.DEFAULT_MODELS["openai"]
 
 
+def test_openai_model_from_the_env_file_is_used(monkeypatch, tmp_path):
+    """OPENAI_MODEL set only in backend/.env used to be ignored, because the
+    lookup read os.environ and the .env file never lands there."""
+    from app.config import Settings
+
+    env_file = tmp_path / ".env"
+    env_file.write_text("OPENAI_MODEL=model-from-dotenv\n", encoding="utf-8")
+    monkeypatch.setattr(config.settings, "llm_provider", "openai")
+    monkeypatch.setattr(config.settings, "llm_model", None)
+    monkeypatch.setattr(config.settings, "openai_model",
+                        Settings(_env_file=env_file).openai_model)
+    assert providers.active_model() == "model-from-dotenv"
+
+
 def test_a_blank_provider_env_var_is_ignored(monkeypatch):
     monkeypatch.setattr(config.settings, "llm_provider", "openai")
     monkeypatch.setattr(config.settings, "llm_model", None)
