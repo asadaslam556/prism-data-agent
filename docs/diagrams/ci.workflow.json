@@ -28,7 +28,26 @@
         ],
         "note": "Four required checks, then a squash merge."
       }
-    ]
+    ],
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "Start"
+        },
+        "backend": {
+          "label": "Step"
+        },
+        "security": {
+          "label": "Checks"
+        },
+        "frontend": {
+          "label": "Pull request"
+        },
+        "cloud": {
+          "label": "Hosting"
+        }
+      }
+    }
   },
   "lanes": [
     {
