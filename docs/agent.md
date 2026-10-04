@@ -51,7 +51,7 @@ The planner sees what its branch has so far: a preview of the SQL result, any pa
 
 ## Verify and interpret
 
-`verify_node` asks the model whether the merged results answer the question (`Verdict`: `ok` or `retry` plus a note). It returns `ok` without a model call when `ENABLE_VERIFIER` is off, when `MAX_VERIFY_PASSES` retries are used up (default 1), or when the budget is spent. A `retry` goes back to `decompose` with the note as feedback.
+`verify_node` asks the model whether the merged results answer the question (`Verdict`: `ok` or `retry` plus a note). It returns `ok` without a model call when `ENABLE_VERIFIER` is off, when `MAX_VERIFY_PASSES` retries are used up (default 1), or when the budget is spent. A `retry` goes back to `decompose` with the note as feedback; with no results at all there's nothing to go back for, so it counts as `ok`. A model reply that isn't a usable `Verdict` also counts as `ok`.
 
 `interpret_node` writes the answer from a summary of every branch's results. The prompt tells the model to use only those numbers, describe the whole result, and never invent figures or claim a chart type that wasn't drawn.
 

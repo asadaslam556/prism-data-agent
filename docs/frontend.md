@@ -34,7 +34,7 @@ On load, `App.jsx` calls `/api/health`. When it reports `db_connect: false` (the
 When the agent drew a chart, or the result is a single row, `ResultView` renders `DataChart`:
 
 - **A single row with 2 to 8 columns, at least one numeric:** KPI cards.
-- **A bar or line chart:** redrawn as SVG from the result rows, with hover values. The chart type follows the model's code; long labels switch bars to horizontal, and dates read as a line when nothing was declared. Up to 40 points are drawn.
+- **A bar or line chart:** redrawn as SVG from the result rows, with hover values. The chart type follows the model's code; bars turn horizontal when a label is longer than 12 characters or there are more than 8 of them, unless the labels are dates, and dates read as a line when nothing was declared. Up to 40 points are drawn.
 - **Anything else** (scatter, pie, histogram, box plot, heatmap): the model's own PNG, shown as drawn.
 
 The result table shows the first 10 rows and says when the query hit the row cap.
