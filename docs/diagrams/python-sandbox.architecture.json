@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Layers around model-written Python",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "python-sandbox.architecture.html",
+    "repository": {
+      "url": "https://github.com/asadaslam556/prism-data-agent",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "408ad3bb44998befabea0a4f3c80bd41bba1b76e"
+    },
+    "views": [
+      { "id": "layers", "label": "The layers", "focus": ["code", "ast", "namespace", "audit", "watchdog", "result"], "note": "Each layer catches what the one before can't see." },
+      { "id": "fail", "label": "When one says no", "focus": ["ast", "watchdog", "planner"], "note": "The planner sees the error and can try again or answer." }
+    ]
+  },
+  "components": [
+    { "id": "code", "type": "external", "label": "Model writes code", "sublabel": "pandas or matplotlib", "pos": [40, 60], "size": [160, 64],
+      "sources": [{ "path": "backend/app/skills/python_skill.py", "line": 26, "label": "python_skill" }] },
+    { "id": "ast", "type": "security", "label": "AST check", "sublabel": "no imports · no _attrs", "tag": "no file I/O methods", "pos": [250, 60], "size": [170, 64],
+      "sources": [{ "path": "backend/app/hooks/safety.py", "line": 179, "label": "validate_python" }, { "path": "backend/app/hooks/safety.py", "line": 146, "label": "_Guard" }] },
+    { "id": "namespace", "type": "security", "label": "Restricted namespace", "sublabel": "module views", "tag": "~20 builtins · df copy", "pos": [470, 60], "size": [170, 64],
+      "sources": [{ "path": "backend/app/services/sandbox.py", "line": 86, "label": "_ModuleView" }, { "path": "backend/app/services/sandbox.py", "line": 48, "label": "_SAFE_BUILTIN_NAMES" }] },
+    { "id": "audit", "type": "security", "label": "Audit hook", "sublabel": "no writes · processes", "tag": "no sockets · ctypes", "pos": [690, 60], "size": [170, 64],
+      "sources": [{ "path": "backend/app/services/sandbox.py", "line": 133, "label": "_audit" }] },
+    { "id": "watchdog", "type": "security", "label": "Watchdog", "sublabel": "SANDBOX_TIMEOUT", "tag": "default 30 s", "pos": [910, 60], "size": [170, 64],
+      "sources": [{ "path": "backend/app/services/sandbox.py", "line": 171, "label": "_time_limit" }] },
+    { "id": "result", "type": "backend", "label": "Result", "sublabel": "value or chart PNG", "pos": [1130, 60], "size": [160, 64],
+      "sources": [{ "path": "backend/app/services/sandbox.py", "line": 213, "label": "run_analysis" }] },
+    { "id": "planner", "type": "backend", "label": "Back to the planner", "sublabel": "retry or answer", "pos": [580, 240], "size": [170, 64],
+      "sources": [{ "path": "backend/app/agent/graph.py", "line": 282, "label": "python_node" }] }
+  ],
+  "connections": [
+    { "id": "code-ast", "from": "code", "to": "ast", "variant": "emphasis" },
+    { "id": "ast-ns", "from": "ast", "to": "namespace", "variant": "emphasis" },
+    { "id": "ns-audit", "from": "namespace", "to": "audit", "variant": "emphasis" },
+    { "id": "audit-wd", "from": "audit", "to": "watchdog", "variant": "emphasis" },
+    { "id": "wd-result", "from": "watchdog", "to": "result", "variant": "emphasis" },
+    { "id": "ast-planner", "from": "ast", "to": "planner", "label": "rejected", "variant": "security", "fromSide": "bottom", "toSide": "left" },
+    { "id": "wd-planner", "from": "watchdog", "to": "planner", "label": "error or timeout", "variant": "security", "fromSide": "bottom", "toSide": "right" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Why layers", "items": ["The AST check is a denylist; module views and the audit hook limit what a missed route can do", "A blocked call at run time surfaces as an error, like any other"] },
+    { "dot": "slate", "title": "Honest limits", "items": ["No memory cap, and one long C call can't be interrupted (SECURITY.md)"] }
+  ]
+}

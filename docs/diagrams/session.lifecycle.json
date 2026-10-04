@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Dataset session lifecycle",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "session.lifecycle.html",
+    "views": [
+      {
+        "id": "normal",
+        "label": "In use",
+        "focus": [
+          "created",
+          "idle",
+          "inuse"
+        ],
+        "note": "Every request that uses the session refreshes it."
+      },
+      {
+        "id": "removal",
+        "label": "Removal",
+        "focus": [
+          "idle",
+          "ttl",
+          "cap",
+          "expired",
+          "evicted"
+        ],
+        "note": "Idle too long, or pushed out when the registry is full."
+      }
+    ],
+    "viewBox": [
+      1080,
+      640
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "In the registry"
+    },
+    {
+      "id": "checks",
+      "label": "Checks the code runs"
+    },
+    {
+      "id": "terminal",
+      "label": "Removed"
+    }
+  ],
+  "states": [
+    {
+      "id": "created",
+      "type": "start",
+      "label": "Created",
+      "sublabel": "introspect succeeded",
+      "lane": "main",
+      "col": 0,
+      "tag": "new id"
+    },
+    {
+      "id": "idle",
+      "type": "waiting",
+      "label": "Idle",
+      "sublabel": "waiting for a request",
+      "lane": "main",
+      "col": 2
+    },
+    {
+      "id": "inuse",
+      "type": "active",
+      "label": "In use",
+      "sublabel": "get() refreshes it",
+      "lane": "main",
+      "col": 4,
+      "tag": "most recent"
+    },
+    {
+      "id": "ttl",
+      "type": "decision",
+      "label": "Too old?",
+      "sublabel": "idle > SESSION_TTL",
+      "lane": "checks",
+      "col": 0,
+      "tag": "every lookup + load"
+    },
+    {
+      "id": "cap",
+      "type": "decision",
+      "label": "Too many?",
+      "sublabel": "> MAX_SESSIONS",
+      "lane": "checks",
+      "col": 1,
+      "tag": "on a new load"
+    },
+    {
+      "id": "expired",
+      "type": "failure",
+      "label": "Expired",
+      "sublabel": "engine disposed",
+      "lane": "terminal",
+      "col": 0,
+      "tag": "lookups 404"
+    },
+    {
+      "id": "evicted",
+      "type": "failure",
+      "label": "Evicted",
+      "sublabel": "least recent goes",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "engine disposed"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "created-idle",
+      "from": "created",
+      "to": "idle",
+      "label": "registered",
+      "variant": "emphasis"
+    },
+    {
+      "id": "idle-use",
+      "from": "idle",
+      "to": "inuse",
+      "label": "request",
+      "variant": "emphasis",
+      "route": "straight",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "use-idle",
+      "from": "inuse",
+      "to": "idle",
+      "label": "done",
+      "variant": "dashed",
+      "route": "top-channel"
+    },
+    {
+      "id": "idle-ttl",
+      "from": "idle",
+      "to": "ttl",
+      "variant": "security",
+      "route": "straight",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "ttl-expired",
+      "from": "ttl",
+      "to": "expired",
+      "label": "yes",
+      "variant": "security",
+      "labelDy": 24
+    },
+    {
+      "id": "idle-cap",
+      "from": "idle",
+      "to": "cap",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "cap-evicted",
+      "from": "cap",
+      "to": "evicted",
+      "label": "yes",
+      "variant": "security",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Defaults",
+      "items": [
+        "SESSION_TTL_MINUTES=120, MAX_SESSIONS=24"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Not a state",
+      "items": [
+        "A failed load never creates a session; its engine is disposed and the API returns 400",
+        "Sessions live in memory: a restart clears them all"
+      ]
+    }
+  ]
+}

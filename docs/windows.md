@@ -9,14 +9,7 @@
 
 The README's quickstart, in PowerShell, plus the Windows-specific things that tend to go wrong.
 
-```mermaid
-flowchart LR
-    I["Install Python,<br/>Node and Ollama"] --> M["ollama pull qwen2.5"]
-    M --> B["Terminal 1<br/>backend on :8000"]
-    M --> F["Terminal 2<br/>frontend on :5173"]
-    B --> O(["Open localhost:5173"])
-    F --> O
-```
+[![Local setup](diagrams/local-setup.workflow.svg)](diagrams/local-setup.workflow.html)
 
 ## Prerequisites
 
@@ -109,10 +102,10 @@ PowerShell doesn't use `export`:
 
 ```powershell
 $env:LLM_PROVIDER="openai"
-$env:OPENAI_API_KEY="sk-..."
+$env:OPENAI_API_KEY="<YOUR_API_KEY>"
 ```
 
-These only last for the current terminal. For anything permanent, put it in `backend\.env`. The README covers the hosted setup, including the extra setting DeepSeek needs.
+These only last for the current terminal. For anything permanent, put it in `backend\.env`. Every setting is listed in [configuration.md](configuration.md); the hosted setup, including the extra setting DeepSeek needs, is in [models.md](models.md#deepseek).
 
 ## When a change doesn't seem to take effect
 
@@ -166,7 +159,9 @@ These are the same checks CI runs.
 | Answers fail instantly with connection errors to port 11434 | Ollama isn't running. Start it from the Start menu. |
 | The model isn't found | Pull it: `ollama pull qwen2.5`, or whatever `OLLAMA_MODEL` is set to. |
 | `/api/health` shows a different model than you set | `backend\.env` wasn't picked up. Check it's named `.env`, not `.env.txt`, and restart the backend. |
-| Port 8000 or 5173 is in use | `uvicorn app.main:app --reload --port 8001` or `npm run dev -- --port 5174`. |
+| Port 8000 is in use | Free it: `netstat -ano \| findstr :8000`, then `taskkill /PID <pid> /F`. Moving the backend to another port breaks the frontend, whose dev proxy always points at port 8000. |
+| Port 5173 is in use | `npm run dev -- --port 5174`. |
+| **Load sample dataset** says "Not Found" | Something else is answering on port 8000, such as an old server or a Docker container. Check with `netstat` as above and stop it. |
 | First answer is very slow | The model loads into memory on first use. Keep Ollama running. |
 
-More in the [guide's troubleshooting table](guide.md#troubleshooting).
+More in [troubleshooting.md](troubleshooting.md).

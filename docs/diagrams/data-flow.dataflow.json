@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Where the numbers come from",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "data-flow.dataflow.html",
+    "views": [
+      {
+        "id": "query",
+        "label": "Query path",
+        "focus": [
+          "sqlite",
+          "sqlres",
+          "json",
+          "ui"
+        ],
+        "note": "Rows travel from the source to the table and chart in the browser."
+      },
+      {
+        "id": "analysis",
+        "label": "Analysis",
+        "focus": [
+          "sqlres",
+          "pandas",
+          "chart",
+          "json"
+        ],
+        "note": "pandas and matplotlib work on the query result."
+      }
+    ],
+    "viewBox": [
+      1070,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "Source"
+    },
+    {
+      "label": "Query"
+    },
+    {
+      "label": "Analyse"
+    },
+    {
+      "label": "Respond"
+    },
+    {
+      "label": "Show"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "In-memory SQLite",
+      "sublabel": "sample or CSV",
+      "stage": 0,
+      "row": 0,
+      "tag": "table \"data\""
+    },
+    {
+      "id": "extdb",
+      "type": "external",
+      "label": "Your database",
+      "sublabel": "SQLAlchemy URL",
+      "stage": 0,
+      "row": 2,
+      "tag": "local only"
+    },
+    {
+      "id": "sqlres",
+      "type": "database",
+      "label": "Query result",
+      "sublabel": "pandas DataFrame",
+      "stage": 1,
+      "row": 1,
+      "tag": "≤ MAX_SQL_ROWS"
+    },
+    {
+      "id": "pandas",
+      "type": "backend",
+      "label": "pandas result",
+      "sublabel": "sandboxed snippet",
+      "stage": 2,
+      "row": 0,
+      "tag": "text ≤ 4000 chars"
+    },
+    {
+      "id": "chart",
+      "type": "backend",
+      "label": "matplotlib figure",
+      "sublabel": "sandboxed snippet",
+      "stage": 2,
+      "row": 2,
+      "tag": "base64 PNG"
+    },
+    {
+      "id": "json",
+      "type": "backend",
+      "label": "Response JSON",
+      "sublabel": "per-branch results",
+      "stage": 3,
+      "row": 1,
+      "tag": "NaN → null"
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "table · SVG chart · KPIs",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "select",
+      "from": "sqlite",
+      "to": "sqlres",
+      "label": "SELECT",
+      "variant": "emphasis"
+    },
+    {
+      "id": "select-ext",
+      "from": "extdb",
+      "to": "sqlres",
+      "label": "SELECT",
+      "variant": "default"
+    },
+    {
+      "id": "to-pandas",
+      "from": "sqlres",
+      "to": "pandas",
+      "label": "df"
+    },
+    {
+      "id": "to-chart",
+      "from": "sqlres",
+      "to": "chart",
+      "label": "df"
+    },
+    {
+      "id": "rows",
+      "from": "sqlres",
+      "to": "json",
+      "label": "rows",
+      "variant": "emphasis"
+    },
+    {
+      "id": "result",
+      "from": "pandas",
+      "to": "json",
+      "label": "python_result"
+    },
+    {
+      "id": "png",
+      "from": "chart",
+      "to": "json",
+      "label": "chart PNG"
+    },
+    {
+      "id": "final",
+      "from": "json",
+      "to": "ui",
+      "label": "event: final",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "What the browser draws",
+      "items": [
+        "Bar and line charts are redrawn as SVG from the rows; other shapes show the model's PNG",
+        "A single-row result becomes KPI cards"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Details",
+      "items": [
+        "Uploads and the sample are loaded once with to_sql; with no query result yet, pandas and chart get the whole table",
+        "Rows go through pandas' own JSON encoder, so NaN and numpy types are safe"
+      ]
+    }
+  ]
+}

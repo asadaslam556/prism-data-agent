@@ -44,15 +44,18 @@
 - [Tech stack](#tech-stack)
 - [Quickstart](#quickstart)
 - [Using a hosted model](#using-a-hosted-model)
+- [Usage](#usage)
 - [Configuration](#configuration)
 - [Architecture](#architecture)
 - [Security model](#security-model)
 - [Deployment](#deployment)
 - [Testing](#testing)
 - [Project structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
 - [Extending it](#extending-it)
 - [Roadmap](#roadmap)
 - [Documentation](#documentation)
+- [License](#license)
 
 ## Highlights
 
@@ -72,7 +75,7 @@
 
 | The agent graph | A chart it drew |
 | :---: | :---: |
-| <img src="docs/images/agent-graph.png" alt="The orchestrator and worker graphs" width="440"> | <img src="docs/images/revenue-by-region.png" alt="Total revenue by region, drawn by the agent from the bundled sample" width="440"> |
+| <img src="docs/diagrams/orchestrator.architecture.svg" alt="The orchestrator graph: decompose, parallel branches, merge, verify with a bounded retry, interpret" width="440"> | <img src="docs/images/revenue-by-region.png" alt="Total revenue by region, drawn by the agent from the bundled sample" width="440"> |
 | Decompose, fan out, merge, verify, answer. | Bar and line charts are redrawn as SVG with hover values; anything else is shown as drawn. |
 
 ## Tech stack
@@ -95,6 +98,8 @@
 ## Quickstart
 
 You need **Python 3.11+**, **Node 20.19+** and **[Ollama](https://ollama.com/download)**.
+
+![Running Prism locally: install once, pull a model, start the backend and the frontend in two terminals, open localhost:5173](docs/diagrams/local-setup.workflow.svg)
 
 **1. Pull a model** (once):
 
@@ -122,7 +127,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173, click **Load sample dataset**, and try *"Show the monthly revenue trend as a chart"*. Then try *"Revenue by region as a chart and revenue by category"* to watch it split into two tasks.
+Open http://localhost:5173 and click **Load sample dataset**. The Vite dev server proxies `/api` to port 8000, so keep the backend there.
 
 On Windows, [docs/windows.md](docs/windows.md) walks through the same steps in PowerShell.
 
@@ -134,7 +139,7 @@ docker compose up --build
 docker compose exec ollama ollama pull qwen2.5   # once
 ```
 
-Frontend on http://localhost:5173, API on port 8000, Ollama on 11434.
+Frontend on http://localhost:5173, API on port 8000, Ollama on 11434. This stack always runs on Ollama; see [docs/deployment.md](docs/deployment.md) for the single-image option.
 
 </details>
 
@@ -146,7 +151,7 @@ Set `LLM_PROVIDER=openai` and a key, then restart the backend. The provider pack
 
 ```bash
 export LLM_PROVIDER=openai
-export OPENAI_API_KEY=sk-...
+export OPENAI_API_KEY=<YOUR_API_KEY>
 export LLM_MODEL=gpt-4o-mini
 ```
 
@@ -154,254 +159,106 @@ export LLM_MODEL=gpt-4o-mini
 
 ```bash
 export LLM_PROVIDER=openai
-export OPENAI_API_KEY=sk-...
+export OPENAI_API_KEY=<YOUR_API_KEY>
 export OPENAI_BASE_URL=https://api.deepseek.com/v1
 export LLM_MODEL=deepseek-v4-flash
 export LLM_EXTRA_BODY='{"thinking": {"type": "disabled"}}'
 ```
 
 > [!IMPORTANT]
-> Don't skip the last line. DeepSeek's V4 models run in thinking mode by default, and thinking mode rejects a forced tool choice (`400 Thinking mode does not support this tool_choice`). The planner, decomposer and verifier all rely on exactly that, so without it every question fails. Turning thinking off also makes runs noticeably faster.
-
-A few more things worth knowing:
+> Don't skip the last line. DeepSeek's V4 models run in thinking mode by default, and thinking mode rejects a forced tool choice (`400 Thinking mode does not support this tool_choice`). The planner, decomposer and verifier all rely on exactly that, so without it every question fails. Turning thinking off also makes runs faster.
 
 - `OPENAI_BASE_URL` points the provider at any compatible server: LM Studio, vLLM, Groq, a company gateway.
-- Gateways often rename models (`gpt-4o-mini@default`, say). Run `python list_models.py` from `backend/` to list what your endpoint actually serves and check whether `LLM_MODEL` is on it.
-- Some models reject `temperature` outright. Set `LLM_TEMPERATURE=` (blank) to leave it out of the request.
-- The pill in the app header always shows which provider and model are answering.
+- Gateways often rename models (`gpt-4o-mini@default`, say). Run `python list_models.py` from `backend/` to list what your endpoint serves.
+- Some models reject `temperature`. Set `LLM_TEMPERATURE=` (blank) to leave it out of the request.
+- The pill in the app header shows which model is answering.
 
-If the backend can't reach the model (Ollama not running, a bad key) you get a readable message saying what to check, not a stack trace.
+If the backend can't reach the model (Ollama not running, a bad key) you get a readable message saying what to check, not a stack trace. More in [docs/models.md](docs/models.md).
+
+## Usage
+
+Load the sample, then try:
+
+| Ask | What you'll see |
+| --- | --- |
+| *What is total revenue by region?* | One query, a table and a short answer |
+| *Show the monthly revenue trend as a chart* | A query and a chart; bar and line charts are redrawn from the rows |
+| *Revenue by region as a chart and revenue by category* | Two branches running at the same time, one per part |
+| *Total revenue, average order value and order count* | A single-row result shown as KPI cards |
+
+Each answer comes with the SQL the agent wrote, the result table, any pandas code it ran, and a collapsible panel with every step it took.
+
+The same agent is available over HTTP:
+
+```bash
+# load the sample and keep its session id
+curl -s http://localhost:8000/api/sample
+
+# ask a question in one request
+curl -s http://localhost:8000/api/query \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "<SESSION_ID>", "question": "What is total revenue by region?"}'
+```
+
+`POST /api/query/stream` streams the same run as Server-Sent Events. Every route is in [docs/api.md](docs/api.md).
 
 ## Configuration
 
-Everything is an environment variable. Copy `backend/.env.example` to `backend/.env` and edit it. The file is read once at startup, so restart the server after changing it.
+Everything is an environment variable. Copy `backend/.env.example` to `backend/.env` and edit it; the file is read once at startup, so restart the server after a change. Defaults and details for every setting are in [docs/configuration.md](docs/configuration.md).
 
-<details>
-<summary><strong>All settings</strong></summary>
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `LLM_PROVIDER` | `ollama` | `ollama` or `openai` (OpenAI or any compatible endpoint) |
-| `LLM_MODEL` | provider default | Overrides the model for whichever provider is active |
-| `LLM_TEMPERATURE` | `0.0` | Leave blank to omit it from the request |
-| `LLM_TOP_P` | | Nucleus sampling. Blank leaves it to the provider |
-| `LLM_MAX_TOKENS` | `2048` | Ceiling on what the model may write per call |
-| `LLM_REQUEST_TIMEOUT` | `180` | Seconds per call. One question is several calls |
-| `LLM_EXTRA_BODY` | | Raw JSON merged into the request, for provider-specific switches like thinking mode |
-| `OPENAI_API_KEY` | | Only for the hosted provider |
-| `OPENAI_BASE_URL` | | Point at DeepSeek, Groq, a gateway or any compatible server |
-| `OLLAMA_BASE_URL` | `http://localhost:11434` | Where Ollama listens |
-| `OLLAMA_MODEL` | `qwen2.5` | Ollama's default model |
-| `MAX_AGENT_STEPS` | `16` | Hard cap on planner steps, shared across all branches |
-| `MAX_PARALLEL_BRANCHES` | `3` | Sub-questions run at once. `1` gives the plain single loop |
-| `MAX_VERIFY_PASSES` | `1` | How often the verifier may send work back |
-| `ENABLE_VERIFIER` | `true` | Turns the verification step off entirely |
-| `MAX_SQL_ROWS` | `1000` | Row cap on every generated query |
-| `SQL_RETRY_ATTEMPTS` | `1` | Extra tries after a failed query |
-| `SANDBOX_TIMEOUT_SECONDS` | `30` | Wall-clock cap on one generated snippet |
-| `MAX_UPLOAD_MB` | `25` | Upload size cap |
-| `MAX_SESSIONS` / `SESSION_TTL_MINUTES` | `24` / `120` | How many datasets stay loaded, and for how long |
-| `LOG_LEVEL` | `INFO` | App log verbosity |
-| `APP_USERNAME` / `APP_PASSWORD` | | Set both to put the whole app behind a browser login |
-| `ENABLE_DB_CONNECT` | `true` | Turns `/api/connect` off. The deployment image sets it to `false` |
-
-</details>
+| Variable | Purpose |
+| --- | --- |
+| `LLM_PROVIDER` | `ollama` or `openai` (OpenAI or any compatible endpoint) |
+| `LLM_MODEL` | Model for the active provider |
+| `LLM_TEMPERATURE`, `LLM_TOP_P`, `LLM_MAX_TOKENS` | Sampling and length; blank leaves temperature and top-p out |
+| `LLM_REQUEST_TIMEOUT` | Seconds per model call |
+| `LLM_EXTRA_BODY` | Raw JSON merged into the request, for switches like DeepSeek's thinking mode |
+| `OPENAI_API_KEY`, `OPENAI_BASE_URL` | The hosted provider's key and endpoint |
+| `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | Where Ollama listens, and its model |
+| `MAX_AGENT_STEPS` | Planner steps, shared by all branches of one question |
+| `MAX_PARALLEL_BRANCHES` | Sub-questions run at once; `1` gives a single loop |
+| `MAX_VERIFY_PASSES`, `ENABLE_VERIFIER` | How often the verifier may send work back, or turn it off |
+| `MAX_SQL_ROWS`, `SQL_RETRY_ATTEMPTS` | Row cap on every query, and retries after a failed one |
+| `SANDBOX_TIMEOUT_SECONDS` | Wall-clock cap on one generated snippet |
+| `MAX_UPLOAD_MB`, `MAX_SESSIONS`, `SESSION_TTL_MINUTES` | Upload size, datasets kept loaded, and for how long |
+| `APP_USERNAME`, `APP_PASSWORD` | Set both to put the whole app behind a browser login |
+| `ENABLE_DB_CONNECT` | Allows `/api/connect`; the deployment image turns it off |
+| `CORS_ORIGINS` | Origins allowed to call the API from another host |
+| `LOG_LEVEL` | App log level |
 
 ## Architecture
 
-### System overview
+One React app, one FastAPI process, one agent. The model provider and the data source are both swappable.
 
-One React app, one FastAPI process, one agent. The model provider and the data source are both swappable, and neither the agent nor the UI cares which one is active.
+<a href="docs/diagrams/system-overview.architecture.html"><img src="docs/diagrams/system-overview.architecture.svg" alt="System overview: the React console talks to one FastAPI process holding the agent graph, skills, guardrails, sandbox, model layer, session registry and connectors; the model provider and your own database sit outside it"></a>
 
-```mermaid
-flowchart LR
-    subgraph browser["Browser"]
-        UI["React console"]
-    end
+The question is split into independent parts by an **orchestrator** graph, and each part runs its own **plan-act loop** at the same time:
 
-    subgraph server["FastAPI process"]
-        API["REST endpoints<br/>sample · upload · connect"]
-        SSE["SSE stream<br/>/api/query/stream"]
-        AG["LangGraph agent"]
-        SB["Sandbox<br/>pandas · numpy · matplotlib"]
-    end
+| Orchestrator | Branch loop |
+| :---: | :---: |
+| <img src="docs/diagrams/orchestrator.architecture.svg" alt="Orchestrator: decompose, branches in parallel, merge, verify with a bounded retry, interpret" width="440"> | <img src="docs/diagrams/branch-loop.architecture.svg" alt="Branch loop: plan picks sql, python or chart, each tool returns to plan, answer ends the branch" width="440"> |
 
-    subgraph models["Model provider"]
-        OL["Ollama (local)"]
-        OA["OpenAI-compatible<br/>OpenAI · DeepSeek · Groq"]
-    end
+Every step streams to the browser as it finishes:
 
-    subgraph data["Data"]
-        CSV["CSV upload"]
-        SAMP["Bundled sample"]
-        DB["Postgres · MySQL · SQLite"]
-    end
+![A question end to end: the browser posts to FastAPI, the graph runs on its own thread, branches query the data and stream steps over SSE, then the final answer arrives](docs/diagrams/question.sequence.svg)
 
-    UI -- "question" --> SSE
-    UI -- "load data" --> API
-    API --> data
-    SSE --> AG
-    AG -- "prompts" --> models
-    AG -- "read-only SELECT" --> data
-    AG -- "checked code" --> SB
-    AG -. "live steps" .-> SSE
-    SSE -. "events" .-> UI
-```
-
-### Layers
-
-The backend is split into layers that only call downwards. Model access sits to the side, because the orchestration layer and the skills both use it.
-
-```mermaid
-flowchart TB
-    P["<b>Presentation</b><br/>frontend/src · React components, SSE reader"]
-    A["<b>API</b><br/>app/main.py · app/schemas.py<br/>routes, streaming, login, request ids"]
-    O["<b>Orchestration</b><br/>app/agent/graph.py · state.py · prompts.py<br/>orchestrator graph + worker loop"]
-    S["<b>Capabilities</b><br/>app/skills/<br/>sql · python · chart · interpret"]
-    G["<b>Guardrails</b><br/>app/hooks/<br/>SQL + Python validation, step budget, logging"]
-    E["<b>Execution and state</b><br/>app/services/<br/>sandbox, dataset sessions"]
-    D["<b>Data access</b><br/>app/data/connectors.py<br/>engines, introspection, locked reads"]
-    M["<b>Model access</b><br/>app/agent/llm.py · providers.py<br/>complete() · structured()"]
-
-    P --> A --> O --> S
-    S --> G
-    S --> E --> D
-    O -.-> M
-    S -.-> M
-```
-
-| Layer | Knows about | Doesn't know about |
-| --- | --- | --- |
-| Presentation | The API's JSON and SSE events | Graphs, models, databases |
-| API | Sessions, the agent's `run()` and `stream()` | How the agent decides anything |
-| Orchestration | Skills, state, the step budget | SQL dialects, provider SDKs |
-| Capabilities | Guardrails, sandbox, connectors, `llm` | The graph they run in |
-| Guardrails | Nothing above them | Everything above them |
-| Model access | Provider SDKs | Everything else |
-
-### The agent
-
-Two levels, both explicit [LangGraph](https://langchain-ai.github.io/langgraph/) state machines. The **orchestrator** decides how many independent sub-questions a request contains, runs a **worker** for each at the same time, merges the results, and hands them to a **verifier** that can send the work back.
-
-```mermaid
-flowchart LR
-    Q([Question]) --> D[Decompose]
-    D -->|in parallel| B1[Branch 1]
-    D -->|in parallel| B2[Branch 2]
-    D -->|in parallel| B3[Branch 3]
-    B1 --> M[Merge]
-    B2 --> M
-    B3 --> M
-    M --> V{Verify}
-    V -->|gap found, bounded retry| D
-    V -->|ok| I[Interpret]
-    I --> A([Answer])
-```
-
-Each branch runs its own plan-act loop with isolated state:
-
-```mermaid
-flowchart LR
-    P[Plan]
-    P -->|sql| S[Query the data]
-    P -->|python| Y[Run pandas]
-    P -->|chart| C[Draw a chart]
-    S --> P
-    Y --> P
-    C --> P
-    P -->|done| E([Branch result])
-```
-
-Most questions decompose to a single branch and behave like a plain agent loop. The parallel machinery only kicks in when a question really has independent parts.
-
-### A question, end to end
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant U as Browser
-    participant A as FastAPI
-    participant O as Orchestrator
-    participant B as Branch worker
-    participant M as Model
-    participant D as Data
-
-    U->>A: POST /api/query/stream
-    A->>O: start run on a background thread
-    O->>M: decompose the question
-    M-->>O: sub-questions
-    O-->>U: step: split into N tasks
-
-    par Branch 1
-        O->>B: sub-question 1
-        loop until done or budget spent
-            B->>M: plan next action
-            M-->>B: sql / python / chart / done
-            B->>D: validated read-only SELECT
-            D-->>B: rows
-            B-->>U: step event, live
-        end
-    and Branch 2
-        O->>B: sub-question 2
-        Note over B: same loop, isolated state
-        B-->>U: step event, live
-    end
-
-    O->>O: merge branch results
-    O->>M: verify: does this answer it?
-    alt gap found
-        M-->>O: retry with a note (bounded)
-    else looks complete
-        M-->>O: ok
-    end
-    O->>M: write the answer from computed numbers only
-    M-->>O: answer
-    O-->>U: final: answer, charts, tables, SQL
-```
-
-[docs/architecture.md](docs/architecture.md) goes into the state design, streaming and the trade-offs. [docs/guide.md](docs/guide.md) walks through every file.
+[docs/architecture.md](docs/architecture.md) walks through all 21 diagrams. Each one also has an interactive version (`.html` next to the image in [docs/diagrams/](docs/diagrams/)) with search, focus and light and dark themes; in the code-level architecture diagrams, components link to their source lines.
 
 ## Security model
 
-Running SQL and Python that a model wrote is the main risk in this project, so everything the model writes goes through independent layers:
+Running SQL and Python that a model wrote is the main risk here, so everything it writes passes through independent layers.
 
-```mermaid
-flowchart TB
-    M["Model writes SQL or Python"] --> L1
+![Layers around model-written Python: AST check, restricted namespace, audit hook, watchdog; a rejection, error or timeout goes back to the planner](docs/diagrams/python-sandbox.architecture.svg)
 
-    subgraph L1["1 · Static checks"]
-        S1["SQL: one SELECT/WITH, keyword blocklist,<br/>comments stripped, LIMIT added or clamped"]
-        S2["Python: AST walk, no imports, private attributes,<br/>frame introspection, eval/exec/open, file I/O calls"]
-    end
+![How a generated query gets run: validate_sql, then run_select, with rejections and query errors sent back to the model](docs/diagrams/sql-guard.architecture.svg)
 
-    L1 -->|rejected| R(["Refused, the planner retries"])
-    L1 -->|passes| L2
-
-    subgraph L2["2 · Restricted namespace"]
-        E1["A copy of the data, ~20 allow-listed builtins,<br/>module views that won't hand out os or subprocess"]
-    end
-
-    L2 --> L3["3 · Audit hook<br/>no file writes, processes or sockets at runtime"]
-    L3 --> L4["4 · Watchdog<br/>stops snippets past SANDBOX_TIMEOUT_SECONDS"]
-    L4 --> L5["5 · Bounded loop<br/>shared step budget, capped verifier retries"]
-    L5 --> OK(["Result returned"])
-```
-
-This is hardening for a local, single-user tool, not a jail. CPython can't be fully locked down from inside its own process. [SECURITY.md](SECURITY.md) lists the known gaps and what a multi-tenant deployment would need on top.
+This is hardening for a local, single-user tool, not a jail. CPython can't be fully locked down from inside its own process. [SECURITY.md](SECURITY.md) lists the known gaps and how to report a vulnerability; [docs/guardrails.md](docs/guardrails.md) covers each layer.
 
 ## Deployment
 
-The root `Dockerfile` builds one image: the React build is served by FastAPI, so there's one process and one port. It listens on `$PORT` when the host sets one.
+![Three ways to run Prism: Vite and uvicorn on your machine, docker compose with three containers, or the single image on a host such as Render](docs/diagrams/deployment.architecture.svg)
 
-```mermaid
-flowchart LR
-    GH["GitHub push"] --> CI["CI: lint, tests,<br/>frontend build, image build"]
-    GH --> R["Render builds the Dockerfile"]
-    R --> IMG["Stage 1: Vite build<br/>Stage 2: Python runtime"]
-    IMG --> RUN["uvicorn on $PORT<br/>behind the optional login"]
-```
-
-[docs/deploy-render.md](docs/deploy-render.md) walks through putting it on Render's free tier, step by step.
+The root `Dockerfile` builds one image: FastAPI serves the built React app and the API on one port (`$PORT`, 7860 by default), with `/api/connect` turned off. [docs/deployment.md](docs/deployment.md) compares the three setups, and [docs/deploy-render.md](docs/deploy-render.md) puts the image on Render's free tier behind a login.
 
 ## Testing
 
@@ -412,7 +269,7 @@ python -m pytest
 ruff check app tests list_models.py
 ```
 
-The model is mocked in every test, so the suite runs anywhere, CI included, without Ollama. It covers everything around the model:
+The model is mocked in every test, so the suite runs anywhere, CI included, without Ollama. It covers:
 
 - both guardrails, and every sandbox escape route found so far
 - the data layer, the API and the server limits
@@ -420,6 +277,8 @@ The model is mocked in every test, so the suite runs anywhere, CI included, with
 - the orchestration layer: decomposition, real thread-level parallelism, verifier retries
 - provider selection and outage handling
 - the concurrency bugs that only appeared once branches ran at the same time
+
+CI runs the same checks on Python 3.11 and 3.12, builds the frontend and builds the deployment image; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project structure
 
@@ -434,27 +293,42 @@ prism-data-agent/
 │   │   ├── data/           # SQLAlchemy connectors
 │   │   ├── config.py       # settings, all overridable by env var
 │   │   ├── schemas.py      # API models
-│   │   └── main.py         # FastAPI app and SSE endpoint
+│   │   └── main.py         # FastAPI app, middleware and routes
 │   ├── data/samples/       # the bundled sales dataset
 │   ├── tests/
 │   ├── list_models.py      # asks the configured endpoint what it serves
 │   ├── Dockerfile          # backend image for docker-compose
 │   └── requirements*.txt
 ├── frontend/               # React + Vite console
-├── docs/                   # architecture, guide, Windows and Render guides
+├── docs/
+│   ├── diagrams/           # archify sources (.json), interactive .html, .svg and .png
+│   ├── images/             # screenshots, demo and logo
+│   └── archive/            # superseded pages, kept for history
 ├── Dockerfile              # single deployment image
 └── docker-compose.yml      # Ollama + backend + frontend for local use
 ```
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| Answers fail with connection errors to port 11434 | Ollama isn't running. Start it, or run `ollama serve`. |
+| "Not Found" when loading the sample | Something else is listening on port 8000. Stop it; the frontend always proxies to 8000. |
+| A changed `.env` setting has no effect | It's read once at startup. Restart the backend. |
+| DeepSeek fails with `Thinking mode does not support this tool_choice` | Set `LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}`. |
+
+More in [docs/troubleshooting.md](docs/troubleshooting.md).
 
 ## Extending it
 
 To add a capability, say forecasting:
 
 1. Create `backend/app/skills/forecast_skill.py` exposing `NAME`, `DESCRIPTION` and `run(...) -> SkillResult`.
-2. Add a node and a loop-back edge for it in `backend/app/agent/graph.py`, and add the action to the planner prompt.
-3. The reasoning panel picks it up from the streamed steps with no frontend change.
+2. In `backend/app/agent/graph.py`, add the action to the `Action` type, add a node with a loop-back edge to `plan`, and map it in `branch_route`.
+3. Describe the action in `PLANNER_SYSTEM` in `backend/app/agent/prompts.py`.
+4. Add the node name to `TraceStep.node` in `backend/app/schemas.py`, or `/api/query` rejects the new step.
 
-A new model provider is one function in `backend/app/agent/providers.py` with `@register("name")` on it.
+The reasoning panel picks the new steps up with no frontend change. A new model provider is one function in `backend/app/agent/providers.py` with `@register("name")` on it.
 
 ## Roadmap
 
@@ -466,16 +340,21 @@ A new model provider is one function in `backend/app/agent/providers.py` with `@
 
 ## Documentation
 
+Start at [docs/README.md](docs/README.md), which maps every page.
+
 | Document | What's in it |
 | --- | --- |
-| [docs/architecture.md](docs/architecture.md) | The graph design, state, streaming and safety layering, and why |
-| [docs/guide.md](docs/guide.md) | Every file explained, the life of a question, and the bugs that shaped the design |
-| [docs/windows.md](docs/windows.md) | Setup and troubleshooting in PowerShell |
-| [docs/deploy-render.md](docs/deploy-render.md) | Deploying the single image to Render behind a login |
-| [SECURITY.md](SECURITY.md) | The sandbox layers, known gaps, and how to report a vulnerability |
+| [docs/architecture.md](docs/architecture.md) | Every diagram, explained |
+| [docs/agent.md](docs/agent.md) | The orchestrator, the branch loop, the planner, streaming |
+| [docs/data.md](docs/data.md) | Loading data, sessions, where the numbers come from, concurrency |
+| [docs/guardrails.md](docs/guardrails.md) | The SQL guard and the Python sandbox |
+| [docs/configuration.md](docs/configuration.md) | Every setting, with defaults |
+| [docs/api.md](docs/api.md) | Every route and the streaming format |
+| [docs/deployment.md](docs/deployment.md) | Local, compose and single-image setups, and CI |
+| [SECURITY.md](SECURITY.md) | Known gaps and how to report a vulnerability |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Setup for contributors, checks, and where things go |
 
-## Author
+## License
 
 Built and maintained by **Asad Aslam** · [GitHub](https://github.com/asadaslam556) · [asadaslam.tech](https://asadaslam.tech/)
 

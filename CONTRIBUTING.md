@@ -4,7 +4,7 @@
 ![Ruff](https://img.shields.io/badge/Ruff-D7FF64?logo=ruff&logoColor=black)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
 
-Thanks for taking a look. Here's how to work on it.
+Thanks for taking a look. Here's how to work on it. How the code fits together is in [docs/](docs/README.md).
 
 By taking part you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -30,14 +30,7 @@ You only need Ollama (or a hosted provider key) to use the app. The test suite m
 
 ## How a change lands
 
-```mermaid
-flowchart LR
-    B["Branch off main"] --> C["Change + tests"]
-    C --> L["ruff · pytest ·<br/>npm run build"]
-    L --> PR["Open a PR"]
-    PR --> CI["CI: backend 3.11/3.12,<br/>frontend, image, CodeQL"]
-    CI --> S(["Squash merge"])
-```
+[![How a change lands](docs/diagrams/ci.workflow.svg)](docs/diagrams/ci.workflow.html)
 
 ## Before opening a PR
 
@@ -53,7 +46,7 @@ CI runs the same checks on Python 3.11 and 3.12, plus a build of the deployment 
 
 ## Where things go
 
-- **A new agent capability** goes in `backend/app/skills/`. Copy the shape of an existing skill, add a node for it in `agent/graph.py`, and add the action to the planner prompt in `agent/prompts.py`.
+- **A new agent capability** goes in `backend/app/skills/`. Copy the shape of an existing skill, add a node for it in `agent/graph.py`, add the action to the planner prompt in `agent/prompts.py`, and add the node name to `TraceStep.node` in `schemas.py`. The full steps are in the [README](README.md#extending-it).
 - **A new LLM provider** is one builder function in `backend/app/agent/providers.py` with `@register("name")` on it. Keep the SDK import inside the function.
 - **Guardrail changes** go in `backend/app/hooks/safety.py` or `backend/app/services/sandbox.py`, and need tests. These two files are what make it reasonable to point the app at real data. If you find a way past them, see [SECURITY.md](SECURITY.md) before opening a public issue.
 

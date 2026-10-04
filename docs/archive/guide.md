@@ -1,5 +1,7 @@
 # Project guide
 
+> **Archived.** This page described Prism 1.7–1.8 and has been replaced by the module pages linked from [docs/README.md](../README.md), [troubleshooting.md](../troubleshooting.md) and [design-notes.md](../design-notes.md). It is kept for history; its diagrams and some details are out of date.
+
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?logo=langgraph&logoColor=white)
@@ -7,7 +9,7 @@
 ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 
-A walk through the codebase: what each file does, what happens between pressing enter and seeing an answer, and the bugs that shaped the design. Setup and configuration are in the [README](../README.md); the reasoning behind the graph design is in [architecture.md](architecture.md).
+A walk through the codebase: what each file does, what happens between pressing enter and seeing an answer, and the bugs that shaped the design. Setup and configuration are in the [README](../../README.md); the reasoning behind the graph design is in [architecture.md](architecture.md).
 
 **On this page:** [Module map](#how-the-modules-connect) · [Backend](#the-backend) · [Frontend](#the-frontend-frontend) · [Life of a question](#life-of-a-question) · [Bugs found along the way](#bugs-found-along-the-way) · [Troubleshooting](#troubleshooting)
 

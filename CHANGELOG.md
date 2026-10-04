@@ -2,6 +2,19 @@
 
 All notable changes to Prism. Versions follow [semantic versioning](https://semver.org).
 
+## Unreleased
+
+### Documentation
+- Rewrote the README and `docs/`: one page each for the agent, data, guardrails,
+  models, frontend, API, configuration, deployment, troubleshooting and design
+  notes, with an index in `docs/README.md`.
+- Replaced every Mermaid diagram with 21 diagrams in `docs/diagrams/`, each as
+  an interactive HTML page with SVG and PNG exports.
+- Fixed the port advice: moving the backend off port 8000 breaks the frontend's
+  dev proxy.
+- Moved the old `docs/architecture.md`, `docs/guide.md` and the agent graph
+  image to `docs/archive/`.
+
 ## 1.8.0
 
 Fixes from a production-readiness audit: fewer wrongly rejected queries, no

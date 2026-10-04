@@ -1,211 +1,139 @@
 # Architecture
 
-![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?logo=langgraph&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
-![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?logo=sqlalchemy&logoColor=white)
+How Prism fits together, one diagram at a time. Each section says what the diagram shows and why it's built that way, then points to the page with the detail. Every image links to an interactive version you can open in a browser (see [Diagrams](README.md#diagrams)).
 
-How the agent works inside and why it's built this way. The [README](../README.md) covers what it does; [guide.md](guide.md) goes file by file.
+**On this page:** [System](#system) · [Agent](#agent) · [A question end to end](#a-question-end-to-end) · [Data](#data) · [Models](#models) · [Guardrails](#guardrails) · [Frontend](#frontend) · [Delivery](#delivery) · [Documentation map](#documentation-map) · [Testing approach](#testing-approach)
 
-**On this page:** [Two graphs](#two-graphs-not-one) · [State](#state) · [Concurrency](#what-parallelism-broke) · [Planner fallbacks](#the-planners-safety-nets) · [Safety layers](#safety-layering) · [Streaming](#streaming) · [Providers](#the-provider-layer) · [Skills and hooks](#skills-and-hooks) · [Testing](#testing-approach)
+## System
 
-## Two graphs, not one
+### System overview
 
-The agent is built from explicit LangGraph `StateGraph`s rather than a prebuilt ReAct helper. That costs some code and buys three things: the control flow is visible and testable, the routing is deterministic, and the steps the UI shows are the actual execution path rather than a reconstruction of it.
+[![System overview](diagrams/system-overview.architecture.svg)](diagrams/system-overview.architecture.html)
 
-### The worker graph
+One React app, one FastAPI process, one agent. Everything inside the dashed box runs in that single process: the API, the agent graph, the skills, the guardrails, the sandbox, the session registry, and the in-memory SQLite databases that hold uploaded CSVs. Only two things live outside it: the model provider, and your own database when you connect one.
 
-The plan-act loop for a single sub-question:
+The browser talks to the API over plain REST for loading data and over Server-Sent Events for a question, so steps appear while the agent works.
 
-```mermaid
-stateDiagram-v2
-    [*] --> plan
-    plan --> run_sql: action = sql
-    plan --> run_python: action = python
-    plan --> make_chart: action = chart
-    plan --> [*]: action = answer
-    run_sql --> plan
-    run_python --> plan
-    make_chart --> plan
-```
+### Backend modules
 
-Each time `plan` runs it looks at what the branch has so far (the SQL preview, any pandas output, whether a chart exists, the last error) and picks exactly one next action through structured output. Tool nodes always come back to `plan`. That edge is what lets a branch notice "the SQL is enough, but a chart was asked for" and take another step, or see an error and route around it.
+[![Backend modules and their imports](diagrams/backend-modules.architecture.svg)](diagrams/backend-modules.architecture.html)
 
-### The orchestrator graph
+Arrows point from a module to what it imports, and nothing lower down imports back up. `main.py` knows the graph and the session registry; the graph drives the skills and asks the model layer for decisions; the skills use the guardrails, the sandbox and the connectors. Two things are left out to keep the picture readable: `config.py`, which most modules read, and a few extra imports listed in the diagram's notes.
 
-Runs several of those loops:
+## Agent
 
-```mermaid
-stateDiagram-v2
-    [*] --> decompose
-    decompose --> branch: one Send per sub-question
-    decompose --> merge: nothing new to run
-    branch --> merge
-    merge --> verify
-    verify --> decompose: retry (bounded)
-    verify --> interpret: ok
-    interpret --> [*]
+Details: [agent.md](agent.md).
 
-    state branch {
-        [*] --> worker_loop
-        worker_loop --> [*]
-    }
-```
+### Orchestrator
 
-`decompose` decides how many independent sub-questions the request contains, usually one. `fan_out` emits one `Send` per sub-question, and LangGraph runs them concurrently on separate threads. `merge` is the join point; the reducer has already collected the branch summaries by the time it runs. `verify` takes a second look at the merged results and can route back to `decompose` a bounded number of times.
+[![Orchestrator graph](diagrams/orchestrator.architecture.svg)](diagrams/orchestrator.architecture.html)
 
-Why two levels? Independent sub-questions get answered at the same time instead of one after another, which is what you notice with a slow local model. And the verifier is a separate node looking at the merged result, rather than the planner that did the work marking its own homework.
+The agent is two explicit LangGraph state graphs rather than a prebuilt agent helper, so the control flow is visible, testable and exactly what the UI shows. The orchestrator decides how many independent parts a question has (usually one), sends each to its own branch with LangGraph's `Send`, and runs them at the same time. `merge` is the join point; `verify` looks at the merged results and can send the work back to `decompose` at most `MAX_VERIFY_PASSES` times. If a retry produces only sub-questions that were already answered, `decompose` skips straight to `merge`.
 
-## State
+### Branch loop
 
-```mermaid
-flowchart LR
-    subgraph orchestrator["AgentState (orchestrator)"]
-        Q["question · schema · history"]
-        BR["branches ➕"]
-        TR["trace ➕"]
-        V["verdict · passes · answer"]
-    end
+[![Branch worker loop](diagrams/branch-loop.architecture.svg)](diagrams/branch-loop.architecture.html)
 
-    subgraph w1["BranchState (branch 1)"]
-        T1["task · df · sql · chart · error"]
-    end
+Each branch runs the classic plan-act loop on its own state: `plan` picks one action, the tool runs, control comes back to `plan`, and `answer` ends the branch. The loop back is what lets a branch notice "the query is done, but a chart was asked for" and take another step.
 
-    subgraph w2["BranchState (branch 2)"]
-        T2["task · df · sql · chart · error"]
-    end
+### How plan decides
 
-    BUD[["BudgetTracker<br/>shared, locked"]]
+[![How plan picks the next action](diagrams/planner.architecture.svg)](diagrams/planner.architecture.html)
 
-    Q -- "Send" --> w1
-    Q -- "Send" --> w2
-    w1 -- "summary only" --> BR
-    w2 -- "summary only" --> BR
-    w1 -. "steps" .-> TR
-    w2 -. "steps" .-> TR
-    w1 --- BUD
-    w2 --- BUD
-```
+Small local models don't always manage structured output, so the planner degrades in stages. It records the step first; if the shared budget is spent, it answers with what it has. Otherwise it asks the model for a `NextStep`; if nothing usable comes back, a fixed rule decides (no SQL yet: query; chart owed: chart; otherwise: answer). An outage or a rejected request is different: that raises `ProviderError` and ends the run with a readable message.
 
-➕ marks the fields with an additive reducer.
+### One question's lifecycle
 
-Each worker runs on its own `BranchState`: its sub-question, its working DataFrame, its errors. Nothing it does can reach another branch, and only a short summary crosses back to the orchestrator. That isolation is what makes the parallelism safe. One shared `df` field with last-write-wins would have three branches overwriting each other's data mid-run.
+[![Lifecycle of one question](diagrams/agent-run.lifecycle.svg)](diagrams/agent-run.lifecycle.html)
 
-The fields several branches write at the same time, `branches` and `trace`, are declared with an additive reducer (`Annotated[list[dict], operator.add]`), so parallel updates append rather than fight over the slot. Everything else is last-write-wins, which is right for a field with a single owner.
+A run is started, decomposed, worked on by its branches, verified and answered. Two other endings exist: a model failure ends it with a readable error inside the final event, and a closed browser tab stops it early without writing an answer.
 
-The step budget is the deliberate exception to isolation. One `BudgetTracker` is shared by every branch, so the cap is on total work, not per branch. Several threads increment the same counter, so it has a lock.
+## A question end to end
 
-The DataFrame travels through state as a real object and is never serialised mid-run; only the final response turns rows into JSON. That keeps the pandas and chart skills fast. The trade-off is that state can't be checkpointed to disk as-is, which is fine for a request-scoped agent and would be the first thing to change if runs ever needed to be resumable.
+[![A question, end to end](diagrams/question.sequence.svg)](diagrams/question.sequence.html)
 
-## What parallelism broke
+The browser posts the question. FastAPI starts the graph on a background thread, and every node pushes its step into a queue the moment it finishes; the API relays each one as an SSE `step` event, then sends one `final` event with the full response. Because the queue is written as work happens, parallel branches report live and interleaved instead of in one lump when a branch ends.
 
-Real threads surfaced bugs the sequential version could never hit, and each one now has a lock in exactly one place:
+[![Closing the tab stops the run](diagrams/disconnect.sequence.svg)](diagrams/disconnect.sequence.html)
 
-```mermaid
-flowchart TB
-    subgraph threads["Branch threads"]
-        T1["Branch 1"]
-        T2["Branch 2"]
-        T3["Branch 3"]
-    end
+If the browser goes away, a watcher in the API notices within half a second and sets a stop event. The step budget then reads as spent, so each branch answers at its next step, and the verifier and the final write-up skip their model calls. A model call already in flight still finishes; a thread can be told to stop but not killed.
 
-    L1{{"Per-engine read lock<br/>connectors.py"}}
-    L2{{"Plot lock<br/>sandbox.py"}}
-    L3{{"Budget lock<br/>cost.py"}}
+## Data
 
-    T1 & T2 & T3 --> L1 --> DB[("Shared in-memory<br/>SQLite connection")]
-    T1 & T2 & T3 --> L2 --> PLT["pyplot global state"]
-    T1 & T2 & T3 --> L3 --> CNT["Step counter"]
-```
+Details: [data.md](data.md).
 
-The worst was silent. The in-memory SQLite engines share one connection across threads, which is what makes an uploaded table visible to FastAPI's threadpool at all. Concurrent reads through that connection interleaved their cursors and returned each other's rows: no exception, just wrong numbers. Reads on shared-connection engines are now serialised per engine, while real databases, with a connection per thread, still run concurrently. SQLite queries take milliseconds and the model calls around them take seconds, so the parallelism that matters is kept.
+### Loading a dataset
 
-pyplot's global figure state deadlocked two branches drawing at once, and `steps += 1` lost updates across threads. The details are in [guide.md](guide.md#bugs-found-along-the-way).
+[![Loading a dataset](diagrams/dataset-loading.sequence.svg)](diagrams/dataset-loading.sequence.html)
 
-## The planner's safety nets
+The sample and uploaded CSVs are written into a fresh in-memory SQLite database as a table called `data`; a database URL connects to your database instead. Either way the connector reads the schema, the row count and five sample rows, and the session registry stores the result under a new id.
 
-Structured output from a small local model fails in ways a large hosted model rarely does, so the planner degrades in stages:
+### Session lifecycle
 
-```mermaid
-flowchart LR
-    A["Structured output<br/>NextStep via function calling"] -->|valid| OK([Action chosen])
-    A -->|nothing usable| B["Heuristic fallback<br/>no SQL → sql · wants chart → chart · else answer"]
-    B --> OK
-    C{"Budget spent?"} -->|yes| F([Forced answer])
-    C -->|no| A
-```
+[![Dataset session lifecycle](diagrams/session.lifecycle.svg)](diagrams/session.lifecycle.html)
 
-1. **Structured output.** `with_structured_output(NextStep, method="function_calling")` returns a validated decision: an `action` and a one-sentence `reasoning` that the UI shows. Function calling is used on every provider because DeepSeek rejects the `json_schema` response format LangChain would otherwise pick.
-2. **Heuristic fallback.** If that returns nothing usable, a fixed rule routes instead.
-3. **The budget.** At `MAX_AGENT_STEPS` the action is forced to `answer`, so even a pathological loop ends with a best-effort answer instead of hanging. The graph's `recursion_limit` sits above the budget so the budget, with its graceful ending, always fires first.
+Sessions live in memory. Every request that uses one refreshes it. Two checks remove them: one older than `SESSION_TTL_MINUTES` is dropped on the next lookup or load, and past `MAX_SESSIONS` the least recently used goes. Both dispose of the engine so its connection is freed.
 
-## Safety layering
+### Where the numbers come from
 
-Generated code passes through independent layers, so getting past one still hits the next:
+[![Where the numbers come from](diagrams/data-flow.dataflow.svg)](diagrams/data-flow.dataflow.html)
 
-| Layer | SQL | Python |
-| --- | --- | --- |
-| Static checks | `sqlparse`: one statement, `SELECT`/`WITH` only, token-level keyword blocklist, comments stripped, trailing `LIMIT` added or clamped | AST walk: no imports, private or dunder attributes, frame introspection, `eval`/`exec`/`open`/`getattr`, or file-touching library calls |
-| Constrained execution | read-only queries, row cap | a copied DataFrame, ~20 allow-listed builtins, module views that won't return submodules, an audit hook refusing writes, processes and sockets |
-| Containment | the error goes back to the model for a retry, then fails gracefully | the watchdog stops runaway loops; errors go back to the planner, which can retry or answer without the analysis |
+Every number in an answer comes from a query result. pandas and matplotlib work on that result, the response carries the rows, any analysis text and any chart, and the final answer is written from those computed values; the prompt tells the model to use only the numbers it was given and never invent figures. The browser redraws bar and line charts from the rows and shows the model's own PNG for other shapes.
 
-The SQL keyword check is token-level on purpose. A substring check would reject a `discount` column because it contains `count`. [SECURITY.md](../SECURITY.md) has the full picture, including the known gaps.
+### Locks for parallel branches
 
-## Streaming
+[![The four locks parallel branches need](diagrams/concurrency-locks.architecture.svg)](diagrams/concurrency-locks.architecture.html)
 
-```mermaid
-sequenceDiagram
-    participant G as Graph thread
-    participant Q as Queue
-    participant S as stream()
-    participant A as FastAPI
-    participant B as Browser
+Running branches on real threads exposed four shared resources, each now behind one lock: the single shared SQLite connection, pyplot's global state, the step counter, and the session registry. The read lock only applies to in-memory engines, so real databases still read concurrently. [design-notes.md](design-notes.md) has the bug behind each one.
 
-    G->>Q: node finishes, put(step)
-    S->>Q: get()
-    S->>A: ("step", entry)
-    A->>B: event: step
-    Note over G,B: repeats for every node, across all branches
-    G->>Q: put(DONE)
-    S->>A: ("final", response)
-    A->>B: event: final
-```
+## Models
 
-The graph runs on a background thread, and each node pushes its trace entry into a queue the moment it finishes. `stream()` drains the queue. Reading the parent state after each node instead would batch a branch's steps into one lump when that branch finished, which hides exactly the part worth seeing. With the queue, parallel branches report live and interleaved: two `plan` steps arrive back to back, then two `sql` steps. Each entry carries its branch id.
+[![How Prism talks to a model](diagrams/model-providers.architecture.svg)](diagrams/model-providers.architecture.html)
 
-The API wraps each entry as an SSE `step` event and ends with one `final` event holding the full response. `EventSource` can't POST, so `api.js` reads the fetch body and parses the frames itself. If the connection closes before `final` arrives, the client reports an error instead of waiting forever. The reasoning panel is built entirely from those step objects; nothing about it is invented client-side.
+Everything goes through `llm.py`, which offers `complete()` for text and `structured()` for a validated object and keeps one client per provider and model. `providers.py` is a small registry: `LLM_PROVIDER` picks the builder, and only that provider's SDK is imported. Details: [models.md](models.md).
 
-## The provider layer
+## Guardrails
 
-```mermaid
-flowchart LR
-    N["Graph nodes and skills"] --> L["llm.py<br/>complete() · structured()<br/>one cached client per model"]
-    L --> R["providers.py registry<br/>@register(name)"]
-    R -->|LLM_PROVIDER=ollama| O["ChatOllama"]
-    R -->|LLM_PROVIDER=openai| C["ChatOpenAI<br/>OpenAI · DeepSeek · Groq · vLLM"]
-    L -. "outage or rejected request" .-> E["ProviderError<br/>readable message"]
-```
+Details: [guardrails.md](guardrails.md) and [SECURITY.md](../SECURITY.md).
 
-`providers.py` is a small registry. Each provider is one builder function tagged `@register("name")`, chosen at runtime by `LLM_PROVIDER`. `llm.py` puts `complete()` and `structured()` on top and caches one client per provider and model, so nothing else in the codebase knows which SDK is underneath. SDKs are imported inside their builders, so only the active one is loaded.
+[![Layers around model-written Python](diagrams/python-sandbox.architecture.svg)](diagrams/python-sandbox.architecture.html)
 
-Failures fall into two groups. Transport, auth and configuration problems (connection refused, 401, unknown model, a rejected parameter) become a `ProviderError` with a message a person can act on, and `run()`/`stream()` turn it into a normal response, so an unreachable model shows up as a readable answer rather than a 500. Anything else, such as a model that can't produce structured output, falls through to the heuristic above.
+Generated Python passes four layers: an AST check before anything runs, a namespace that hands out read-only module views and about twenty builtins, an audit hook that refuses file writes, processes and sockets at run time, and a watchdog that stops a snippet past `SANDBOX_TIMEOUT_SECONDS`. Each catches what the previous one can't see.
 
-## Skills and hooks
+[![How a generated query gets run](diagrams/sql-guard.architecture.svg)](diagrams/sql-guard.architecture.html)
 
-```mermaid
-flowchart LR
-    subgraph skill["A skill (vertical)"]
-        direction LR
-        P1[Prompt] --> P2[Generate] --> P3[Validate] --> P4[Execute] --> P5[SkillResult]
-    end
-    H["Hooks (horizontal)<br/>safety · budget · logging"] -.-> P3
-    H -.-> P4
-```
+Generated SQL must be a single read-only statement and ends with a `LIMIT` no larger than `MAX_SQL_ROWS`. A rejected query or a database error goes back to the model with the message for another try.
 
-- A **skill** is a vertical capability: prompt → generate → validate → execute → `SkillResult`. Skills don't know about the graph; its nodes are thin adapters around them, which is what makes them easy to test with a mocked model.
-- A **hook** is horizontal: safety, budget, logging. Skills and nodes import hooks directly rather than having them woven into the graph, so reading one skill shows its whole guardrail story.
+## Frontend
+
+[![Frontend components](diagrams/frontend.architecture.svg)](diagrams/frontend.architecture.html)
+
+`App.jsx` owns the state and shows either the landing screen or the chat. `api.js` is the only file that talks to the backend; it reads the SSE stream from a `fetch` body because `EventSource` can't POST. Charts and markdown are drawn by hand, so the app has no runtime dependencies beyond React and never inserts model text as HTML. Details: [frontend.md](frontend.md).
+
+## Delivery
+
+Details: [deployment.md](deployment.md).
+
+[![Three ways to run Prism](diagrams/deployment.architecture.svg)](diagrams/deployment.architecture.html)
+
+Locally, Vite serves the app and proxies `/api` to uvicorn. `docker compose` runs the same split in three containers with Ollama. The root `Dockerfile` builds one image where FastAPI serves the built app and the API on one port, which is what runs on Render.
+
+[![How a change lands](diagrams/ci.workflow.svg)](diagrams/ci.workflow.html)
+
+Changes go through a pull request. CI lints and tests the backend on Python 3.11 and 3.12, builds the frontend and builds the deployment image; all four checks must pass before a squash merge, and Render redeploys `main`.
+
+[![Running Prism on your machine](diagrams/local-setup.workflow.svg)](diagrams/local-setup.workflow.html)
+
+[![Deploying to Render](diagrams/render-deploy.workflow.svg)](diagrams/render-deploy.workflow.html)
+
+The setup and Render guides are [windows.md](windows.md), the [README quickstart](../README.md#quickstart) and [deploy-render.md](deploy-render.md).
+
+## Documentation map
+
+[![Where to find what](diagrams/docs-map.architecture.svg)](diagrams/docs-map.architecture.html)
+
+The map at the top of [docs/README.md](README.md): one place to start, and the page for each kind of question.
 
 ## Testing approach
 
-The model is mocked in every test. What's under test is everything around it: the guardrails, the sandbox, the data plumbing, and above all the control flow. Tools loop back to the planner, the fallback routes sensibly, the budget always ends the run, streaming emits steps and then exactly one final event. Those properties hold whichever model is plugged in. Model quality changes the answers; it shouldn't change whether the loop is safe.
+The model is mocked in every test. What's under test is everything around it: the guardrails, the sandbox, the data plumbing, and above all the control flow. Tools loop back to the planner, the fallback routes sensibly, the budget always ends the run, and streaming emits steps and then exactly one final event. Those properties hold whichever model is plugged in.
