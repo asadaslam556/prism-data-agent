@@ -13,7 +13,7 @@ Find the symptom, then the fix. Windows-specific problems are in [windows.md](wi
 | Symptom | Cause and fix |
 | --- | --- |
 | A changed `.env` setting has no effect | Settings are read once at startup, and `--reload` only watches `.py` files. Restart the backend. |
-| `/api/health` shows a different model than you set | The model comes from `LLM_MODEL`, then `OLLAMA_MODEL` or `OPENAI_MODEL`. `OPENAI_MODEL` in `backend/.env` is ignored; use `LLM_MODEL` there ([architecture.md](architecture.md#models)). |
+| `/api/health` shows a different model than you set | The model comes from `LLM_MODEL` first, then `OLLAMA_MODEL` or `OPENAI_MODEL`, so a leftover `LLM_MODEL` wins. Restart the backend after changing `.env` ([architecture.md](architecture.md#models)). |
 | `LLM_PROVIDER=openai but no key found` | Set `OPENAI_API_KEY`. |
 | Port 8000 is in use | Stop whatever holds it. Don't move the backend to another port: the frontend's dev proxy always points at 8000. |
 | Port 5173 is in use | `npm run dev -- --port 5174`. |
