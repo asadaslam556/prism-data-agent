@@ -25,7 +25,7 @@
   <a href="#quickstart">Quickstart</a> ·
   <a href="#architecture">Architecture</a> ·
   <a href="#security-model">Security</a> ·
-  <a href="docs/README.md">Docs</a> ·
+  <a href="docs/architecture.md">Docs</a> ·
   <a href="CHANGELOG.md">Changelog</a>
 </p>
 
@@ -75,7 +75,7 @@
 
 | The agent graph | A chart it drew |
 | :---: | :---: |
-| <img src="docs/diagrams/orchestrator.architecture.svg" alt="The orchestrator graph: decompose, parallel branches, merge, verify with a bounded retry, interpret" width="440"> | <img src="docs/images/revenue-by-region.png" alt="Total revenue by region, drawn by the agent from the bundled sample" width="440"> |
+| <img src="docs/images/orchestrator.svg" alt="The orchestrator graph: decompose, parallel branches, merge, verify with a bounded retry, interpret" width="440"> | <img src="docs/images/revenue-by-region.png" alt="Total revenue by region, drawn by the agent from the bundled sample" width="440"> |
 | Decompose, fan out, merge, verify, answer. | Bar and line charts are redrawn as SVG with hover values; anything else is shown as drawn. |
 
 ## Tech stack
@@ -92,14 +92,14 @@
 | Models | ![Ollama](https://img.shields.io/badge/Ollama-000000?logo=ollama&logoColor=white) ![OpenAI compatible](https://img.shields.io/badge/OpenAI--compatible-412991) ![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?logo=deepseek&logoColor=white) | Local by default, hosted with one variable. |
 | Analysis | ![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C) | The sandboxed analysis and charting environment. |
 | Data | ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?logo=sqlalchemy&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white) | Every dataset sits behind one SQLAlchemy engine, whatever its source. |
-| Quality | ![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white) ![Ruff](https://img.shields.io/badge/Ruff-D7FF64?logo=ruff&logoColor=black) ![CodeQL](https://img.shields.io/badge/CodeQL-2F3237?logo=github&logoColor=white) | Tests with the model mocked, linting, and code scanning on every push. |
+| Quality | ![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white) ![Ruff](https://img.shields.io/badge/Ruff-D7FF64?logo=ruff&logoColor=black) ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white) ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white) ![CodeQL](https://img.shields.io/badge/CodeQL-2F3237?logo=github&logoColor=white) | Tests with the model mocked, linting, and code scanning on every push. |
 | Delivery | ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white) ![Render](https://img.shields.io/badge/Render-46E3B7?logo=render&logoColor=black) | One deployment image, CI on Python 3.11 and 3.12, hosted on Render. |
 
 ## Quickstart
 
 You need **Python 3.11+**, **Node 20.19+** and **[Ollama](https://ollama.com/download)**.
 
-![Running Prism locally: install once, pull a model, start the backend and the frontend in two terminals, open localhost:5173](docs/diagrams/local-setup.workflow.svg)
+![Running Prism locally: install once, pull a model, start the backend and the frontend in two terminals, open localhost:5173](docs/images/local-setup.svg)
 
 **1. Pull a model** (once):
 
@@ -139,7 +139,7 @@ docker compose up --build
 docker compose exec ollama ollama pull qwen2.5   # once
 ```
 
-Frontend on http://localhost:5173, API on port 8000, Ollama on 11434. This stack always runs on Ollama; see [docs/deployment.md](docs/deployment.md) for the single-image option.
+Frontend on http://localhost:5173, API on port 8000, Ollama on 11434. This stack always runs on Ollama; see [Deployment](#deployment) for the single-image option.
 
 </details>
 
@@ -173,7 +173,7 @@ export LLM_EXTRA_BODY='{"thinking": {"type": "disabled"}}'
 - Some models reject `temperature`. Set `LLM_TEMPERATURE=` (blank) to leave it out of the request.
 - The pill in the app header shows which model is answering.
 
-If the backend can't reach the model (Ollama not running, a bad key) you get a readable message saying what to check, not a stack trace. More in [docs/models.md](docs/models.md).
+If the backend can't reach the model (Ollama not running, a bad key) you get a readable message saying what to check, not a stack trace. More in [docs/architecture.md](docs/architecture.md#models).
 
 ## Usage
 
@@ -200,7 +200,7 @@ curl -s http://localhost:8000/api/query \
   -d '{"session_id": "<SESSION_ID>", "question": "What is total revenue by region?"}'
 ```
 
-`POST /api/query/stream` streams the same run as Server-Sent Events. Every route is in [docs/api.md](docs/api.md).
+`POST /api/query/stream` streams the same run as Server-Sent Events. Every route is in [docs/configuration.md](docs/configuration.md#api-routes).
 
 ## Configuration
 
@@ -230,35 +230,35 @@ Everything is an environment variable. Copy `backend/.env.example` to `backend/.
 
 One React app, one FastAPI process, one agent. The model provider and the data source are both swappable.
 
-<a href="docs/diagrams/system-overview.architecture.html"><img src="docs/diagrams/system-overview.architecture.svg" alt="System overview: the React console talks to one FastAPI process holding the agent graph, skills, guardrails, sandbox, model layer, session registry and connectors; the model provider and your own database sit outside it"></a>
+![System overview: the React console talks to one FastAPI process holding the agent graph, skills, guardrails, sandbox, model layer, session registry and connectors; the model provider and your own database sit outside it](docs/images/system-overview.svg)
 
 The question is split into independent parts by an **orchestrator** graph, and each part runs its own **plan-act loop** at the same time:
 
 | Orchestrator | Branch loop |
 | :---: | :---: |
-| <img src="docs/diagrams/orchestrator.architecture.svg" alt="Orchestrator: decompose, branches in parallel, merge, verify with a bounded retry, interpret" width="440"> | <img src="docs/diagrams/branch-loop.architecture.svg" alt="Branch loop: plan picks sql, python or chart, each tool returns to plan, answer ends the branch" width="440"> |
+| <img src="docs/images/orchestrator.svg" alt="Orchestrator: decompose, branches in parallel, merge, verify with a bounded retry, interpret" width="440"> | <img src="docs/images/branch-loop.svg" alt="Branch loop: plan picks sql, python or chart, each tool returns to plan, answer ends the branch" width="440"> |
 
 Every step streams to the browser as it finishes:
 
-![A question end to end: the browser posts to FastAPI, the graph runs on its own thread, branches query the data and stream steps over SSE, then the final answer arrives](docs/diagrams/question.sequence.svg)
+![A question end to end: the browser posts to FastAPI, the graph runs on its own thread, branches query the data and stream steps over SSE, then the final answer arrives](docs/images/question.svg)
 
-[docs/architecture.md](docs/architecture.md) walks through all 21 diagrams. Each one also has an interactive version (`.html` next to the image in [docs/diagrams/](docs/diagrams/)) with search, focus and light and dark themes; in the code-level architecture diagrams, components link to their source lines.
+[docs/architecture.md](docs/architecture.md) covers the rest: the planner, the data path, sessions, the locks that parallel branches need, the model layer and the frontend, each with its diagram.
 
 ## Security model
 
 Running SQL and Python that a model wrote is the main risk here, so everything it writes passes through independent layers.
 
-![Layers around model-written Python: AST check, restricted namespace, audit hook, watchdog; a rejection, error or timeout goes back to the planner](docs/diagrams/python-sandbox.architecture.svg)
+![Layers around model-written Python: AST check, restricted namespace, audit hook, watchdog; a rejection, error or timeout goes back to the planner](docs/images/python-sandbox.svg)
 
-![How a generated query gets run: validate_sql, then run_select, with rejections and query errors sent back to the model](docs/diagrams/sql-guard.architecture.svg)
+![How a generated query gets run: validate_sql, then run_select, with rejections and query errors sent back to the model](docs/images/sql-guard.svg)
 
-This is hardening for a local, single-user tool, not a jail. CPython can't be fully locked down from inside its own process. [SECURITY.md](SECURITY.md) lists the known gaps and how to report a vulnerability; [docs/guardrails.md](docs/guardrails.md) covers each layer.
+This is hardening for a local, single-user tool, not a jail. CPython can't be fully locked down from inside its own process. [SECURITY.md](SECURITY.md) covers each layer with its exact rules, the known gaps, and how to report a vulnerability.
 
 ## Deployment
 
-![Three ways to run Prism: Vite and uvicorn on your machine, docker compose with three containers, or the single image on a host such as Render](docs/diagrams/deployment.architecture.svg)
+![Three ways to run Prism: Vite and uvicorn on your machine, docker compose with three containers, or the single image on a host such as Render](docs/images/deployment.svg)
 
-The root `Dockerfile` builds one image: FastAPI serves the built React app and the API on one port (`$PORT`, 7860 by default), with `/api/connect` turned off. [docs/deployment.md](docs/deployment.md) compares the three setups, and [docs/deploy-render.md](docs/deploy-render.md) puts the image on Render's free tier behind a login.
+The root `Dockerfile` builds one image: FastAPI serves the built React app and the API on one port (`$PORT`, 7860 by default), with `/api/connect` turned off. [docs/architecture.md](docs/architecture.md#running-it) compares the three setups, and [docs/deploy-render.md](docs/deploy-render.md) puts the image on Render's free tier behind a login.
 
 ## Testing
 
@@ -267,9 +267,13 @@ cd backend
 pip install -r requirements-dev.txt
 python -m pytest
 ruff check app tests list_models.py
+
+cd ../frontend
+npm run lint
+npm test
 ```
 
-The model is mocked in every test, so the suite runs anywhere, CI included, without Ollama. It covers:
+The model is mocked in every backend test, so the suite runs anywhere, CI included, without Ollama. It covers:
 
 - both guardrails, and every sandbox escape route found so far
 - the data layer, the API and the server limits
@@ -277,8 +281,9 @@ The model is mocked in every test, so the suite runs anywhere, CI included, with
 - the orchestration layer: decomposition, real thread-level parallelism, verifier retries
 - provider selection and outage handling
 - the concurrency bugs that only appeared once branches ran at the same time
+- on the frontend, the stream reader and the chart decisions
 
-CI runs the same checks on Python 3.11 and 3.12, builds the frontend and builds the deployment image; see [CONTRIBUTING.md](CONTRIBUTING.md).
+CI runs the same checks, the backend on Python 3.11 and 3.12, then builds the frontend and the deployment image; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project structure
 
@@ -301,9 +306,7 @@ prism-data-agent/
 │   └── requirements*.txt
 ├── frontend/               # React + Vite console
 ├── docs/
-│   ├── diagrams/           # archify sources (.json), interactive .html, .svg and .png
-│   ├── images/             # screenshots, demo and logo
-│   └── archive/            # superseded pages, kept for history
+│   └── images/             # diagrams, screenshots, demo and logo
 ├── Dockerfile              # single deployment image
 └── docker-compose.yml      # Ollama + backend + frontend for local use
 ```
@@ -340,18 +343,15 @@ The reasoning panel picks the new steps up with no frontend change. A new model 
 
 ## Documentation
 
-Start at [docs/README.md](docs/README.md), which maps every page.
-
 | Document | What's in it |
 | --- | --- |
-| [docs/architecture.md](docs/architecture.md) | Every diagram, explained |
-| [docs/agent.md](docs/agent.md) | The orchestrator, the branch loop, the planner, streaming |
-| [docs/data.md](docs/data.md) | Loading data, sessions, where the numbers come from, concurrency |
-| [docs/guardrails.md](docs/guardrails.md) | The SQL guard and the Python sandbox |
-| [docs/configuration.md](docs/configuration.md) | Every setting, with defaults |
-| [docs/api.md](docs/api.md) | Every route and the streaming format |
-| [docs/deployment.md](docs/deployment.md) | Local, compose and single-image setups, and CI |
-| [SECURITY.md](SECURITY.md) | Known gaps and how to report a vulnerability |
+| [docs/architecture.md](docs/architecture.md) | The agent, the data path, the model layer, the frontend and how it ships, with diagrams |
+| [docs/configuration.md](docs/configuration.md) | Every setting with its default, and the HTTP API |
+| [docs/troubleshooting.md](docs/troubleshooting.md) | Symptoms and fixes |
+| [docs/design-notes.md](docs/design-notes.md) | The bugs that shaped the design |
+| [docs/windows.md](docs/windows.md) | The quickstart in PowerShell |
+| [docs/deploy-render.md](docs/deploy-render.md) | Deploying to Render with DeepSeek |
+| [SECURITY.md](SECURITY.md) | The SQL guard, the Python sandbox, known gaps, reporting |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Setup for contributors, checks, and where things go |
 
 ## License

@@ -1,5 +1,11 @@
 # Troubleshooting
 
+![Ollama](https://img.shields.io/badge/Ollama-000000?logo=ollama&logoColor=white)
+![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?logo=deepseek&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite_8-646CFF?logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+
 Find the symptom, then the fix. Windows-specific problems are in [windows.md](windows.md#troubleshooting), and Render-specific ones are in [deploy-render.md](deploy-render.md).
 
 ## Starting up
@@ -7,7 +13,7 @@ Find the symptom, then the fix. Windows-specific problems are in [windows.md](wi
 | Symptom | Cause and fix |
 | --- | --- |
 | A changed `.env` setting has no effect | Settings are read once at startup, and `--reload` only watches `.py` files. Restart the backend. |
-| `/api/health` shows a different model than you set | The model comes from `LLM_MODEL`, then `OLLAMA_MODEL` or `OPENAI_MODEL`. `OPENAI_MODEL` in `backend/.env` is ignored; use `LLM_MODEL` there ([models.md](models.md#which-model-is-used)). |
+| `/api/health` shows a different model than you set | The model comes from `LLM_MODEL`, then `OLLAMA_MODEL` or `OPENAI_MODEL`. `OPENAI_MODEL` in `backend/.env` is ignored; use `LLM_MODEL` there ([architecture.md](architecture.md#models)). |
 | `LLM_PROVIDER=openai but no key found` | Set `OPENAI_API_KEY`. |
 | Port 8000 is in use | Stop whatever holds it. Don't move the backend to another port: the frontend's dev proxy always points at 8000. |
 | Port 5173 is in use | `npm run dev -- --port 5174`. |
@@ -21,7 +27,7 @@ Find the symptom, then the fix. Windows-specific problems are in [windows.md](wi
 | Answers fail at once with connection errors to port 11434 | Ollama isn't running. Start the app (Windows, macOS) or `ollama serve` (Linux). |
 | The model isn't found | Pull it: `ollama pull qwen2.5`, or whatever `OLLAMA_MODEL` names. |
 | A hosted provider says the model doesn't exist | Gateways rename models. Run `python list_models.py` from `backend/` to see the real names. |
-| DeepSeek fails with `Thinking mode does not support this tool_choice` | Set `LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}` ([models.md](models.md#deepseek)). |
+| DeepSeek fails with `Thinking mode does not support this tool_choice` | Set `LLM_EXTRA_BODY={"thinking": {"type": "disabled"}}` ([configuration.md](configuration.md#deepseek)). |
 | A provider rejects `temperature` | Set `LLM_TEMPERATURE` blank, so it isn't sent. |
 | The first answer is very slow | The model loads into memory on first use. Later questions are faster. |
 | Answers are wrong, or SQL keeps retrying | Small local models are weak at SQL; the retries show in the reasoning panel. Try a bigger model or a hosted provider. |

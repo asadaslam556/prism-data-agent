@@ -7,9 +7,9 @@
 ![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white)
 
 The FastAPI service that hosts the agent. Setup is in the [root README](../README.md).
-The [docs](../docs/README.md) cover the [agent](../docs/agent.md), the
-[guardrails](../docs/guardrails.md), every [setting](../docs/configuration.md) and the
-[API](../docs/api.md).
+[docs/architecture.md](../docs/architecture.md) covers the agent and the data path,
+[docs/configuration.md](../docs/configuration.md) every setting and the API, and
+[SECURITY.md](../SECURITY.md) the guardrails.
 
 ```bash
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\Activate.ps1
@@ -35,6 +35,8 @@ Interactive API docs are at http://localhost:8000/docs while it's running.
 | `POST` | `/api/query/stream` | Runs the agent and streams each step as Server-Sent Events |
 
 ## Layout
+
+![Backend modules and their imports](../docs/images/backend-modules.svg)
 
 | Path | Contents |
 | --- | --- |

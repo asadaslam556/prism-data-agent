@@ -2,9 +2,11 @@
 
 ![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white)
 ![Ruff](https://img.shields.io/badge/Ruff-D7FF64?logo=ruff&logoColor=black)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
 
-Thanks for taking a look. Here's how to work on it. How the code fits together is in [docs/](docs/README.md).
+Thanks for taking a look. Here's how to work on it. How the code fits together is in [docs/architecture.md](docs/architecture.md).
 
 By taking part you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -30,7 +32,7 @@ You only need Ollama (or a hosted provider key) to use the app. The test suite m
 
 ## How a change lands
 
-[![How a change lands](docs/diagrams/ci.workflow.svg)](docs/diagrams/ci.workflow.html)
+![How a change lands](docs/images/ci.svg)
 
 ## Before opening a PR
 
@@ -39,6 +41,8 @@ cd backend
 ruff check app tests list_models.py
 python -m pytest
 cd ../frontend
+npm run lint
+npm test
 npm run build
 ```
 
@@ -52,4 +56,4 @@ CI runs the same checks on Python 3.11 and 3.12, plus a build of the deployment 
 
 ## Style
 
-Ruff is the linter; its config is in `backend/pyproject.toml`. Match the surrounding code, keep comments short and about *why*, and don't add a dependency without a reason you can explain in the PR description. Add a line to [CHANGELOG.md](CHANGELOG.md) for anything user-visible.
+Ruff lints the backend (config in `backend/pyproject.toml`) and ESLint the frontend (`frontend/eslint.config.js`). Match the surrounding code, keep comments short and about *why*, and don't add a dependency without a reason you can explain in the PR description. Add a line to [CHANGELOG.md](CHANGELOG.md) for anything user-visible.

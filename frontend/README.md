@@ -3,15 +3,19 @@
 ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite_8-646CFF?logo=vite&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white)
 
 React + Vite console for Prism. See the root [README](../README.md) for setup
-and [docs/frontend.md](../docs/frontend.md) for how it works.
+and [docs/architecture.md](../docs/architecture.md#frontend) for how it works.
 
 ```bash
 npm install
 npm run dev        # dev server on http://localhost:5173
 npm run build      # production build into dist/
 npm run preview    # serve the production build locally
+npm run lint       # ESLint
+npm test           # Vitest
 ```
 
 The dev server proxies `/api` to the backend on port 8000 (see
@@ -23,6 +27,8 @@ Set `VITE_API_BASE` only for a split deployment where the backend lives on a
 different host. Copy `.env.example` to `.env` if you need it.
 
 ## Components
+
+![Frontend components](../docs/images/frontend.svg)
 
 | File | What it does |
 | --- | --- |

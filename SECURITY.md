@@ -6,20 +6,43 @@
 
 ## The risky part
 
-Prism runs SQL and Python written by a language model. That's the core feature and the core risk, and it's handled in layers so that getting past one still leaves the others.
+Prism runs SQL and Python written by a language model. That's the core feature and the core risk, and it's handled in layers so that getting past one still leaves the others. Code: `backend/app/hooks/safety.py` and `backend/app/services/sandbox.py`.
 
-[![Python sandbox layers](docs/diagrams/python-sandbox.architecture.svg)](docs/diagrams/python-sandbox.architecture.html)
+### SQL
 
-[![SQL guard](docs/diagrams/sql-guard.architecture.svg)](docs/diagrams/sql-guard.architecture.html)
+![How a generated query gets run](docs/images/sql-guard.svg)
 
-Every check, with the exact lists, is in [docs/guardrails.md](docs/guardrails.md).
+The SQL skill asks the model for one query, written for the session's database. `validate_sql` then, in order:
 
-1. **Static checks.** SQL must be a single `SELECT` or `WITH` statement with no write or admin keywords. Comments are stripped, and the query ends with a `LIMIT` no larger than `MAX_SQL_ROWS`, added or clamped as needed. Python is parsed and walked before it runs: no imports, no private or dunder attributes, no frame introspection (`gi_frame`, `f_globals` and so on), no `eval`/`exec`/`open`/`getattr`, and none of the pandas, numpy or matplotlib calls that read or write files, including `query()`, which evaluates its string argument itself. Method names passed as strings (`df.apply("to_pickle", ...)`) are rejected too.
-2. **A restricted namespace.** Snippets run against a copy of the data with about twenty allow-listed builtins. They get read-only views of `pd`, `np` and `plt` rather than the modules themselves, because those libraries import `os`, `sys` and `subprocess` internally and any submodule used to be a way to reach them. The views return functions, classes and constants as normal but refuse to hand out a module, apart from a few numeric ones like `np.random` and `pd.api.types`. A narrow `__import__` returns already-loaded numpy and pandas internals, because numpy imports lazily partway through ordinary calls.
-3. **An audit hook.** While a snippet runs, a [PEP 578](https://peps.python.org/pep-0578/) audit hook on that thread refuses file writes, process creation, sockets and ctypes. This catches what static checks can't read, like a method name assembled at runtime. Reads are allowed, because matplotlib opens its own font files while rendering.
-4. **A watchdog.** No static check rejects `while True:`, and in CPython a tight loop starves every other thread of the GIL. Snippets are stopped once they pass `SANDBOX_TIMEOUT_SECONDS`.
-5. **A bounded loop.** A step budget shared across all parallel branches, and a fixed number of verifier retries, so a stuck agent ends with a best-effort answer.
-6. **Server limits.** Upload size cap, session cap with LRU eviction, session TTL, and a request id on every response.
+1. **Strips comments**, so `-- no limit` can't count as a `LIMIT`.
+2. **Requires exactly one statement.**
+3. **Requires it to start with `SELECT` or `WITH`.**
+4. **Rejects write and admin keywords** as whole words: `insert`, `update`, `delete`, `drop`, `alter`, `create`, `truncate`, `attach`, `detach`, `pragma`, `grant`, `revoke`, `vacuum`, `reindex`, `exec`, `execute`, `call`, `merge`, `copy`, `into`. Whole words, so a `discount` column isn't rejected for containing `count`. Words inside quoted values are skipped (`WHERE status = 'update pending'` is fine), except in a value containing a backslash, because databases disagree on where such a value ends. `REPLACE()` is allowed; `REPLACE INTO` is still caught by `into`.
+5. **Caps the rows.** Only a trailing `LIMIT` counts, because one in a subquery doesn't bound the result. A missing `LIMIT` is added as `MAX_SQL_ROWS`; a larger one is clamped to it, including MySQL's `LIMIT offset, count` form.
+
+A rejected query or a database error goes back to the model with the message, up to `SQL_RETRY_ATTEMPTS` extra tries (default 1). After that the step fails and the planner sees the error.
+
+### Python
+
+![Layers around model-written Python](docs/images/python-sandbox.svg)
+
+The pandas and chart skills ask the model for one snippet that leaves its output in a variable called `result`. Four layers stand between that snippet and the server.
+
+1. **An AST check** (`validate_python`). The snippet is parsed and walked before anything runs, and rejected for:
+   - any `import`, or any attribute starting with `_`, private or dunder;
+   - frame and code introspection: `gi_frame`, `f_back`, `f_globals`, `f_builtins`, `tb_frame` and the rest;
+   - the names `eval`, `exec`, `compile`, `open`, `__import__`, `input`, `globals`, `locals`, `getattr`, `setattr`, `delattr`, `vars`;
+   - methods that read or write files or evaluate strings: the pandas `to_*` writers and `read_*` readers, numpy's `save`/`load` family, matplotlib's `savefig`, and `query`, `eval`, `exec`, `system`, `popen`, including when the name is passed as a string, as in `df.apply("to_pickle", path=...)`.
+2. **A restricted namespace.** The snippet gets a copy of the DataFrame as `df`, and read-only views of `pd`, `np` and `plt` rather than the modules themselves, because those libraries import `os`, `sys` and `subprocess` internally. The views return functions, classes and constants as usual but refuse to return a module, apart from a few numeric ones like `numpy.random` and `pandas.api.types`. There are 20 builtins (`len`, `range`, `min`, `max`, `sum`, `abs`, `round`, `sorted`, `list`, `dict`, `set`, `tuple`, `float`, `int`, `str`, `bool`, `enumerate`, `zip`, `print`, `isinstance`), and a narrow `__import__` that only returns already-loaded numpy, pandas and standard math and date modules, because numpy imports lazily partway through some ordinary calls.
+3. **An audit hook.** While a snippet runs, a [PEP 578](https://peps.python.org/pep-0578/) audit hook on that thread refuses opening a file for writing, process creation, file removal and renaming, sockets, `ctypes`, `urllib` and `http`. This catches what the AST check can't read, like a method name assembled at run time. Reads are allowed, because matplotlib opens its own font files.
+4. **A watchdog.** No static check rejects `while True:`, and in CPython a tight loop starves every other thread. A line tracer stops the snippet once it runs longer than `SANDBOX_TIMEOUT_SECONDS` (default 30).
+
+A rejection, an error while running (including a blocked call) or a timeout comes back to the planner as a failed step, and it can try again or answer without that analysis.
+
+### Limits around the agent
+
+- **A bounded loop.** A step budget shared across all parallel branches, and a fixed number of verifier retries, so a stuck agent ends with a best-effort answer.
+- **Server limits.** An upload size cap, a session cap with least-recently-used eviction, a session TTL, and a request id on every response.
 
 ## Continuous checks
 
