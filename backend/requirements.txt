@@ -15,7 +15,7 @@ sqlalchemy>=2.1.1
 sqlparse>=0.6.0                # used by the SQL guardrail to check statements
 
 # --- Agent / LLM ---
-langgraph==1.2.12              # the agent graph itself
+langgraph==1.2.14              # the agent graph itself
 langchain-core==1.6.5          # message types shared by every provider
 langchain-ollama>=1.1.0        # LLM_PROVIDER=ollama  (local, default)
 langchain-openai==1.6.6        # LLM_PROVIDER=openai  (OpenAI + any compatible endpoint)
