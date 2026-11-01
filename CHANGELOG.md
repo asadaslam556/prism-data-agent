@@ -2,6 +2,12 @@
 
 All notable changes to Prism. Versions follow [semantic versioning](https://semver.org).
 
+## Unreleased
+
+### Changed
+- Answer cards drop the thick colored stripe on their left edge; error answers
+  get a red border instead.
+
 ## 1.8.2
 
 Security updates and a move to Node 22.

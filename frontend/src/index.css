@@ -389,14 +389,13 @@ button:disabled {
   max-width: 860px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--accent);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 18px 20px;
 }
 
 .agent-message-error {
-  border-left-color: var(--err);
+  border-color: var(--err);
 }
 
 .agent-answer {
