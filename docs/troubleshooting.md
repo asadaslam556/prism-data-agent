@@ -4,7 +4,7 @@
 ![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?logo=deepseek&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite_8-646CFF?logo=vite&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js_22.13+-5FA04E?logo=nodedotjs&logoColor=white)
 
 Find the symptom, then the fix. Windows-specific problems are in [windows.md](windows.md#troubleshooting), and Render-specific ones are in [deploy-render.md](deploy-render.md).
 
@@ -18,7 +18,7 @@ Find the symptom, then the fix. Windows-specific problems are in [windows.md](wi
 | Port 8000 is in use | Stop whatever holds it. Don't move the backend to another port: the frontend's dev proxy always points at 8000. |
 | Port 5173 is in use | `npm run dev -- --port 5174`. |
 | **Load sample dataset** says "Not Found" | Something other than Prism is answering on port 8000, such as an old server or a Docker container. Stop it and start the backend again. |
-| `npm install` or `npm run dev` fails | Node is older than 20.19. Check with `node -v`. |
+| `npm install` or `npm run dev` fails | Node is older than 22.13. Check with `node -v`. |
 
 ## Asking questions
 

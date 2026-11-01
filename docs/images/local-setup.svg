@@ -466,8 +466,8 @@ rect.c-bg-rect { fill: var(--bg); }
         <path data-edge-from="venv" data-edge-to="uvicorn" data-edge-key="6" data-edge-id="venv-uv" data-composition-points="516,246;544,246" d="M 516 246 L 544 246" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
 
         <!-- Nodes -->
-        <g id="node-install" data-node-id="install" data-node-label="Install" tabindex="0" role="button" aria-label="Focus Install, Python 3.11+ · Node 20.19+, Once" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python 3.11+ · Node 20.19+" data-node-tag="+ Ollama" data-node-context="Once">
-          <title>Install · Python 3.11+ · Node 20.19+ · Once · + Ollama</title>
+        <g id="node-install" data-node-id="install" data-node-label="Install" tabindex="0" role="button" aria-label="Focus Install, Python 3.11+ · Node 22.13+, Once" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python 3.11+ · Node 22.13+" data-node-tag="+ Ollama" data-node-context="Once">
+          <title>Install · Python 3.11+ · Node 22.13+ · Once · + Ollama</title>
           <rect x="48" y="86" width="160" height="68" rx="6" class="c-mask"/>
           <rect x="48" y="86" width="160" height="68" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(54 92) scale(0.6875)">
@@ -475,7 +475,7 @@ rect.c-bg-rect { fill: var(--bg); }
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
           <text data-node-label="" x="128" y="107" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Install</text>
-          <text x="128" y="124" class="t-muted" font-size="8" text-anchor="middle">Python 3.11+ · Node 20.19+</text>
+          <text x="128" y="124" class="t-muted" font-size="8" text-anchor="middle">Python 3.11+ · Node 22.13+</text>
         <text x="128" y="142" class="t-external" font-size="7" text-anchor="middle">+ Ollama</text>
         </g>
 

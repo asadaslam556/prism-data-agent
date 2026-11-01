@@ -9,7 +9,7 @@
 #   docker run --rm -p 7860:7860 --env-file backend/.env prism
 
 # ---- stage 1: build the frontend -----------------------------------------
-FROM node:20-slim AS frontend
+FROM node:22-slim AS frontend
 
 WORKDIR /build
 

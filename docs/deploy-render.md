@@ -52,7 +52,7 @@ uvicorn app.main:app --reload --port 8000
 http://localhost:8000/api/health should return something like:
 
 ```json
-{"status":"ok","version":"1.8.1","provider":"openai","model":"deepseek-v4-flash","db_connect":true}
+{"status":"ok","version":"1.8.2","provider":"openai","model":"deepseek-v4-flash","db_connect":true}
 ```
 
 Start the frontend in a second terminal and ask a real question. If that works, the deploy will too.
