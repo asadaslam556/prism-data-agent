@@ -1,5 +1,5 @@
 # Everything in requirements.txt, plus the tooling CI runs.
 -r requirements.txt
 
-pytest>=9.1.1                  # the model is mocked in every test
-ruff>=0.16.9                   # linter; config lives in pyproject.toml
+pytest>=9.2.0                  # the model is mocked in every test
+ruff>=0.17.3                   # linter; config lives in pyproject.toml
