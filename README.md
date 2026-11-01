@@ -17,7 +17,7 @@
   <a href="https://github.com/asadaslam556/prism-data-agent/actions/workflows/ci.yml"><img src="https://github.com/asadaslam556/prism-data-agent/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://github.com/asadaslam556/prism-data-agent/security/code-scanning"><img src="https://github.com/asadaslam556/prism-data-agent/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL"></a>
   <img src="https://img.shields.io/badge/python-3.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python 3.11 | 3.12">
-  <img src="https://img.shields.io/badge/node-20.19%2B-5FA04E?logo=nodedotjs&logoColor=white" alt="Node 20.19+">
+  <img src="https://img.shields.io/badge/node-22.13%2B-5FA04E?logo=nodedotjs&logoColor=white" alt="Node 22.13+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
 </p>
 
@@ -97,7 +97,7 @@
 
 ## Quickstart
 
-You need **Python 3.11+**, **Node 20.19+** and **[Ollama](https://ollama.com/download)**.
+You need **Python 3.11+**, **Node 22.13+** and **[Ollama](https://ollama.com/download)**.
 
 ![Running Prism locally: install once, pull a model, start the backend and the frontend in two terminals, open localhost:5173](docs/images/local-setup.svg)
 

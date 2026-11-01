@@ -2,6 +2,23 @@
 
 All notable changes to Prism. Versions follow [semantic versioning](https://semver.org).
 
+## 1.8.2
+
+Security updates and a move to Node 22.
+
+### Security
+- LangGraph 1.2.18, which fixes unencoded identifiers in its streaming client.
+- Vite 8.3.5 and source-map-js 1.2.2 for the dev server and build advisories,
+  zod 4.6.7, and minimatch 11 (forced through an npm override until ESLint
+  ships it). `npm audit` reports nothing.
+
+### Changed
+- The frontend needs Node 22.13 or newer. Node 20 reached end of life in April
+  2026, and Vitest 5 and ESLint 10 no longer support it. CI and both Docker
+  images build on Node 22.
+- Backend dependencies updated, including FastAPI 0.162, LangChain 1.7 and
+  pandas 3.1.
+
 ## 1.8.1
 
 A small fix release, frontend checks in CI, and leaner documentation.

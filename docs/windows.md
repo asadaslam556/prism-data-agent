@@ -3,7 +3,7 @@
 ![Windows](https://img.shields.io/badge/Windows-0078D4)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE)
 ![Python](https://img.shields.io/badge/Python_3.11+-3776AB?logo=python&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js_22.13+-5FA04E?logo=nodedotjs&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-000000?logo=ollama&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 
@@ -14,7 +14,7 @@ The README's quickstart, in PowerShell, plus the Windows-specific things that te
 ## Prerequisites
 
 - **Python 3.11 or newer** from https://www.python.org/downloads/windows/. Tick **"Add python.exe to PATH"** during install, then check with `python --version`.
-- **Node.js 20.19 or newer** from https://nodejs.org (the LTS installer). Check with `node -v`.
+- **Node.js 22.13 or newer** from https://nodejs.org (the LTS installer). Check with `node -v`.
 - **Ollama** from https://ollama.com/download. It runs the model locally.
 - **Docker Desktop**, only if you want the Docker option below.
 
@@ -51,7 +51,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 http://localhost:8000/api/health should return something like:
 
 ```json
-{"status":"ok","version":"1.8.1","provider":"ollama","model":"qwen2.5","db_connect":true}
+{"status":"ok","version":"1.8.2","provider":"ollama","model":"qwen2.5","db_connect":true}
 ```
 
 The `model` field is the model the backend will actually use.

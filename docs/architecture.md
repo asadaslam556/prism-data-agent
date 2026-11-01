@@ -243,7 +243,7 @@ Each question carries the last three question-and-answer pairs as `history`, so 
 | Single image (root `Dockerfile`) | FastAPI itself, from `static/` | A hosted API | `$PORT`, or 7860 |
 
 - **docker compose** passes the backend only `LLM_PROVIDER`, `OLLAMA_MODEL` and `OLLAMA_BASE_URL`, so it always runs on Ollama. nginx turns proxy buffering off for `/api/`, which streaming needs.
-- **The single image** builds the frontend with Node 20, then runs uvicorn on Python 3.12 as a non-root user, serving the API and the app from one origin. It sets `ENABLE_DB_CONNECT=false`, and `.dockerignore` keeps every `.env` out of it. This is what runs on Render: [deploy-render.md](deploy-render.md).
+- **The single image** builds the frontend with Node 22, then runs uvicorn on Python 3.12 as a non-root user, serving the API and the app from one origin. It sets `ENABLE_DB_CONNECT=false`, and `.dockerignore` keeps every `.env` out of it. This is what runs on Render: [deploy-render.md](deploy-render.md).
 
 ![How a change lands](images/ci.svg)
 

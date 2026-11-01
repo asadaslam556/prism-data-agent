@@ -2,7 +2,7 @@
 
 ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite_8-646CFF?logo=vite&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js_20.19+-5FA04E?logo=nodedotjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js_22.13+-5FA04E?logo=nodedotjs&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white)
 
